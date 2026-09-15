@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Registers ZenArchive context menu entries in Windows Explorer.
 .DESCRIPTION
@@ -87,7 +87,7 @@ function Register-ContextMenuEntries {
     # Extract Here
     $ehKey = "$starBase\ZenArchiveExtractHere"
     New-Item -Path "$ehKey\command" -Force | Out-Null
-    Set-ItemProperty -Path $ehKey -Name "(Default)" -Value "ZenArchive > Extract Here"
+    Set-ItemProperty -Path $ehKey -Name "(Default)" -Value "Extract Here"
     Set-ItemProperty -Path $ehKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $ehKey -Name "AppliesTo" -Value $appliesTo
     Set-ItemProperty -Path "$ehKey\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
@@ -95,7 +95,7 @@ function Register-ContextMenuEntries {
     # Extract Files...
     $efKey = "$starBase\ZenArchiveExtractFiles"
     New-Item -Path "$efKey\command" -Force | Out-Null
-    Set-ItemProperty -Path $efKey -Name "(Default)" -Value "ZenArchive > Extract Files..."
+    Set-ItemProperty -Path $efKey -Name "(Default)" -Value "Extract Files..."
     Set-ItemProperty -Path $efKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $efKey -Name "AppliesTo" -Value $appliesTo
     Set-ItemProperty -Path "$efKey\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
@@ -103,7 +103,7 @@ function Register-ContextMenuEntries {
     # Extract to <ArchiveName>\
     $seKey = "$starBase\ZenArchiveSmartExtract"
     New-Item -Path "$seKey\command" -Force | Out-Null
-    Set-ItemProperty -Path $seKey -Name "(Default)" -Value "ZenArchive > Extract to <ArchiveName>\"
+    Set-ItemProperty -Path $seKey -Name "(Default)" -Value "Extract to <ArchiveName>\\"
     Set-ItemProperty -Path $seKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $seKey -Name "AppliesTo" -Value $appliesTo
     Set-ItemProperty -Path "$seKey\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
@@ -131,25 +131,25 @@ function Register-ContextMenuEntries {
         
         # Open
         New-Item -Path "$sfaBase\ZenArchiveOpen\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen" -Name "(Default)" -Value "ZenArchive > Open with ZenArchive"
+        Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen" -Name "(Default)" -Value "Open with ZenArchive"
         Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen" -Name "Icon" -Value $quotedApp
         Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen\command" -Name "(Default)" -Value "$quotedApp ""%1"""
         
         # Extract Here
         New-Item -Path "$sfaBase\ZenArchiveExtractHere\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere" -Name "(Default)" -Value "ZenArchive > Extract Here"
+        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere" -Name "(Default)" -Value "Extract Here"
         Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere" -Name "Icon" -Value $quotedApp
         Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
         
         # Extract Files...
         New-Item -Path "$sfaBase\ZenArchiveExtractFiles\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles" -Name "(Default)" -Value "ZenArchive > Extract Files..."
+        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles" -Name "(Default)" -Value "Extract Files..."
         Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles" -Name "Icon" -Value $quotedApp
         Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
         
         # Smart Extract
         New-Item -Path "$sfaBase\ZenArchiveSmartExtract\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract" -Name "(Default)" -Value "ZenArchive > Extract to <ArchiveName>\"
+        Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract" -Name "(Default)" -Value "Extract to <ArchiveName>\\"
         Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract" -Name "Icon" -Value $quotedApp
         Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
     }

@@ -1,0 +1,32 @@
+## .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+*.pdb
+
+## Build output
+publish/
+*.exe
+!Archieve App/*.exe
+
+## NuGet
+packages/
+*.nupkg
+
+## IDE
+.idea/
+*.DotSettings.user
+
+## OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+## Installer output
+Archieve App/bin/installer/*.exe
+
+## Crash logs
+crash.log

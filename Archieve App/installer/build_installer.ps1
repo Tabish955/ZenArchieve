@@ -37,7 +37,9 @@ $publishArgs = @(
     "-c", $Configuration,
     "-r", $Runtime,
     "--self-contained", "$SelfContained",
-    "-p:PublishSingleFile=false"
+    "-p:PublishSingleFile=false",
+    "-p:DebugType=none",
+    "-p:DebugSymbols=false"
 )
 
 & dotnet @publishArgs

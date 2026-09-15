@@ -4,157 +4,193 @@
 
 # ZenArchive
 
-### The Modern, Fluent Alternative to WinRAR & 7-Zip
-**Next-Generation Archive Manager built for Windows 11 with .NET 9, Mica Glassmorphism & Enterprise Security.**
+### 🏆 The Modern, Open-Source Alternative to WinRAR & 7-Zip
+
+**Next-generation archive manager built for Windows 11 — .NET 9, Mica Glassmorphism, AES-256 Security & features no other archiver has.**
 
 [![.NET 9](https://img.shields.io/badge/.NET-9.0%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![Windows 11 Fluent](https://img.shields.io/badge/Design-Windows%2011%20Mica-0078D4?style=for-the-badge&logo=windows11&logoColor=white)](https://github.com/lepoco/wpfui)
+[![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 [![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
-[![Inno Setup 6](https://img.shields.io/badge/Installer-Inno%20Setup%206-FF6C37?style=for-the-badge&logo=windows&logoColor=white)](#-installer--deployment)
-[![Version](https://img.shields.io/badge/Version-v1.3.0%20Pro-00D2FF?style=for-the-badge)](https://github.com/zenarchive/zenarchive/releases)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-v2.0.0-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/Tabish955/ZenArchieve?style=for-the-badge&logo=github&logoColor=white&color=gold)](https://github.com/Tabish955/ZenArchieve)
 
 ---
+
+**[📥 Download Latest Release](https://github.com/Tabish955/ZenArchieve/releases)** · **[🐛 Report Bug](https://github.com/Tabish955/ZenArchieve/issues)** · **[💡 Request Feature](https://github.com/Tabish955/ZenArchieve/issues)**
 
 </div>
 
+---
+
 ## 🌟 Why ZenArchive?
 
-For decades, archive management on Windows has been trapped in 1998: clunky dialogs, confusing nag screens, unsafe extractions that litter loose files across your Desktop, and vulnerability to path traversal exploits.
+For decades, archive management on Windows has been trapped in 1998: clunky Win32 dialogs, "Buy WinRAR" nag screens, no preview capability, vulnerability to path traversal exploits, and zero visual feedback.
 
-**ZenArchive** reimagines archiving from the ground up:
-- 🎨 **Breathtaking Visuals**: Native Windows 11 Mica backdrop, dark Fluent theme, and silky micro-animations powered by `WPF-UI`.
-- 🧠 **Smart Extract**: Automatically prevents desktop clutter by inspecting archives before extraction. If multiple loose files exist, it wraps them into a clean container folder. If contents are already in a single folder, it extracts directly without nesting redundant folders.
-- 👁️ **In-Archive Quick Look**: Preview high-resolution images, inspect formatted text/code with syntax styling, and calculate instant SHA-256 hashes—all directly in memory without unpacking to disk.
-- 🛡️ **Zero-Day Security Guard**: Active Zip-Slip sanitization neutralizes directory traversal exploits (`../../`), while the disguised extension shield immediately flags social engineering malware like `invoice.pdf.exe`.
-- 🔐 **Military-Grade Encryption**: AES-256 password protection for modern `.zip` and `.7z` formats with a real-time password strength meter.
-- ⚡ **Batch Processing & Benchmarking**: Multi-archive extraction/conversion queue with dual-progress visualization and an in-memory multi-threaded compression benchmark with dynamic **ZenScore** hardware ratings.
+**ZenArchive** reimagines archiving from the ground up — delivering the features that WinRAR and 7-Zip simply don't have:
+
+| 🎨 **Stunning UI** | 🧠 **Smart Extract** | 🔍 **Archive Diff** | 📊 **Size Analyzer** |
+|:---:|:---:|:---:|:---:|
+| Native Windows 11 Mica, dark Fluent theme, micro-animations | Auto-prevents desktop clutter by detecting loose files | Compare two archives — find added/removed/modified files | Visual breakdown of space usage by folder & file type |
+
+| 🔄 **Format Converter** | 🔐 **AES-256 Encryption** | 📋 **Checksum Verifier** | 🛡️ **Security Guard** |
+|:---:|:---:|:---:|:---:|
+| One-click ZIP ↔ 7Z conversion | Military-grade password protection with strength meter | SHA-256/MD5/SHA-1 for entire archive files | Zip-Slip & disguised extension attack neutralization |
 
 ---
 
-## ⚔️ ZenArchive vs. Legacy Archivers
+## ⚔️ ZenArchive vs. Competitors
 
-| Feature | **ZenArchive v1.3** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchive v2.0** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
-| **User Interface** | Modern Windows 11 Fluent / Mica | 1995 Win32 Grid | Minimalist Win32 List | Custom Lazarus Widget |
-| **Desktop Clutter Prevention (Smart Extract)** | ✅ **Automatic** | ❌ Manual | ❌ Manual | ⚠️ Semi-manual |
-| **In-Memory Image & Code Previews** | ✅ **Direct Stream** | ❌ Spawns Temp File | ❌ Spawns Temp File | ⚠️ Basic |
-| **Executable Threat Shield (No Auto-Run)** | ✅ **Yes + SHA-256** | ❌ Double-click runs EXE | ❌ Double-click runs EXE | ❌ No |
-| **Disguised Double-Extension Blocker** | ✅ **Active Warning Badge** | ❌ Hidden by OS | ❌ Hidden by OS | ❌ No |
-| **Zip-Slip Path Traversal Neutralization** | ✅ **Strict Boundary Sandbox** | ⚠️ CVE-vulnerable in past | ⚠️ Varies | ⚠️ Varies |
-| **Multi-Archive Batch Processing Queue** | ✅ **Smart Extract & Convert** | ⚠️ Complex wizard | ❌ No | ⚠️ Clunky |
-| **Hardware Benchmark Engine** | ✅ **ZenScore Multithreaded** | ⚠️ Basic KB/s | ⚠️ Legacy MIPS | ❌ No |
-| **Adware / License Nag Screen** | 🚫 **100% Free & Open** | ❌ "Buy WinRAR" popups | 🚫 Free | 🚫 Free |
+| **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
+| **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |
+| **Smart Extract (Clutter Prevention)** | ✅ **Automatic** | ❌ Manual | ❌ Manual | ⚠️ Semi |
+| **🆕 Archive Comparison (Diff Tool)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **🆕 Size Analyzer (Visual Breakdown)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **🆕 One-Click Format Converter** | ✅ **ZIP ↔ 7Z** | ❌ No | ❌ Manual | ❌ No |
+| **🆕 Checksum Verifier (SHA/MD5)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **In-Memory Image & Code Previews** | ✅ **Direct Stream** | ❌ Temp File | ❌ Temp File | ⚠️ Basic |
+| **Executable Threat Shield** | ✅ **SHA-256 Guard** | ❌ Auto-runs | ❌ Auto-runs | ❌ No |
+| **Disguised Extension Blocker** | ✅ **Active Warning** | ❌ Hidden | ❌ Hidden | ❌ No |
+| **Zip-Slip Path Traversal Defense** | ✅ **Strict Sandbox** | ⚠️ CVE History | ⚠️ Varies | ⚠️ Varies |
+| **Multi-Archive Batch Processing** | ✅ **Smart Queue** | ⚠️ Wizard | ❌ No | ⚠️ Clunky |
+| **Hardware Benchmark Engine** | ✅ **ZenScore** | ⚠️ Basic | ⚠️ Legacy | ❌ No |
+| **Adware / Nag Screen** | 🚫 **None** | ❌ Constant | 🚫 None | 🚫 None |
+
+> **4 features marked 🆕 are exclusive to ZenArchive — no other archive manager has them.**
 
 ---
 
-## 🚀 Key Feature Highlights
+## 🚀 Feature Highlights
 
 ### 1. 🧠 Smart Extract (Clutter-Free Extraction)
-Tired of extracting an archive and having 50 loose files scattered across your Desktop or Downloads folder?
-- **Loose File Detection**: ZenArchive analyzes root items inside the archive. If multiple loose files or multiple folders exist, ZenArchive creates a dedicated subfolder named after the archive.
-- **Single Root Folder Preservation**: If the archive is already neatly packaged inside a single root directory, ZenArchive extracts it directly without creating annoying duplicate nested folders (`Folder/Folder/file.txt`).
+Tired of extracting an archive and having 50 loose files scattered across your Desktop?
+- **Loose File Detection**: Automatically creates a dedicated subfolder when multiple loose files exist at the archive root.
+- **Single Folder Preservation**: If the archive already has a clean root folder structure, ZenArchive extracts directly — no annoying duplicate nesting.
 
-### 2. 👁️ In-Archive Quick Look Preview & Inspector
-Click any entry in the archive to open the responsive Inspector panel:
-- **Images**: Instant high-DPI rendering for `.png`, `.jpg`, `.jpeg`, `.bmp`, `.webp`, and `.ico`.
-- **Text & Code**: Formatted read-only code viewer for `.txt`, `.json`, `.xml`, `.cs`, `.py`, `.md`, `.log`, `.csv`, `.sql` with smooth line wrapping.
-- **Safety Shield for Binaries**: If you click on an executable or script (`.exe`, `.bat`, `.dll`, `.ps1`, `.msi`), preview execution is locked down and a security warning shield appears alongside an instant in-memory **SHA-256 hash** for virus verification.
+### 2. 🔍 Archive Comparison (Diff Tool) — *EXCLUSIVE*
+Compare any two archives side-by-side with a structured diff report:
+- **Added**: Files present in Archive B but not in A
+- **Removed**: Files present in Archive A but not in B
+- **Modified**: Files with different sizes or timestamps
+- **Identical**: Files that match exactly
 
-### 3. 🛡️ Enterprise Security & Defense Features
-- **Zip-Slip Neutralization (`SanitizeEntryDestinationPath`)**: Neutralizes path traversal attacks (`../../evil.exe`, `C:\Windows\System32\...`, `/etc/passwd`). Unsafe relative paths are stripped and strictly confined within the target extraction root.
-- **Disguised Double-Extension Detection**: Flags social engineering attacks such as `invoice_2026.pdf.exe` or `family_photo.jpg.scr` with a high-contrast warning badge and status pills.
-- **Integrity & Health Audit ("Test Archive")**: Decompresses every entry in-memory, verifies internal header structures, checks CRC checksums, and renders a diagnostic health report.
+### 3. 📊 Size Analyzer — *EXCLUSIVE*
+Visual breakdown showing which files and folders consume the most space:
+- **By Folder**: Proportional bar chart showing folder sizes
+- **By File Type**: Size distribution across extensions (.dll, .exe, .json, etc.)
+- **Largest Files**: Top 10 space consumers with percentage contribution
 
-### 4. 🔐 AES-256 Password Encryption & Creation Modal
-- Compress files into modern `.zip` or high-efficiency `.7z`.
-- Choose between **Store**, **Fast**, **Normal**, or **Maximum (LZMA)** compression levels.
-- Protect confidential files with **AES-256 bit encryption**.
-- Live **Password Strength Meter** provides immediate feedback on entropy and complexity.
-- Support for encrypted filenames in `.7z` format.
+### 4. 🔄 One-Click Format Converter — *EXCLUSIVE*
+Convert between archive formats with a single click:
+- **ZIP → 7Z**: Click Convert on any loaded ZIP to create a 7Z version
+- **7Z/RAR/TAR → ZIP**: Convert any format to universal ZIP
+- Extracts to temp, re-compresses in target format, then cleans up automatically
 
-### 5. 📦 Batch Processing Queue
-- Drag and drop 2 or more archives simultaneously into the window to summon the **Batch Queue**.
-- Perform **Smart Extract All**, **Convert All to ZIP**, or **Convert All to 7-Zip**.
-- Dual-progress bars display overall queue progress and individual archive compression/extraction speed.
+### 5. 📋 Checksum Verifier — *EXCLUSIVE*
+Calculate and verify cryptographic hashes for the entire archive file:
+- **SHA-256**, **MD5**, and **SHA-1** calculated simultaneously
+- One-click copy to clipboard
+- Verify integrity against expected hashes from download pages
 
-### 6. ⏱️ Hardware Compression Benchmark
-- In-memory synthetic stress workload utilizing all CPU logical cores.
-- Tests multi-threaded compression throughput and decompression throughput in MB/s.
-- Awards an official **ZenScore** rating:
-  - *Budget / Everyday PC*
-  - *Mainstream Multitasker*
-  - *High-Performance Rig*
-  - *Enthusiast Workstation*
-  - *Extreme Workstation 🚀*
+### 6. 👁️ In-Archive Quick Look Preview & Inspector
+Click any entry in the archive to preview it directly in memory:
+- **Images**: Instant high-DPI rendering for PNG, JPG, BMP, WebP, ICO
+- **Text & Code**: Formatted read-only viewer for .txt, .json, .xml, .cs, .py, .md, .sql
+- **Safety Shield**: Executables (.exe, .bat, .dll, .ps1) are blocked from preview execution — SHA-256 hash displayed for virus verification
+
+### 7. 🛡️ Enterprise Security & Defense Features
+- **Zip-Slip Neutralization**: Strips path traversal attacks (`../../evil.exe`) — entries are strictly sandboxed within the target extraction directory
+- **Disguised Double-Extension Detection**: Flags `invoice.pdf.exe` or `photo.jpg.scr` with high-contrast warning badges
+- **Integrity Audit ("Test Archive")**: Decompresses every entry in-memory, verifies CRC checksums, and produces a diagnostic health report
+
+### 8. 🔐 AES-256 Password Encryption
+- Compress to `.zip` or `.7z` with **AES-256 bit encryption**
+- Choose between **Store**, **Fast**, **Normal**, or **Maximum** compression
+- Live **Password Strength Meter** with entropy feedback
+- Support for encrypted filenames in `.7z` format
+
+### 9. 📦 Batch Processing Queue
+- Drag and drop multiple archives to summon the batch queue
+- **Smart Extract All**, **Convert All to ZIP**, or **Convert All to 7Z**
+- Dual-progress bars: individual file + overall queue progress
+
+### 10. ⏱️ Hardware Compression Benchmark
+- Multi-threaded in-memory stress workload across all CPU cores
+- Measures compression and decompression throughput in MB/s
+- Awards an official **ZenScore** rating tier
 
 ---
 
 ## 💻 Command-Line Interface (CLI)
 
-ZenArchive is engineered for seamless shell integration, automation, and script execution:
+ZenArchive supports full CLI automation and shell integration:
 
 | Command | Description |
 | :--- | :--- |
-| `ZenArchive.exe "C:\Path\To\file.zip"` | Launches ZenArchive and immediately opens/inspects the specified archive. |
-| `ZenArchive.exe -extract-here "C:\Path\To\file.zip"` | Extracts archive contents directly into the archive's parent folder. |
-| `ZenArchive.exe -smart-extract "C:\Path\To\file.zip"` | Extracts the archive using clutter-free Smart Extract logic (auto-creates subfolder if loose files exist). |
-| `ZenArchive.exe -compress "C:\Path\To\Files"` | Opens the Create Archive modal pre-populated with the specified source files/folders. |
+| `ZenArchive.exe "C:\Path\To\file.zip"` | Opens and inspects the specified archive |
+| `ZenArchive.exe -extract-here "C:\Path\To\file.zip"` | Extracts directly into the archive's parent folder |
+| `ZenArchive.exe -smart-extract "C:\Path\To\file.zip"` | Clutter-free Smart Extract (auto-creates subfolder if needed) |
+| `ZenArchive.exe -extract-files "C:\Path\To\file.zip"` | Prompts for destination folder, then extracts |
+| `ZenArchive.exe -compress "C:\Path\To\Files"` | Opens Create Archive modal with source pre-populated |
 
 ---
 
 ## 🏗️ Architecture & Technology Stack
 
-ZenArchive is constructed on the modern Microsoft .NET 9 desktop application stack:
-
 ```mermaid
 graph TD
-    UI["WPF-UI 4.3 (Windows 11 Fluent / Mica)"] --> App["ZenArchive App Core (MainWindow / App.xaml)"]
+    UI["WPF-UI 4.3 (Windows 11 Fluent / Mica)"] --> App["ZenArchive App Core"]
     App --> Service["ArchiveService (.NET 9 Async Engine)"]
     Service --> SC["SharpCompress 0.50 (ZIP, RAR, 7z, TAR, GZ)"]
     Service --> SZ["SharpZipLib 1.4 (AES-256 ZIP Engine)"]
-    Service --> Sec["Security Guard (Zip-Slip & Disguised Extension Filter)"]
-    Service --> Bench["Benchmark Engine (Multi-threaded Workloads)"]
-    App --> Setup["Inno Setup 6 (64-Bit Desktop Installer)"]
+    Service --> Sec["Security Guard (Zip-Slip & Extension Filter)"]
+    Service --> Bench["Benchmark Engine (Multi-threaded)"]
+    Service --> Compare["Archive Comparator (Diff Engine)"]
+    Service --> Convert["Format Converter (ZIP ↔ 7Z)"]
+    Service --> Hash["Checksum Engine (SHA-256/MD5/SHA-1)"]
+    App --> Setup["Inno Setup 6 (64-Bit Installer)"]
 ```
 
-- **Framework**: .NET 9.0 (`net9.0-windows`)
-- **UI & Design System**: [WPF-UI](https://github.com/lepoco/wpfui) (Fluent Design System, Windows 11 Mica backdrop, modern controls)
-- **Extraction & Archive Parsing**: [SharpCompress](https://github.com/adamhathcock/sharpcompress) (high-performance async streaming for `.zip`, `.rar`, `.7z`, `.tar`, `.gz`)
-- **AES-256 ZIP Engine**: [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) (native AES-256 encryption compliant with WinZip/7-Zip specifications)
-- **Installer**: [Inno Setup 6](https://jrsoftware.org/isinfo.php) (modern 64-bit installer with registry file associations and explorer context menus)
+| Component | Technology |
+| :--- | :--- |
+| **Framework** | .NET 9.0 (`net9.0-windows`) |
+| **UI & Design System** | [WPF-UI](https://github.com/lepoco/wpfui) — Fluent Design, Windows 11 Mica backdrop |
+| **Archive Parsing** | [SharpCompress](https://github.com/adamhathcock/sharpcompress) — High-performance async streaming |
+| **AES-256 Engine** | [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) — Native AES-256 encryption |
+| **Installer** | [Inno Setup 6](https://jrsoftware.org/isinfo.php) — Modern 64-bit installer |
 
 ---
 
-## 📦 Installation & Deployment
+## 📦 Installation
 
-### Recommended: Inno Setup Installer (`.exe`)
-Download and run the official installer:
-👉 **`ZenArchive_Setup_v1.3.exe`** (found in `bin/installer/`)
+### Option 1: Installer (Recommended)
+Download the latest installer from [**Releases**](https://github.com/Tabish955/ZenArchieve/releases):
+> **`ZenArchive_Setup_v2.0.exe`**
 
-Features included with the installer:
-- Automatic 64-bit program installation to `C:\Program Files\ZenArchive`
-- File associations for `.zip`, `.7z`, `.rar`, `.tar`, and `.gz`
-- Windows Explorer right-click context menu options:
-  - **ZenArchive > Open with ZenArchive**
-  - **ZenArchive > Extract Here**
-  - **ZenArchive > Extract to \<ArchiveName>\** (Smart Extract)
-  - **Add to ZenArchive...** (for any files & folders)
-- Start Menu and Desktop shortcuts
-- Clean Control Panel Uninstaller
+The installer provides:
+- ✅ 64-bit installation to `C:\Program Files\ZenArchive`
+- ✅ File associations for `.zip`, `.7z`, `.rar`, `.tar`, `.gz`
+- ✅ Clean Explorer right-click context menu (with app icon):
+  - **Extract Here**
+  - **Extract Files...**
+  - **Extract to \<ArchiveName\>\\**
+  - **Add to ZenArchive...**
+- ✅ Start Menu & Desktop shortcuts
+- ✅ Clean Control Panel uninstaller
 
-### Building from Source
+### Option 2: Build from Source
 
-**Prerequisites**:
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) (or higher)
+**Prerequisites:**
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or higher
 - Windows 10 (1809+) or Windows 11 (64-bit)
-- Optional: [Inno Setup 6](https://jrsoftware.org/isdl.php) (to compile the installer)
+- Optional: [Inno Setup 6](https://jrsoftware.org/isdl.php) (for building the installer)
 
-**Clone & Build**:
 ```powershell
 # Clone repository
-git clone https://github.com/zenarchive/zenarchive.git
-cd zenarchive
+git clone https://github.com/Tabish955/ZenArchieve.git
+cd ZenArchieve
 
 # Build in Release configuration
 dotnet build "Archieve App/Archieve App.csproj" -c Release
@@ -163,36 +199,68 @@ dotnet build "Archieve App/Archieve App.csproj" -c Release
 dotnet run --project "Archieve App/Archieve App.csproj"
 ```
 
-**Build Self-Contained Installer**:
+**Build the Installer:**
 ```powershell
-# Run automated packaging script
 powershell -ExecutionPolicy Bypass -File "Archieve App/installer/build_installer.ps1"
 ```
-The resulting installer will be located at:
-`Archieve App/bin/installer/ZenArchive_Setup_v1.3.exe`
 
 ---
 
-## ⌨️ Keyboard Shortcuts & Gestures
+## ⌨️ Keyboard Shortcuts
 
 | Shortcut / Action | Function |
 | :--- | :--- |
-| `Ctrl + O` / Toolbar Open | Browse and inspect an archive file |
-| `Ctrl + N` / Toolbar New | Open the Create Archive modal |
-| `Drag & Drop (1 archive)` | Instantly open and inspect the archive |
-| `Drag & Drop (multiple archives)` | Summon the Batch Processing Queue |
-| `Drag & Drop (uncompressed files)` | Open Create Archive modal with files pre-selected |
-| `Search Box (Filter)` | Real-time instant search by filename, extension, or path |
-| `Click on DataGrid row` | Expand the Quick Look Safety Preview / Inspector pane |
-| `Esc` | Close any active modal dialog (Audit, Benchmark, Batch Queue, New Archive) |
+| `Ctrl + O` / Toolbar Open | Browse and inspect an archive |
+| `Ctrl + N` / Toolbar New | Open Create Archive modal |
+| `Drag & Drop (1 archive)` | Instantly open and inspect |
+| `Drag & Drop (multiple)` | Summon Batch Processing Queue |
+| `Drag & Drop (files/folders)` | Open Create Archive with files pre-selected |
+| `Search Box` | Real-time filter by filename, extension, or path |
+| `Click DataGrid row` | Expand Quick Look Preview / Inspector |
+| `Esc` | Close any active modal |
 
 ---
 
-## 📄 License & Attribution
+## 🤝 Contributing
 
-ZenArchive is open-source software licensed under the **MIT License**.
+Contributions are welcome! Here's how you can help:
 
-- Built with ❤️ using [.NET 9](https://dotnet.microsoft.com/)
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Areas Where You Can Contribute:
+- 🌐 **Internationalization**: Help translate ZenArchive to other languages
+- 🎨 **Themes**: Add light mode or custom accent color themes
+- 📦 **Format Support**: Extend support for additional archive formats
+- 🧪 **Testing**: Help test on different Windows versions and edge cases
+- 📖 **Documentation**: Improve docs, add tutorials, record demo videos
+
+---
+
+## 📄 License
+
+ZenArchive is open-source software released under the **[MIT License](LICENSE)**.
+
+You are free to use, modify, distribute, and commercialize this software with no restrictions. No nag screens, no trial periods, no hidden costs. **Free forever.**
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ using [.NET 9](https://dotnet.microsoft.com/) by Microsoft
 - UI powered by [WPF-UI](https://github.com/lepoco/wpfui) by Lepoco
 - Compression powered by [SharpCompress](https://github.com/adamhathcock/sharpcompress) and [SharpZipLib](https://github.com/icsharpcode/SharpZipLib)
-- Packaging powered by [Inno Setup 6](https://jrsoftware.org/isinfo.php)
+- Packaging powered by [Inno Setup 6](https://jrsoftware.org/isinfo.php) by Jordan Russell
+
+---
+
+<div align="center">
+
+**⭐ If ZenArchive has been useful to you, please consider giving it a star on GitHub! ⭐**
+
+Made with ❤️ by [Tabish Ahmed](https://github.com/Tabish955)
+
+</div>

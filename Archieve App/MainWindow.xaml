@@ -51,7 +51,7 @@
                             Padding="6,1" 
                             Margin="10,0,0,0" 
                             VerticalAlignment="Center">
-                        <TextBlock Text="v1.3 • Enterprise Pro" 
+                        <TextBlock Text="v2.0 • Enterprise Pro" 
                                    FontSize="10" 
                                    FontWeight="Medium" 
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -180,6 +180,61 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <ui:SymbolIcon Symbol="Gauge24" Margin="0,0,6,0" FontSize="15"/>
                             <TextBlock Text="Benchmark" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Compare Archives Button (NEW - Not in WinRAR/7-Zip) -->
+                    <ui:Button x:Name="BtnCompareArchives" 
+                               Click="BtnCompareArchives_Click"
+                               Appearance="Secondary"
+                               ToolTip="Compare two archives side-by-side: shows files added, removed, modified, and identical"
+                               Margin="0,0,6,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="ArrowSwap24" Margin="0,0,6,0" FontSize="15" Foreground="#FF9C27B0"/>
+                            <TextBlock Text="Compare" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Size Analyzer Button (NEW - Not in WinRAR/7-Zip) -->
+                    <ui:Button x:Name="BtnAnalyzeSize" 
+                               Click="BtnAnalyzeSize_Click"
+                               Appearance="Secondary"
+                               IsEnabled="False"
+                               ToolTip="Visual size analysis: see which files and folders consume the most space inside the archive"
+                               Margin="0,0,6,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="DataPie24" Margin="0,0,6,0" FontSize="15" Foreground="#FFFF9800"/>
+                            <TextBlock Text="Analyze" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Convert Format Button (NEW - Not in WinRAR/7-Zip) -->
+                    <ui:Button x:Name="BtnConvertFormat" 
+                               Click="BtnConvertFormat_Click"
+                               Appearance="Secondary"
+                               IsEnabled="False"
+                               ToolTip="One-click archive format conversion: ZIP ↔ 7Z with selectable compression level"
+                               Margin="0,0,6,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="ArrowRepeatAll24" Margin="0,0,6,0" FontSize="15" Foreground="#FF4CAF50"/>
+                            <TextBlock Text="Convert" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Checksum Verifier Button (NEW - Not in WinRAR/7-Zip) -->
+                    <ui:Button x:Name="BtnChecksum" 
+                               Click="BtnChecksum_Click"
+                               Appearance="Secondary"
+                               IsEnabled="False"
+                               ToolTip="Calculate SHA-256, MD5, or SHA-1 checksum for the entire archive file and verify against expected hash"
+                               Margin="0,0,10,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="Fingerprint24" Margin="0,0,6,0" FontSize="15" Foreground="#FF2196F3"/>
+                            <TextBlock Text="Checksum" FontWeight="Medium" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ui:Button>
 

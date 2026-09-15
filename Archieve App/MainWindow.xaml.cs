@@ -142,6 +142,9 @@ namespace Archieve_App
                 BtnExtractTo.IsEnabled = true;
                 BtnSmartExtract.IsEnabled = true;
                 BtnTestArchive.IsEnabled = true;
+                BtnAnalyzeSize.IsEnabled = true;
+                BtnConvertFormat.IsEnabled = true;
+                BtnChecksum.IsEnabled = true;
 
                 ShowStatus($"Ready • {fileCount} files loaded from {Path.GetFileName(filePath)}", SymbolRegular.CheckmarkCircle24);
             }
@@ -186,6 +189,9 @@ namespace Archieve_App
             BtnExtractTo.IsEnabled = false;
             BtnSmartExtract.IsEnabled = false;
             BtnTestArchive.IsEnabled = false;
+            BtnAnalyzeSize.IsEnabled = false;
+            BtnConvertFormat.IsEnabled = false;
+            BtnChecksum.IsEnabled = false;
             BtnOpenDestinationFolder.Visibility = Visibility.Collapsed;
 
             ShowStatus("Ready", SymbolRegular.CheckmarkCircle24);
@@ -1420,6 +1426,10 @@ namespace Archieve_App
             BtnExtractTo.IsEnabled = !isBusy && _currentArchivePath != null;
             BtnSmartExtract.IsEnabled = !isBusy && _currentArchivePath != null;
             BtnTestArchive.IsEnabled = !isBusy && _currentArchivePath != null;
+            BtnAnalyzeSize.IsEnabled = !isBusy && _currentArchivePath != null;
+            BtnConvertFormat.IsEnabled = !isBusy && _currentArchivePath != null;
+            BtnChecksum.IsEnabled = !isBusy && _currentArchivePath != null;
+            BtnCompareArchives.IsEnabled = !isBusy;
             BtnBatchQueue.IsEnabled = !isBusy;
             BtnBenchmark.IsEnabled = !isBusy;
             if (message != null)
@@ -1458,6 +1468,339 @@ namespace Archieve_App
             else
             {
                 IconStatus.Foreground = (Brush)FindResource("AccentTextFillColorPrimaryBrush");
+            }
+        }
+
+        #endregion
+
+        #region New Features (v2.0) — Compare, Analyze, Convert, Checksum
+
+        /// <summary>
+        /// Compare two archives side-by-side (Feature not available in WinRAR or 7-Zip).
+        /// </summary>
+        private async void BtnCompareArchives_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Pick first archive (or use currently loaded one)
+                string? archiveA = _currentArchivePath;
+                if (string.IsNullOrEmpty(archiveA))
+                {
+                    var dlgA = new OpenFileDialog
+                    {
+                        Title = "Select First Archive (A)",
+                        Filter = "Archives (*.zip;*.rar;*.7z;*.tar;*.gz)|*.zip;*.rar;*.7z;*.tar;*.gz|All Files (*.*)|*.*"
+                    };
+                    if (dlgA.ShowDialog(this) != true) return;
+                    archiveA = dlgA.FileName;
+                }
+
+                // Pick second archive
+                var dlgB = new OpenFileDialog
+                {
+                    Title = "Select Second Archive (B) to Compare Against",
+                    Filter = "Archives (*.zip;*.rar;*.7z;*.tar;*.gz)|*.zip;*.rar;*.7z;*.tar;*.gz|All Files (*.*)|*.*"
+                };
+                if (dlgB.ShowDialog(this) != true) return;
+                string archiveB = dlgB.FileName;
+
+                SetUiBusy(true, $"Comparing archives...");
+                ProgressBarOperation.IsIndeterminate = true;
+                ProgressBarOperation.Visibility = Visibility.Visible;
+
+                var result = await _archiveService.CompareArchivesAsync(
+                    archiveA, archiveB,
+                    _currentArchivePassword, null,
+                    CancellationToken.None);
+
+                // Build report message
+                var sb = new StringBuilder();
+                sb.AppendLine($"📊 Archive Comparison Report");
+                sb.AppendLine($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                sb.AppendLine($"Archive A: {result.ArchiveA}");
+                sb.AppendLine($"Archive B: {result.ArchiveB}");
+                sb.AppendLine($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                sb.AppendLine($"{result.Summary}");
+                sb.AppendLine();
+
+                if (result.AreIdentical)
+                {
+                    sb.AppendLine("✅ Archives are IDENTICAL — no differences found.");
+                }
+                else
+                {
+                    if (result.AddedInB.Count > 0)
+                    {
+                        sb.AppendLine($"\n➕ ADDED in B ({result.AddedInB.Count}):");
+                        foreach (var f in result.AddedInB.Take(50))
+                            sb.AppendLine($"  + {f.Path} ({f.FormattedSizeB})");
+                        if (result.AddedInB.Count > 50) sb.AppendLine($"  ... and {result.AddedInB.Count - 50} more");
+                    }
+                    if (result.RemovedFromA.Count > 0)
+                    {
+                        sb.AppendLine($"\n➖ REMOVED from A ({result.RemovedFromA.Count}):");
+                        foreach (var f in result.RemovedFromA.Take(50))
+                            sb.AppendLine($"  - {f.Path} ({f.FormattedSizeA})");
+                        if (result.RemovedFromA.Count > 50) sb.AppendLine($"  ... and {result.RemovedFromA.Count - 50} more");
+                    }
+                    if (result.Modified.Count > 0)
+                    {
+                        sb.AppendLine($"\n✏️ MODIFIED ({result.Modified.Count}):");
+                        foreach (var f in result.Modified.Take(50))
+                            sb.AppendLine($"  ~ {f.Path} ({f.FormattedSizeA} → {f.FormattedSizeB}, {f.SizeDelta})");
+                        if (result.Modified.Count > 50) sb.AppendLine($"  ... and {result.Modified.Count - 50} more");
+                    }
+                }
+
+                ShowStatus($"Comparison complete: {result.Summary}", SymbolRegular.CheckmarkCircle24);
+                MessageBox.Show(sb.ToString(), "ZenArchive — Archive Comparison", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                ShowStatus($"Comparison failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                MessageBox.Show($"Archive comparison failed:\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Visibility = Visibility.Hidden;
+                SetUiBusy(false);
+            }
+        }
+
+        /// <summary>
+        /// Visual archive size analyzer (Feature not available in WinRAR or 7-Zip).
+        /// </summary>
+        private void BtnAnalyzeSize_Click(object sender, RoutedEventArgs e)
+        {
+            if (_allItems == null || _allItems.Count == 0 || string.IsNullOrEmpty(_currentArchivePath))
+            {
+                ShowStatus("No archive loaded to analyze.", SymbolRegular.ErrorCircle24, isError: true);
+                return;
+            }
+
+            try
+            {
+                var files = _allItems.Where(i => !i.IsDirectory).ToList();
+                long totalSize = files.Sum(i => i.Size);
+
+                // Group by extension
+                var byExtension = files
+                    .GroupBy(f => string.IsNullOrEmpty(f.Extension) ? "(no ext)" : f.Extension.ToUpperInvariant())
+                    .Select(g => new { Extension = g.Key, Size = g.Sum(f => f.Size), Count = g.Count() })
+                    .OrderByDescending(g => g.Size)
+                    .Take(15)
+                    .ToList();
+
+                // Group by top-level folder
+                var byFolder = files
+                    .GroupBy(f =>
+                    {
+                        int slash = f.Path.IndexOf('/');
+                        return slash > 0 ? f.Path.Substring(0, slash) : "(root)";
+                    })
+                    .Select(g => new { Folder = g.Key, Size = g.Sum(f => f.Size), Count = g.Count() })
+                    .OrderByDescending(g => g.Size)
+                    .Take(15)
+                    .ToList();
+
+                // Find largest files
+                var largestFiles = files
+                    .OrderByDescending(f => f.Size)
+                    .Take(10)
+                    .ToList();
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"📊 Archive Size Analysis — {Path.GetFileName(_currentArchivePath)}");
+                sb.AppendLine($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                sb.AppendLine($"Total: {ArchiveItemInfo.FormatBytes(totalSize)} across {files.Count} files");
+                sb.AppendLine();
+
+                sb.AppendLine($"📁 BY FOLDER (Top {byFolder.Count}):");
+                foreach (var g in byFolder)
+                {
+                    double pct = totalSize > 0 ? ((double)g.Size / totalSize) * 100 : 0;
+                    int barLen = (int)Math.Max(1, pct / 2);
+                    string bar = new string('█', barLen) + new string('░', 50 - barLen);
+                    sb.AppendLine($"  {bar} {pct:0.1}% {g.Folder} ({ArchiveItemInfo.FormatBytes(g.Size)}, {g.Count} files)");
+                }
+
+                sb.AppendLine();
+                sb.AppendLine($"📄 BY FILE TYPE (Top {byExtension.Count}):");
+                foreach (var g in byExtension)
+                {
+                    double pct = totalSize > 0 ? ((double)g.Size / totalSize) * 100 : 0;
+                    int barLen = (int)Math.Max(1, pct / 2);
+                    string bar = new string('█', barLen) + new string('░', 50 - barLen);
+                    sb.AppendLine($"  {bar} {pct:0.1}% .{g.Extension} ({ArchiveItemInfo.FormatBytes(g.Size)}, {g.Count} files)");
+                }
+
+                sb.AppendLine();
+                sb.AppendLine($"🏆 LARGEST FILES (Top {largestFiles.Count}):");
+                int rank = 1;
+                foreach (var f in largestFiles)
+                {
+                    double pct = totalSize > 0 ? ((double)f.Size / totalSize) * 100 : 0;
+                    sb.AppendLine($"  {rank}. {f.Path} — {f.FormattedSize} ({pct:0.1}%)");
+                    rank++;
+                }
+
+                ShowStatus($"Size analysis complete for {Path.GetFileName(_currentArchivePath)}", SymbolRegular.CheckmarkCircle24);
+                MessageBox.Show(sb.ToString(), "ZenArchive — Size Analyzer", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                ShowStatus($"Analysis failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                MessageBox.Show($"Size analysis failed:\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// One-click archive format conversion (Feature not available in WinRAR or 7-Zip).
+        /// </summary>
+        private async void BtnConvertFormat_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentArchivePath) || !File.Exists(_currentArchivePath))
+            {
+                ShowStatus("No archive loaded to convert.", SymbolRegular.ErrorCircle24, isError: true);
+                return;
+            }
+
+            try
+            {
+                string ext = Path.GetExtension(_currentArchivePath).ToLowerInvariant();
+                CompressionFormat targetFormat;
+                string targetExt;
+
+                // Auto-detect: if ZIP → convert to 7Z, otherwise → convert to ZIP
+                if (ext == ".zip")
+                {
+                    targetFormat = CompressionFormat.SevenZip;
+                    targetExt = ".7z";
+                }
+                else
+                {
+                    targetFormat = CompressionFormat.Zip;
+                    targetExt = ".zip";
+                }
+
+                string defaultName = Path.GetFileNameWithoutExtension(_currentArchivePath) + targetExt;
+                string? outputDir = Path.GetDirectoryName(_currentArchivePath);
+                string targetPath = Path.Combine(outputDir ?? Environment.GetFolderPath(Environment.SpecialFolder.Desktop), defaultName);
+
+                // Confirm with user
+                var confirmResult = MessageBox.Show(
+                    $"Convert '{Path.GetFileName(_currentArchivePath)}' to {targetFormat} format?\n\n" +
+                    $"Output: {targetPath}\n\n" +
+                    $"This will extract the archive contents and re-compress them in the new format.",
+                    "ZenArchive — Convert Format",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (confirmResult != MessageBoxResult.Yes) return;
+
+                _operationCts = new CancellationTokenSource();
+                SetOperationUiActive(true, $"Converting to {targetFormat}...");
+
+                var progress = new Progress<ArchiveProgressReport>(report =>
+                {
+                    ProgressBarOperation.Value = report.Percentage;
+                    TxtProgressPercent.Text = $"{report.Percentage:0}%";
+                    ShowStatus(report.StatusMessage, SymbolRegular.ArrowClockwise24);
+                });
+
+                await _archiveService.ConvertArchiveAsync(
+                    _currentArchivePath, targetPath, targetFormat,
+                    CompressionLevel.Normal, _currentArchivePassword,
+                    progress, _operationCts.Token);
+
+                ShowStatus($"Conversion complete: {Path.GetFileName(targetPath)}", SymbolRegular.CheckmarkCircle24);
+                MessageBox.Show(
+                    $"Archive successfully converted!\n\n" +
+                    $"Source: {Path.GetFileName(_currentArchivePath)}\n" +
+                    $"Output: {targetPath}",
+                    "ZenArchive — Conversion Complete",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Optionally open the converted archive
+                await LoadArchiveAsync(targetPath);
+            }
+            catch (OperationCanceledException)
+            {
+                ShowStatus("Conversion cancelled.", SymbolRegular.ErrorCircle24, isError: true);
+            }
+            catch (Exception ex)
+            {
+                ShowStatus($"Conversion failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                MessageBox.Show($"Format conversion failed:\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                SetOperationUiActive(false);
+            }
+        }
+
+        /// <summary>
+        /// Full-file checksum calculator & verifier (Feature not available in WinRAR or 7-Zip).
+        /// </summary>
+        private async void BtnChecksum_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentArchivePath) || !File.Exists(_currentArchivePath))
+            {
+                ShowStatus("No archive loaded for checksum.", SymbolRegular.ErrorCircle24, isError: true);
+                return;
+            }
+
+            try
+            {
+                SetUiBusy(true, "Calculating checksums...");
+                ProgressBarOperation.IsIndeterminate = true;
+                ProgressBarOperation.Visibility = Visibility.Visible;
+
+                var progressSha256 = new Progress<double>(p => { });
+
+                // Calculate all three hashes
+                string sha256 = await _archiveService.CalculateFileHashAsync(_currentArchivePath, "SHA256", progressSha256);
+                string md5 = await _archiveService.CalculateFileHashAsync(_currentArchivePath, "MD5");
+                string sha1 = await _archiveService.CalculateFileHashAsync(_currentArchivePath, "SHA1");
+
+                var fileInfo = new FileInfo(_currentArchivePath);
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"🔐 Checksum Report — {Path.GetFileName(_currentArchivePath)}");
+                sb.AppendLine($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                sb.AppendLine($"File Size: {ArchiveItemInfo.FormatBytes(fileInfo.Length)}");
+                sb.AppendLine();
+                sb.AppendLine($"SHA-256:");
+                sb.AppendLine($"  {sha256}");
+                sb.AppendLine();
+                sb.AppendLine($"MD5:");
+                sb.AppendLine($"  {md5}");
+                sb.AppendLine();
+                sb.AppendLine($"SHA-1:");
+                sb.AppendLine($"  {sha1}");
+                sb.AppendLine();
+                sb.AppendLine($"💡 Tip: Copy a hash above and paste an expected hash\n    to verify file integrity (e.g., from a download page).");
+
+                ShowStatus($"Checksums calculated for {Path.GetFileName(_currentArchivePath)}", SymbolRegular.CheckmarkCircle24);
+
+                // Copy SHA-256 to clipboard automatically
+                try { Clipboard.SetText(sha256); } catch { }
+
+                MessageBox.Show(
+                    sb.ToString() + "\n\n✅ SHA-256 hash has been copied to your clipboard.",
+                    "ZenArchive — Checksum Verifier",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                ShowStatus($"Checksum failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                MessageBox.Show($"Checksum calculation failed:\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Visibility = Visibility.Hidden;
+                SetUiBusy(false);
             }
         }
 

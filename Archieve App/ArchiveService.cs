@@ -15,6 +15,7 @@ using SharpCompress.Writers;
 using SysZipArchive = System.IO.Compression.ZipArchive;
 using SysZipFile = System.IO.Compression.ZipFile;
 using System.IO.Compression;
+using System.Security.Cryptography;
 
 namespace Archieve_App
 {
@@ -1537,6 +1538,255 @@ namespace Archieve_App
                     StatusMessage = $"Archive created successfully: {Path.GetFileName(targetArchivePath)}"
                 });
 
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        /// Compares two archive files and produces a structured diff report.
+        /// Reports files that are Added, Removed, Modified, or Identical.
+        /// This feature is not available in WinRAR or 7-Zip.
+        /// </summary>
+        public async Task<ArchiveComparisonResult> CompareArchivesAsync(
+            string archivePathA,
+            string archivePathB,
+            string? passwordA = null,
+            string? passwordB = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(archivePathA))
+                throw new FileNotFoundException("First archive not found.", archivePathA);
+            if (!File.Exists(archivePathB))
+                throw new FileNotFoundException("Second archive not found.", archivePathB);
+
+            var itemsA = await ReadArchiveAsync(archivePathA, passwordA, cancellationToken);
+            var itemsB = await ReadArchiveAsync(archivePathB, passwordB, cancellationToken);
+
+            return await Task.Run(() =>
+            {
+                var result = new ArchiveComparisonResult
+                {
+                    ArchiveA = Path.GetFileName(archivePathA),
+                    ArchiveB = Path.GetFileName(archivePathB)
+                };
+
+                var dictA = new Dictionary<string, ArchiveItemInfo>(StringComparer.OrdinalIgnoreCase);
+                var dictB = new Dictionary<string, ArchiveItemInfo>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var item in itemsA.Where(i => !i.IsDirectory))
+                    dictA[item.Path] = item;
+                foreach (var item in itemsB.Where(i => !i.IsDirectory))
+                    dictB[item.Path] = item;
+
+                // Files in B but not in A = Added
+                foreach (var kvp in dictB)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (!dictA.ContainsKey(kvp.Key))
+                    {
+                        result.AddedInB.Add(new ComparisonEntry
+                        {
+                            Path = kvp.Key,
+                            Name = kvp.Value.Name,
+                            SizeB = kvp.Value.Size,
+                            ModifiedB = kvp.Value.LastModified,
+                            ChangeType = "Added"
+                        });
+                    }
+                }
+
+                // Files in A but not in B = Removed
+                foreach (var kvp in dictA)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (!dictB.ContainsKey(kvp.Key))
+                    {
+                        result.RemovedFromA.Add(new ComparisonEntry
+                        {
+                            Path = kvp.Key,
+                            Name = kvp.Value.Name,
+                            SizeA = kvp.Value.Size,
+                            ModifiedA = kvp.Value.LastModified,
+                            ChangeType = "Removed"
+                        });
+                    }
+                }
+
+                // Files in both = check if Modified or Identical
+                foreach (var kvp in dictA)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (dictB.TryGetValue(kvp.Key, out var bItem))
+                    {
+                        bool sizeChanged = kvp.Value.Size != bItem.Size;
+                        bool dateChanged = kvp.Value.LastModified.HasValue && bItem.LastModified.HasValue &&
+                                           kvp.Value.LastModified.Value != bItem.LastModified.Value;
+
+                        var entry = new ComparisonEntry
+                        {
+                            Path = kvp.Key,
+                            Name = kvp.Value.Name,
+                            SizeA = kvp.Value.Size,
+                            SizeB = bItem.Size,
+                            ModifiedA = kvp.Value.LastModified,
+                            ModifiedB = bItem.LastModified
+                        };
+
+                        if (sizeChanged || dateChanged)
+                        {
+                            entry.ChangeType = "Modified";
+                            result.Modified.Add(entry);
+                        }
+                        else
+                        {
+                            entry.ChangeType = "Identical";
+                            result.Identical.Add(entry);
+                        }
+                    }
+                }
+
+                return result;
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        /// Converts an archive from one format to another (e.g., ZIP → 7Z, 7Z → ZIP, any → TAR.GZ).
+        /// Extracts to a temp directory, then re-compresses into the target format.
+        /// This single-click conversion is not available in WinRAR or 7-Zip.
+        /// </summary>
+        public async Task ConvertArchiveAsync(
+            string sourceArchivePath,
+            string targetArchivePath,
+            CompressionFormat targetFormat,
+            CompressionLevel level = CompressionLevel.Normal,
+            string? sourcePassword = null,
+            IProgress<ArchiveProgressReport>? progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(sourceArchivePath))
+                throw new FileNotFoundException("Source archive not found.", sourceArchivePath);
+
+            string tempDir = Path.Combine(Path.GetTempPath(), $"ZenArchive_Convert_{Guid.NewGuid():N}");
+
+            try
+            {
+                progress?.Report(new ArchiveProgressReport
+                {
+                    CurrentFileName = Path.GetFileName(sourceArchivePath),
+                    Percentage = 0,
+                    StatusMessage = "Extracting source archive for conversion..."
+                });
+
+                // Step 1: Extract source archive to temp
+                await ExtractArchiveAsync(
+                    sourceArchivePath, tempDir, smartExtract: false,
+                    password: sourcePassword, progress: null, cancellationToken: cancellationToken);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    CurrentFileName = Path.GetFileName(targetArchivePath),
+                    Percentage = 50,
+                    StatusMessage = $"Re-compressing to {targetFormat} format..."
+                });
+
+                // Step 2: Gather all extracted files
+                var extractedFiles = Directory.GetFiles(tempDir, "*", SearchOption.AllDirectories);
+                var sourcePaths = new List<string>();
+                
+                // Check if the temp dir has a single subfolder (from smart extract wrapping)
+                var topDirs = Directory.GetDirectories(tempDir);
+                var topFiles = Directory.GetFiles(tempDir);
+                
+                if (topDirs.Length == 1 && topFiles.Length == 0)
+                {
+                    // Single root folder — add its contents directly
+                    foreach (var file in Directory.GetFiles(topDirs[0], "*", SearchOption.AllDirectories))
+                        sourcePaths.Add(file);
+                    foreach (var dir in Directory.GetDirectories(topDirs[0]))
+                        sourcePaths.Add(dir);
+                }
+                else
+                {
+                    // Multiple root items — add them all
+                    foreach (var item in topDirs) sourcePaths.Add(item);
+                    foreach (var item in topFiles) sourcePaths.Add(item);
+                }
+
+                if (sourcePaths.Count == 0 && extractedFiles.Length > 0)
+                {
+                    sourcePaths.AddRange(extractedFiles);
+                }
+
+                // Step 3: Compress into target format
+                await CreateArchiveAsync(
+                    targetArchivePath, sourcePaths, targetFormat, level,
+                    password: null, encryptFileNames: false,
+                    progress: progress, cancellationToken: cancellationToken);
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    CurrentFileName = Path.GetFileName(targetArchivePath),
+                    Percentage = 100,
+                    StatusMessage = $"Conversion complete: {Path.GetFileName(targetArchivePath)}"
+                });
+            }
+            finally
+            {
+                // Cleanup temp directory
+                try
+                {
+                    if (Directory.Exists(tempDir))
+                        Directory.Delete(tempDir, recursive: true);
+                }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Calculates file hash (SHA-256, MD5, or SHA-1) for the entire archive file.
+        /// This built-in checksum verifier is not available in WinRAR or 7-Zip.
+        /// </summary>
+        public async Task<string> CalculateFileHashAsync(
+            string filePath,
+            string algorithm = "SHA256",
+            IProgress<double>? progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("File not found.", filePath);
+
+            return await Task.Run(() =>
+            {
+                using var hashAlg = algorithm.ToUpperInvariant() switch
+                {
+                    "MD5" => (HashAlgorithm)MD5.Create(),
+                    "SHA1" => SHA1.Create(),
+                    "SHA512" => SHA512.Create(),
+                    _ => SHA256.Create()
+                };
+
+                using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256 * 1024);
+                long totalBytes = fs.Length;
+                long bytesRead = 0;
+                byte[] buffer = new byte[256 * 1024];
+                int read;
+
+                while ((read = fs.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    hashAlg.TransformBlock(buffer, 0, read, null, 0);
+                    bytesRead += read;
+                    if (totalBytes > 0)
+                    {
+                        progress?.Report(Math.Min(100.0, ((double)bytesRead / totalBytes) * 100.0));
+                    }
+                }
+
+                hashAlg.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+                progress?.Report(100.0);
+
+                return BitConverter.ToString(hashAlg.Hash!).Replace("-", "").ToUpperInvariant();
             }, cancellationToken);
         }
     }
