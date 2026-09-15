@@ -261,6 +261,6 @@ You are free to use, modify, distribute, and commercialize this software with no
 
 **⭐ If ZenArchive has been useful to you, please consider giving it a star on GitHub! ⭐**
 
-Made with ❤️ by [Tabish Ahmed](https://github.com/Tabish955)
+Made with ❤️ by [Tabish Jameel](https://github.com/Tabish955)
 
 </div>
