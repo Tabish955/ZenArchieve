@@ -1,0 +1,92 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {},
+    ".NETCoreApp,Version=v9.0/win-x64": {
+      "Archieve App/1.3.0": {
+        "dependencies": {
+          "SharpCompress": "0.50.4",
+          "SharpZipLib": "1.4.2",
+          "WPF-UI": "4.3.0"
+        },
+        "runtime": {
+          "Archieve App.dll": {}
+        }
+      },
+      "SharpCompress/0.50.4": {
+        "runtime": {
+          "lib/net8.0/SharpCompress.dll": {
+            "assemblyVersion": "0.50.4.0",
+            "fileVersion": "0.50.4.0"
+          }
+        }
+      },
+      "SharpZipLib/1.4.2": {
+        "runtime": {
+          "lib/net6.0/ICSharpCode.SharpZipLib.dll": {
+            "assemblyVersion": "1.4.2.13",
+            "fileVersion": "1.4.2.13"
+          }
+        }
+      },
+      "WPF-UI/4.3.0": {
+        "dependencies": {
+          "WPF-UI.Abstractions": "4.3.0"
+        },
+        "runtime": {
+          "lib/net9.0-windows7.0/Wpf.Ui.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.0.0"
+          }
+        }
+      },
+      "WPF-UI.Abstractions/4.3.0": {
+        "runtime": {
+          "lib/net9.0/Wpf.Ui.Abstractions.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Archieve App/1.3.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SharpCompress/0.50.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/hxjUR7DEX6mky8/LQXyrnrKioOL6D6veAID1EZpro+q4s02x5dHEYBV3qjEN6lDYYilDoQQ76BcmQj+lRx51w==",
+      "path": "sharpcompress/0.50.4",
+      "hashPath": "sharpcompress.0.50.4.nupkg.sha512"
+    },
+    "SharpZipLib/1.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yjj+3zgz8zgXpiiC3ZdF/iyTBbz2fFvMxZFEBPUcwZjIvXOf37Ylm+K58hqMfIBt5JgU/Z2uoUS67JmTLe973A==",
+      "path": "sharpziplib/1.4.2",
+      "hashPath": "sharpziplib.1.4.2.nupkg.sha512"
+    },
+    "WPF-UI/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SIHhc8lIrhEQ/1cLFZN6Dtf8cqsLm4myBULj9obnacd9TyDs2vizhKYzRzTlcPEcnzb3L4EstvPN3M6kcXbJCA==",
+      "path": "wpf-ui/4.3.0",
+      "hashPath": "wpf-ui.4.3.0.nupkg.sha512"
+    },
+    "WPF-UI.Abstractions/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7Kj9DmCCo4SOCd1jAiw4+EcMFP2nR8rLLvitAYzVtzbWToTsodkbie24+8x9C4LDLxkopWEUGX62szqqNy7oeg==",
+      "path": "wpf-ui.abstractions/4.3.0",
+      "hashPath": "wpf-ui.abstractions.4.3.0.nupkg.sha512"
+    }
+  }
+}
