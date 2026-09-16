@@ -1804,6 +1804,15 @@ namespace Archieve_App
             }
         }
 
+        private void ToolbarScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (sender is ScrollViewer scv)
+            {
+                scv.ScrollToHorizontalOffset(scv.HorizontalOffset - e.Delta);
+                e.Handled = true;
+            }
+        }
+
         #endregion
     }
 }

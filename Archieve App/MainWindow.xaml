@@ -68,20 +68,27 @@
                 Padding="16,10,16,10">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Action Buttons -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <!-- Open Archive Button -->
-                    <ui:Button x:Name="BtnOpenArchive" 
-                               Click="BtnOpenArchive_Click"
-                               Appearance="Secondary"
-                               ToolTip="Open and inspect an archive (.zip, .rar, .7z)"
-                               Margin="0,0,6,0" 
-                               Padding="10,7">
+                <!-- Action Buttons ScrollViewer (Horizontally scrollable for all screen sizes) -->
+                <ScrollViewer Grid.Column="0" 
+                              x:Name="ToolbarScrollViewer"
+                              HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Disabled"
+                              Focusable="False"
+                              Margin="0,0,12,0"
+                              PanningMode="HorizontalOnly"
+                              PreviewMouseWheel="ToolbarScrollViewer_PreviewMouseWheel">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,3">
+                        <!-- Open Archive Button -->
+                        <ui:Button x:Name="BtnOpenArchive" 
+                                   Click="BtnOpenArchive_Click"
+                                   Appearance="Secondary"
+                                   ToolTip="Open and inspect an archive (.zip, .rar, .7z)"
+                                   Margin="0,0,6,0" 
+                                   Padding="10,7">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <ui:SymbolIcon Symbol="FolderOpen24" Margin="0,0,6,0" FontSize="15"/>
                             <TextBlock Text="Open" FontWeight="Medium" VerticalAlignment="Center"/>
@@ -255,9 +262,10 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </StackPanel>
+            </ScrollViewer>
 
                 <!-- Search / Filter Input -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <ui:TextBox x:Name="TxtFilter" 
                                 Width="180" 
                                 PlaceholderText="Filter files..." 
