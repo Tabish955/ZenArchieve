@@ -245,6 +245,33 @@
                         </StackPanel>
                     </ui:Button>
 
+                    <!-- Duplicate Finder Button (NEW v2.1 - Not in WinRAR/7-Zip) -->
+                    <ui:Button x:Name="BtnFindDuplicates" 
+                               Click="BtnFindDuplicates_Click"
+                               Appearance="Secondary"
+                               IsEnabled="False"
+                               ToolTip="Find duplicate files inside the archive by content hash — identify wasted space"
+                               Margin="0,0,6,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="DocumentCopy24" Margin="0,0,6,0" FontSize="15" Foreground="#FFE91E63"/>
+                            <TextBlock Text="Duplicates" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Merge Archives Button (NEW v2.1 - Not in WinRAR/7-Zip) -->
+                    <ui:Button x:Name="BtnMergeArchives" 
+                               Click="BtnMergeArchives_Click"
+                               Appearance="Secondary"
+                               ToolTip="Merge two archives into one, deduplicating identical files automatically"
+                               Margin="0,0,10,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="MergeType24" Margin="0,0,6,0" FontSize="15" Foreground="#FF00BCD4"/>
+                            <TextBlock Text="Merge" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0,4,10,4" />
 
                     <!-- Quick Archive Path Display -->

@@ -12,7 +12,7 @@
 [![Windows 11 Fluent](https://img.shields.io/badge/Design-Windows%2011%20Mica-0078D4?style=for-the-badge&logo=windows11&logoColor=white)](https://github.com/lepoco/wpfui)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 [![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
-[![Version](https://img.shields.io/badge/Version-v2.0.0-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+[![Version](https://img.shields.io/badge/Version-v2.1.0-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/Tabish955/ZenArchieve?style=for-the-badge&logo=github&logoColor=white&color=gold)](https://github.com/Tabish955/ZenArchieve)
 
 ---
@@ -41,7 +41,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 
 ## ⚔️ ZenArchive vs. Competitors
 
-| Feature | **ZenArchive v2.0** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchive v2.1** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
 | **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |
@@ -50,6 +50,9 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 | **🆕 Size Analyzer (Visual Breakdown)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
 | **🆕 One-Click Format Converter** | ✅ **ZIP ↔ 7Z** | ❌ No | ❌ Manual | ❌ No |
 | **🆕 Checksum Verifier (SHA/MD5)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **🆕 Duplicate File Finder** | ✅ **SHA-256 Hash** | ❌ No | ❌ No | ❌ No |
+| **🆕 Archive Merge (Deduplicate)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **🆕 One-Click Auto-Update** | ✅ **GitHub OTA** | ❌ Manual | ❌ Manual | ❌ Manual |
 | **In-Memory Image & Code Previews** | ✅ **Direct Stream** | ❌ Temp File | ❌ Temp File | ⚠️ Basic |
 | **Executable Threat Shield** | ✅ **SHA-256 Guard** | ❌ Auto-runs | ❌ Auto-runs | ❌ No |
 | **Disguised Extension Blocker** | ✅ **Active Warning** | ❌ Hidden | ❌ Hidden | ❌ No |
@@ -58,7 +61,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 | **Hardware Benchmark Engine** | ✅ **ZenScore** | ⚠️ Basic | ⚠️ Legacy | ❌ No |
 | **Adware / Nag Screen** | 🚫 **None** | ❌ Constant | 🚫 None | 🚫 None |
 
-> **4 features marked 🆕 are exclusive to ZenArchive — no other archive manager has them.**
+> **7 features marked 🆕 are exclusive to ZenArchive — no other archive manager has them.**
 
 ---
 
@@ -121,6 +124,26 @@ Click any entry in the archive to preview it directly in memory:
 - Measures compression and decompression throughput in MB/s
 - Awards an official **ZenScore** rating tier
 
+### 11. 🔎 Duplicate File Finder — *EXCLUSIVE (v2.1)*
+Scan any archive for duplicate files using SHA-256 content hashing:
+- **Two-phase detection**: Fast size-based pre-filter, then content hashing for accuracy
+- **Grouped report**: Duplicates shown in groups with individual and total wasted space
+- Find bloated archives with redundant copies of the same files
+
+### 12. 🔗 Archive Merge — *EXCLUSIVE (v2.1)*
+Merge two archives into a single output archive with intelligent deduplication:
+- **Select Archive A + Archive B → Output**: Choose any two archives and a destination
+- **Auto-deduplication**: Identical files are detected and skipped — no redundant copies
+- **Conflict resolution**: When both archives contain the same path, Archive B wins
+- Full merge report with files added, overridden, and duplicates skipped
+
+### 13. 🔄 One-Click Auto-Update — *EXCLUSIVE (v2.1)*
+ZenArchive checks for updates automatically on startup:
+- **GitHub Releases integration**: Detects newer versions via the GitHub API
+- **Seamless in-place upgrade**: Downloads the new installer and runs it silently
+- **No manual uninstall needed**: Inno Setup's same-AppId mechanism upgrades in place
+- User is never forced to update — always prompted first
+
 ---
 
 ## 💻 Command-Line Interface (CLI)
@@ -150,6 +173,9 @@ graph TD
     Service --> Compare["Archive Comparator (Diff Engine)"]
     Service --> Convert["Format Converter (ZIP ↔ 7Z)"]
     Service --> Hash["Checksum Engine (SHA-256/MD5/SHA-1)"]
+    Service --> Dupes["Duplicate Finder (SHA-256 Content Hash)"]
+    Service --> Merge["Archive Merger (Deduplicate & Combine)"]
+    App --> Update["Auto-Update (GitHub Releases API)"]
     App --> Setup["Inno Setup 6 (64-Bit Installer)"]
 ```
 
@@ -167,7 +193,7 @@ graph TD
 
 ### Option 1: Installer (Recommended)
 Download the latest installer from [**Releases**](https://github.com/Tabish955/ZenArchieve/releases):
-> **`ZenArchive_Setup_v2.0.exe`**
+> **`ZenArchive_Setup_v2.1.exe`**
 
 The installer provides:
 - ✅ 64-bit installation to `C:\Program Files\ZenArchive`

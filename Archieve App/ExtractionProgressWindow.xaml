@@ -9,6 +9,7 @@
         Height="290" Width="520"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
+        Topmost="True"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Background="{DynamicResource ApplicationBackgroundBrush}"

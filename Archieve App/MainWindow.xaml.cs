@@ -63,7 +63,71 @@ namespace Archieve_App
             {
                 WindowBackdropType = WindowBackdropType.None;
             }
+
+            // Fire-and-forget auto-update check (non-blocking)
+            Loaded += async (s, e) => await CheckForUpdatesAsync();
         }
+
+        #region Auto-Update
+
+        private async Task CheckForUpdatesAsync()
+        {
+            try
+            {
+                var update = await UpdateService.CheckForUpdateAsync();
+                if (update == null) return; // Already up to date or check failed
+
+                var result = MessageBox.Show(
+                    $"🚀 A new version of ZenArchive is available!\n\n" +
+                    $"Current Version: v{update.CurrentVersion}\n" +
+                    $"Latest Version: v{update.LatestVersion}\n" +
+                    $"Release: {update.ReleaseName}\n" +
+                    $"Download Size: {update.FormattedSize}\n\n" +
+                    $"Would you like to update now?\n\n" +
+                    $"(The update installs automatically — no need to uninstall first)",
+                    "ZenArchive — Update Available",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information);
+
+                if (result != MessageBoxResult.Yes) return;
+
+                ShowStatus("Downloading update...", SymbolRegular.ArrowDownload24);
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Value = 0;
+                ProgressBarOperation.Visibility = Visibility.Visible;
+
+                var progress = new Progress<double>(p =>
+                {
+                    ProgressBarOperation.Value = p;
+                    TxtStatus.Text = $"Downloading update: {p:0}%";
+                });
+
+                bool success = await UpdateService.DownloadAndInstallUpdateAsync(update, progress);
+
+                if (success)
+                {
+                    MessageBox.Show(
+                        "Update downloaded successfully!\n\n" +
+                        "The installer will now run. ZenArchive will close to complete the update.",
+                        "ZenArchive — Updating",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    ShowStatus("Update download failed. Please try again later.", SymbolRegular.ErrorCircle24, isError: true);
+                    ProgressBarOperation.Visibility = Visibility.Hidden;
+                }
+            }
+            catch
+            {
+                // Silently fail — don't disrupt the user for update check failures
+            }
+        }
+
+        #endregion
 
         #region Archive Loading & Inspecting
 
@@ -145,6 +209,7 @@ namespace Archieve_App
                 BtnAnalyzeSize.IsEnabled = true;
                 BtnConvertFormat.IsEnabled = true;
                 BtnChecksum.IsEnabled = true;
+                BtnFindDuplicates.IsEnabled = true;
 
                 ShowStatus($"Ready • {fileCount} files loaded from {Path.GetFileName(filePath)}", SymbolRegular.CheckmarkCircle24);
             }
@@ -192,6 +257,7 @@ namespace Archieve_App
             BtnAnalyzeSize.IsEnabled = false;
             BtnConvertFormat.IsEnabled = false;
             BtnChecksum.IsEnabled = false;
+            BtnFindDuplicates.IsEnabled = false;
             BtnOpenDestinationFolder.Visibility = Visibility.Collapsed;
 
             ShowStatus("Ready", SymbolRegular.CheckmarkCircle24);
@@ -1810,6 +1876,182 @@ namespace Archieve_App
             {
                 scv.ScrollToHorizontalOffset(scv.HorizontalOffset - e.Delta);
                 e.Handled = true;
+            }
+        }
+
+        #endregion
+
+        #region Duplicate Finder & Merge Archives (v2.1 Exclusive Features)
+
+        private async void BtnFindDuplicates_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentArchivePath)) return;
+
+            try
+            {
+                SetUiBusy(true, "Scanning for duplicate files...");
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Value = 0;
+                ProgressBarOperation.Visibility = Visibility.Visible;
+
+                var progress = new Progress<double>(p =>
+                {
+                    ProgressBarOperation.Value = p;
+                    TxtStatus.Text = $"Scanning for duplicates: {p:0}% complete";
+                });
+
+                var report = await _archiveService.FindDuplicatesAsync(
+                    _currentArchivePath, _currentArchivePassword, progress);
+
+                if (!report.HasDuplicates)
+                {
+                    ShowStatus("No duplicates found — archive is clean!", SymbolRegular.CheckmarkCircle24);
+                    MessageBox.Show(
+                        $"✅ No duplicate files found!\n\n" +
+                        $"Scanned: {report.TotalFilesScanned} files\n" +
+                        $"Every file in this archive is unique.",
+                        "ZenArchive — Duplicate Finder",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                // Build detailed report
+                var sb = new StringBuilder();
+                sb.AppendLine($"📋 Duplicate File Report — {Path.GetFileName(_currentArchivePath)}");
+                sb.AppendLine($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                sb.AppendLine($"Files Scanned: {report.TotalFilesScanned}");
+                sb.AppendLine($"Duplicate Files Found: {report.TotalDuplicateFiles}");
+                sb.AppendLine($"Wasted Space: {report.FormattedWastedSpace}");
+                sb.AppendLine($"Duplicate Groups: {report.Groups.Count}");
+                sb.AppendLine();
+
+                int groupNum = 1;
+                foreach (var group in report.Groups.OrderByDescending(g => g.FileSize))
+                {
+                    sb.AppendLine($"── Group {groupNum} ({group.FormattedSize} each, {group.DuplicateCount} duplicates) ──");
+                    foreach (var file in group.Files)
+                    {
+                        sb.AppendLine($"   • {file}");
+                    }
+                    sb.AppendLine();
+                    groupNum++;
+                    if (groupNum > 25) // Limit display to 25 groups
+                    {
+                        sb.AppendLine($"   ... and {report.Groups.Count - 25} more groups");
+                        break;
+                    }
+                }
+
+                ShowStatus($"Found {report.TotalDuplicateFiles} duplicates wasting {report.FormattedWastedSpace}", SymbolRegular.DocumentCopy24);
+
+                MessageBox.Show(
+                    sb.ToString(),
+                    "ZenArchive — Duplicate Finder Report",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                ShowStatus($"Duplicate scan failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                MessageBox.Show($"Duplicate scan failed:\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Visibility = Visibility.Hidden;
+                SetUiBusy(false);
+            }
+        }
+
+        private async void BtnMergeArchives_Click(object sender, RoutedEventArgs e)
+        {
+            // Step 1: Select Archive A
+            var dialogA = new OpenFileDialog
+            {
+                Title = "Select First Archive to Merge (Archive A)",
+                Filter = "All Supported Archives (*.zip;*.rar;*.7z;*.tar;*.gz)|*.zip;*.rar;*.7z;*.tar;*.gz|All Files (*.*)|*.*",
+                CheckFileExists = true
+            };
+            if (dialogA.ShowDialog(this) != true) return;
+
+            // Step 2: Select Archive B
+            var dialogB = new OpenFileDialog
+            {
+                Title = "Select Second Archive to Merge (Archive B)",
+                Filter = "All Supported Archives (*.zip;*.rar;*.7z;*.tar;*.gz)|*.zip;*.rar;*.7z;*.tar;*.gz|All Files (*.*)|*.*",
+                CheckFileExists = true
+            };
+            if (dialogB.ShowDialog(this) != true) return;
+
+            // Step 3: Select output path
+            var saveDialog = new SaveFileDialog
+            {
+                Title = "Save Merged Archive As",
+                Filter = "ZIP Archive (*.zip)|*.zip|7-Zip Archive (*.7z)|*.7z",
+                DefaultExt = ".zip",
+                FileName = "Merged_Archive.zip"
+            };
+            if (saveDialog.ShowDialog(this) != true) return;
+
+            string outputPath = saveDialog.FileName;
+            var format = Path.GetExtension(outputPath).Equals(".7z", StringComparison.OrdinalIgnoreCase)
+                ? CompressionFormat.SevenZip
+                : CompressionFormat.Zip;
+
+            try
+            {
+                SetUiBusy(true, "Merging archives...");
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Value = 0;
+                ProgressBarOperation.Visibility = Visibility.Visible;
+
+                var progress = new Progress<ArchiveProgressReport>(report =>
+                {
+                    ProgressBarOperation.Value = report.Percentage;
+                    TxtStatus.Text = report.StatusMessage;
+                });
+
+                var report = await _archiveService.MergeArchivesAsync(
+                    dialogA.FileName, dialogB.FileName, outputPath, format,
+                    progress: progress);
+
+                ShowStatus($"Merged into {Path.GetFileName(outputPath)} ({report.FormattedOutputSize})", SymbolRegular.CheckmarkCircle24);
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"✅ Archives Merged Successfully!");
+                sb.AppendLine();
+                sb.AppendLine($"Archive A: {Path.GetFileName(dialogA.FileName)}");
+                sb.AppendLine($"Archive B: {Path.GetFileName(dialogB.FileName)}");
+                sb.AppendLine();
+                sb.AppendLine($"━━━ Merge Results ━━━");
+                sb.AppendLine($"Files from A: {report.FilesFromA}");
+                sb.AppendLine($"New files from B: {report.FilesFromB}");
+                sb.AppendLine($"Files updated by B: {report.FilesOverridden}");
+                sb.AppendLine($"Identical duplicates skipped: {report.DuplicatesSkipped}");
+                sb.AppendLine();
+                sb.AppendLine($"Total files in output: {report.TotalFilesInOutput}");
+                sb.AppendLine($"Output size: {report.FormattedOutputSize}");
+                sb.AppendLine($"Saved to: {outputPath}");
+
+                var result = MessageBox.Show(
+                    sb.ToString() + "\n\nWould you like to open the merged archive now?",
+                    "ZenArchive — Merge Complete",
+                    MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    await LoadArchiveAsync(outputPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowStatus($"Merge failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                MessageBox.Show($"Archive merge failed:\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                ProgressBarOperation.IsIndeterminate = false;
+                ProgressBarOperation.Visibility = Visibility.Hidden;
+                SetUiBusy(false);
             }
         }
 

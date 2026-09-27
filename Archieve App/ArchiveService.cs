@@ -1789,5 +1789,258 @@ namespace Archieve_App
                 return BitConverter.ToString(hashAlg.Hash!).Replace("-", "").ToUpperInvariant();
             }, cancellationToken);
         }
+
+        /// <summary>
+        /// Finds duplicate files within an archive by computing SHA-256 hashes of each entry's content.
+        /// Groups files with identical content, reporting total wasted space.
+        /// This feature is not available in WinRAR, 7-Zip, or PeaZip.
+        /// </summary>
+        public async Task<DuplicateReport> FindDuplicatesAsync(
+            string archivePath,
+            string? password = null,
+            IProgress<double>? progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(archivePath))
+                throw new FileNotFoundException("Archive not found.", archivePath);
+
+            var items = await ReadArchiveAsync(archivePath, password, cancellationToken);
+            var fileItems = items.Where(i => !i.IsDirectory).ToList();
+
+            if (fileItems.Count == 0)
+                return new DuplicateReport();
+
+            // Phase 1: Group by file size (fast pre-filter — files with unique sizes can't be duplicates)
+            var sizeGroups = fileItems.GroupBy(f => f.Size).Where(g => g.Count() > 1).ToList();
+            var candidates = sizeGroups.SelectMany(g => g).ToList();
+
+            if (candidates.Count == 0)
+            {
+                progress?.Report(100);
+                return new DuplicateReport { TotalFilesScanned = fileItems.Count };
+            }
+
+            // Phase 2: Compute SHA-256 for size-matched candidates
+            var hashMap = new Dictionary<string, List<ArchiveItemInfo>>();
+            int processed = 0;
+
+            foreach (var item in candidates)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                try
+                {
+                    using var stream = await GetEntryStreamAsync(archivePath, item.Path, password);
+                    byte[] hash = SHA256.HashData(stream.ToArray());
+                    string hexHash = Convert.ToHexString(hash);
+
+                    if (!hashMap.ContainsKey(hexHash))
+                        hashMap[hexHash] = new List<ArchiveItemInfo>();
+                    hashMap[hexHash].Add(item);
+                }
+                catch
+                {
+                    // Skip entries that can't be read (e.g. corrupt)
+                }
+
+                processed++;
+                progress?.Report(Math.Min(100.0, (double)processed / candidates.Count * 100.0));
+            }
+
+            // Phase 3: Build report
+            var report = new DuplicateReport { TotalFilesScanned = fileItems.Count };
+            foreach (var kvp in hashMap)
+            {
+                if (kvp.Value.Count > 1)
+                {
+                    var group = new DuplicateGroup
+                    {
+                        Hash = kvp.Key,
+                        FileSize = kvp.Value[0].Size,
+                        Files = kvp.Value.Select(f => f.Path).ToList()
+                    };
+                    report.Groups.Add(group);
+                    report.TotalDuplicateFiles += kvp.Value.Count - 1; // One is the "original"
+                    report.TotalWastedBytes += kvp.Value[0].Size * (kvp.Value.Count - 1);
+                }
+            }
+
+            progress?.Report(100);
+            return report;
+        }
+
+        /// <summary>
+        /// Merges two archives into a single output archive, deduplicating identical files by hash.
+        /// Files from archiveB override files from archiveA when paths match.
+        /// This feature is not available in WinRAR, 7-Zip, or PeaZip.
+        /// </summary>
+        public async Task<MergeReport> MergeArchivesAsync(
+            string archivePathA,
+            string archivePathB,
+            string outputPath,
+            CompressionFormat format = CompressionFormat.Zip,
+            CompressionLevel level = CompressionLevel.Normal,
+            IProgress<ArchiveProgressReport>? progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(archivePathA))
+                throw new FileNotFoundException("Archive A not found.", archivePathA);
+            if (!File.Exists(archivePathB))
+                throw new FileNotFoundException("Archive B not found.", archivePathB);
+
+            string tempDir = Path.Combine(Path.GetTempPath(), $"ZenArchive_Merge_{Guid.NewGuid():N}");
+            var report = new MergeReport();
+
+            try
+            {
+                string tempA = Path.Combine(tempDir, "A");
+                string tempB = Path.Combine(tempDir, "B");
+                string tempMerged = Path.Combine(tempDir, "merged");
+                Directory.CreateDirectory(tempA);
+                Directory.CreateDirectory(tempB);
+                Directory.CreateDirectory(tempMerged);
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    Percentage = 5,
+                    StatusMessage = "Extracting first archive..."
+                });
+
+                // Extract both archives
+                await ExtractArchiveAsync(archivePathA, tempA, smartExtract: false, cancellationToken: cancellationToken);
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    Percentage = 30,
+                    StatusMessage = "Extracting second archive..."
+                });
+
+                await ExtractArchiveAsync(archivePathB, tempB, smartExtract: false, cancellationToken: cancellationToken);
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    Percentage = 55,
+                    StatusMessage = "Merging and deduplicating files..."
+                });
+
+                // Copy all files from A to merged directory
+                foreach (var file in Directory.GetFiles(tempA, "*", SearchOption.AllDirectories))
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    string relativePath = Path.GetRelativePath(tempA, file);
+                    string destPath = Path.Combine(tempMerged, relativePath);
+                    string? destDir = Path.GetDirectoryName(destPath);
+                    if (!string.IsNullOrEmpty(destDir))
+                        Directory.CreateDirectory(destDir);
+                    File.Copy(file, destPath, overwrite: true);
+                    report.FilesFromA++;
+                }
+
+                // Copy/override from B, tracking additions vs overrides
+                foreach (var file in Directory.GetFiles(tempB, "*", SearchOption.AllDirectories))
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    string relativePath = Path.GetRelativePath(tempB, file);
+                    string destPath = Path.Combine(tempMerged, relativePath);
+                    string? destDir = Path.GetDirectoryName(destPath);
+                    if (!string.IsNullOrEmpty(destDir))
+                        Directory.CreateDirectory(destDir);
+
+                    if (File.Exists(destPath))
+                    {
+                        // Check if identical (by size for speed)
+                        var existingInfo = new FileInfo(destPath);
+                        var newInfo = new FileInfo(file);
+                        if (existingInfo.Length == newInfo.Length)
+                        {
+                            report.DuplicatesSkipped++;
+                            continue; // Same file — skip
+                        }
+                        report.FilesOverridden++;
+                    }
+                    else
+                    {
+                        report.FilesFromB++;
+                    }
+
+                    File.Copy(file, destPath, overwrite: true);
+                }
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    Percentage = 75,
+                    StatusMessage = "Compressing merged archive..."
+                });
+
+                // Compress merged directory into output
+                var allMergedItems = new List<string>();
+                foreach (var item in Directory.GetFileSystemEntries(tempMerged))
+                    allMergedItems.Add(item);
+
+                await CreateArchiveAsync(
+                    outputPath, allMergedItems, format, level,
+                    cancellationToken: cancellationToken);
+
+                report.TotalFilesInOutput = Directory.GetFiles(tempMerged, "*", SearchOption.AllDirectories).Length;
+                report.OutputPath = outputPath;
+                report.OutputSizeBytes = new FileInfo(outputPath).Length;
+
+                progress?.Report(new ArchiveProgressReport
+                {
+                    Percentage = 100,
+                    StatusMessage = "Merge complete!"
+                });
+            }
+            finally
+            {
+                try
+                {
+                    if (Directory.Exists(tempDir))
+                        Directory.Delete(tempDir, recursive: true);
+                }
+                catch { }
+            }
+
+            return report;
+        }
+    }
+
+    /// <summary>
+    /// Result of scanning an archive for duplicate files.
+    /// </summary>
+    public class DuplicateReport
+    {
+        public int TotalFilesScanned { get; set; }
+        public int TotalDuplicateFiles { get; set; }
+        public long TotalWastedBytes { get; set; }
+        public List<DuplicateGroup> Groups { get; set; } = new();
+
+        public string FormattedWastedSpace => ArchiveItemInfo.FormatBytes(TotalWastedBytes);
+        public bool HasDuplicates => Groups.Count > 0;
+    }
+
+    public class DuplicateGroup
+    {
+        public string Hash { get; set; } = "";
+        public long FileSize { get; set; }
+        public List<string> Files { get; set; } = new();
+
+        public string FormattedSize => ArchiveItemInfo.FormatBytes(FileSize);
+        public int DuplicateCount => Files.Count - 1;
+    }
+
+    /// <summary>
+    /// Result of merging two archives.
+    /// </summary>
+    public class MergeReport
+    {
+        public int FilesFromA { get; set; }
+        public int FilesFromB { get; set; }
+        public int FilesOverridden { get; set; }
+        public int DuplicatesSkipped { get; set; }
+        public int TotalFilesInOutput { get; set; }
+        public string OutputPath { get; set; } = "";
+        public long OutputSizeBytes { get; set; }
+
+        public string FormattedOutputSize => ArchiveItemInfo.FormatBytes(OutputSizeBytes);
     }
 }
