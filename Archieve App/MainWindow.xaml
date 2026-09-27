@@ -267,7 +267,7 @@
                                Margin="0,0,10,0" 
                                Padding="10,7">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <ui:SymbolIcon Symbol="MergeType24" Margin="0,0,6,0" FontSize="15" Foreground="#FF00BCD4"/>
+                            <ui:SymbolIcon Symbol="Merge24" Margin="0,0,6,0" FontSize="15" Foreground="#FF00BCD4"/>
                             <TextBlock Text="Merge" FontWeight="Medium" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ui:Button>
