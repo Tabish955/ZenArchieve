@@ -1,16 +1,16 @@
 ﻿<#
 .SYNOPSIS
-    Registers ZenArchive context menu entries in Windows Explorer.
+    Registers ZenArchieve context menu entries in Windows Explorer.
 .DESCRIPTION
-    Adds "Extract Here", "Extract Files...", "Extract to <ArchiveName>\", and "Add to ZenArchive..."
+    Adds "Extract Here", "Extract Files...", "Extract to <ArchiveName>\", and "Add to ZenArchieve..."
     to the right-click context menu for archive file types (.zip, .7z, .rar, .tar, .gz).
     Also enables the classic full context menu on Windows 11 (bypassing "Show more options").
     
     Run as Administrator for HKLM registration, or as user for HKCU registration.
 .PARAMETER AppPath
-    Full path to the ZenArchive executable. If not specified, auto-detects from script location.
+    Full path to the ZenArchieve executable. If not specified, auto-detects from script location.
 .PARAMETER Unregister
-    If specified, removes all ZenArchive context menu entries.
+    If specified, removes all ZenArchieve context menu entries.
 #>
 
 param(
@@ -33,7 +33,7 @@ if ([string]::IsNullOrEmpty($AppPath)) {
         $AppPath = Join-Path $debugDir "Archieve App.exe"
     } else {
         # Check Program Files install location
-        $pfPath = "C:\Program Files\ZenArchive\Archieve App.exe"
+        $pfPath = "C:\Program Files\ZenArchieve\Archieve App.exe"
         if (Test-Path $pfPath) {
             $AppPath = $pfPath
         } else {
@@ -44,7 +44,7 @@ if ([string]::IsNullOrEmpty($AppPath)) {
 }
 
 $AppPath = (Resolve-Path $AppPath).Path
-Write-Host "ZenArchive executable: $AppPath" -ForegroundColor Cyan
+Write-Host "ZenArchieve executable: $AppPath" -ForegroundColor Cyan
 
 # Determine if we have admin privileges
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -58,10 +58,10 @@ $quotedApp = """$AppPath"""
 function Register-ContextMenuEntries {
     Write-Host "`n[1/4] Registering file type associations..." -ForegroundColor Green
     
-    # ZenArchive.Archive ProgID
-    $progIdBase = "$rootKey\Software\Classes\ZenArchive.Archive"
+    # ZenArchieve.Archive ProgID
+    $progIdBase = "$rootKey\Software\Classes\ZenArchieve.Archive"
     New-Item -Path "$progIdBase" -Force | Out-Null
-    Set-ItemProperty -Path "$progIdBase" -Name "(Default)" -Value "ZenArchive Compressed Archive"
+    Set-ItemProperty -Path "$progIdBase" -Name "(Default)" -Value "ZenArchieve Compressed Archive"
     
     New-Item -Path "$progIdBase\DefaultIcon" -Force | Out-Null
     Set-ItemProperty -Path "$progIdBase\DefaultIcon" -Name "(Default)" -Value "$AppPath,0"
@@ -74,7 +74,7 @@ function Register-ContextMenuEntries {
         # Don't override if already set, just add OpenWithProgids
         $owKey = "$extKey\OpenWithProgids"
         New-Item -Path $owKey -Force | Out-Null
-        Set-ItemProperty -Path $owKey -Name "ZenArchive.Archive" -Value "" -Type String
+        Set-ItemProperty -Path $owKey -Name "ZenArchieve.Archive" -Value "" -Type String
     }
     
     Write-Host "  -> File associations registered" -ForegroundColor Green
@@ -85,7 +85,7 @@ function Register-ContextMenuEntries {
     $starBase = "$rootKey\Software\Classes\*\shell"
     
     # Extract Here
-    $ehKey = "$starBase\ZenArchiveExtractHere"
+    $ehKey = "$starBase\ZenArchieveExtractHere"
     New-Item -Path "$ehKey\command" -Force | Out-Null
     Set-ItemProperty -Path $ehKey -Name "(Default)" -Value "Extract Here"
     Set-ItemProperty -Path $ehKey -Name "Icon" -Value $quotedApp
@@ -93,7 +93,7 @@ function Register-ContextMenuEntries {
     Set-ItemProperty -Path "$ehKey\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
     
     # Extract Files...
-    $efKey = "$starBase\ZenArchiveExtractFiles"
+    $efKey = "$starBase\ZenArchieveExtractFiles"
     New-Item -Path "$efKey\command" -Force | Out-Null
     Set-ItemProperty -Path $efKey -Name "(Default)" -Value "Extract Files..."
     Set-ItemProperty -Path $efKey -Name "Icon" -Value $quotedApp
@@ -101,24 +101,24 @@ function Register-ContextMenuEntries {
     Set-ItemProperty -Path "$efKey\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
     
     # Extract to <ArchiveName>\
-    $seKey = "$starBase\ZenArchiveSmartExtract"
+    $seKey = "$starBase\ZenArchieveSmartExtract"
     New-Item -Path "$seKey\command" -Force | Out-Null
     Set-ItemProperty -Path $seKey -Name "(Default)" -Value "Extract to <ArchiveName>\\"
     Set-ItemProperty -Path $seKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $seKey -Name "AppliesTo" -Value $appliesTo
     Set-ItemProperty -Path "$seKey\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
     
-    # Add to ZenArchive... (for any file)
-    $acKey = "$starBase\ZenArchiveCompress"
+    # Add to ZenArchieve... (for any file)
+    $acKey = "$starBase\ZenArchieveCompress"
     New-Item -Path "$acKey\command" -Force | Out-Null
-    Set-ItemProperty -Path $acKey -Name "(Default)" -Value "Add to ZenArchive..."
+    Set-ItemProperty -Path $acKey -Name "(Default)" -Value "Add to ZenArchieve..."
     Set-ItemProperty -Path $acKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path "$acKey\command" -Name "(Default)" -Value "$quotedApp -compress ""%1"""
     
     # Directory context menu (compress folder)
-    $dirKey = "$rootKey\Software\Classes\Directory\shell\ZenArchiveCompress"
+    $dirKey = "$rootKey\Software\Classes\Directory\shell\ZenArchieveCompress"
     New-Item -Path "$dirKey\command" -Force | Out-Null
-    Set-ItemProperty -Path $dirKey -Name "(Default)" -Value "Add to ZenArchive..."
+    Set-ItemProperty -Path $dirKey -Name "(Default)" -Value "Add to ZenArchieve..."
     Set-ItemProperty -Path $dirKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path "$dirKey\command" -Name "(Default)" -Value "$quotedApp -compress ""%1"""
     
@@ -130,28 +130,28 @@ function Register-ContextMenuEntries {
         $sfaBase = "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell"
         
         # Open
-        New-Item -Path "$sfaBase\ZenArchiveOpen\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen" -Name "(Default)" -Value "Open with ZenArchive"
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveOpen\command" -Name "(Default)" -Value "$quotedApp ""%1"""
+        New-Item -Path "$sfaBase\ZenArchieveOpen\command" -Force | Out-Null
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveOpen" -Name "(Default)" -Value "Open with ZenArchieve"
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveOpen" -Name "Icon" -Value $quotedApp
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveOpen\command" -Name "(Default)" -Value "$quotedApp ""%1"""
         
         # Extract Here
-        New-Item -Path "$sfaBase\ZenArchiveExtractHere\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere" -Name "(Default)" -Value "Extract Here"
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractHere\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
+        New-Item -Path "$sfaBase\ZenArchieveExtractHere\command" -Force | Out-Null
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere" -Name "(Default)" -Value "Extract Here"
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere" -Name "Icon" -Value $quotedApp
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
         
         # Extract Files...
-        New-Item -Path "$sfaBase\ZenArchiveExtractFiles\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles" -Name "(Default)" -Value "Extract Files..."
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveExtractFiles\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
+        New-Item -Path "$sfaBase\ZenArchieveExtractFiles\command" -Force | Out-Null
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles" -Name "(Default)" -Value "Extract Files..."
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles" -Name "Icon" -Value $quotedApp
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
         
         # Smart Extract
-        New-Item -Path "$sfaBase\ZenArchiveSmartExtract\command" -Force | Out-Null
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract" -Name "(Default)" -Value "Extract to <ArchiveName>\\"
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchiveSmartExtract\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
+        New-Item -Path "$sfaBase\ZenArchieveSmartExtract\command" -Force | Out-Null
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract" -Name "(Default)" -Value "Extract to <ArchiveName>\\"
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract" -Name "Icon" -Value $quotedApp
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
     }
     
     Write-Host "  -> SystemFileAssociations registered" -ForegroundColor Green
@@ -172,33 +172,33 @@ function Register-ContextMenuEntries {
     Start-Process explorer.exe
     
     Write-Host "`n===========================================================" -ForegroundColor Green
-    Write-Host "  ZenArchive context menu registered successfully!" -ForegroundColor Green
+    Write-Host "  ZenArchieve context menu registered successfully!" -ForegroundColor Green
     Write-Host "  Right-click any .zip, .7z, .rar, .tar, .gz file to see" -ForegroundColor White
-    Write-Host "  ZenArchive options in the context menu." -ForegroundColor White
+    Write-Host "  ZenArchieve options in the context menu." -ForegroundColor White
     Write-Host "===========================================================" -ForegroundColor Green
 }
 
 function Unregister-ContextMenuEntries {
-    Write-Host "`nRemoving ZenArchive context menu entries..." -ForegroundColor Yellow
+    Write-Host "`nRemoving ZenArchieve context menu entries..." -ForegroundColor Yellow
     
     $keysToRemove = @(
-        "$rootKey\Software\Classes\ZenArchive.Archive",
-        "$rootKey\Software\Classes\*\shell\ZenArchiveExtractHere",
-        "$rootKey\Software\Classes\*\shell\ZenArchiveExtractFiles",
-        "$rootKey\Software\Classes\*\shell\ZenArchiveSmartExtract",
-        "$rootKey\Software\Classes\*\shell\ZenArchiveCompress",
-        "$rootKey\Software\Classes\Directory\shell\ZenArchiveCompress",
-        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchiveOpen",
-        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchiveExtractHere",
-        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchiveExtractFiles",
-        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchiveSmartExtract"
+        "$rootKey\Software\Classes\ZenArchieve.Archive",
+        "$rootKey\Software\Classes\*\shell\ZenArchieveExtractHere",
+        "$rootKey\Software\Classes\*\shell\ZenArchieveExtractFiles",
+        "$rootKey\Software\Classes\*\shell\ZenArchieveSmartExtract",
+        "$rootKey\Software\Classes\*\shell\ZenArchieveCompress",
+        "$rootKey\Software\Classes\Directory\shell\ZenArchieveCompress",
+        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchieveOpen",
+        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere",
+        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles",
+        "$rootKey\Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract"
     )
     
     foreach ($ext in @(".zip", ".7z", ".rar", ".tar", ".gz")) {
-        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchiveOpen"
-        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchiveExtractHere"
-        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchiveExtractFiles"
-        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchiveSmartExtract"
+        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchieveOpen"
+        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchieveExtractHere"
+        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchieveExtractFiles"
+        $keysToRemove += "$rootKey\Software\Classes\SystemFileAssociations\$ext\shell\ZenArchieveSmartExtract"
     }
     
     foreach ($key in $keysToRemove) {
@@ -215,7 +215,7 @@ function Unregister-ContextMenuEntries {
         Write-Host "  Removed Windows 11 classic context menu override" -ForegroundColor Gray
     }
     
-    Write-Host "`n  ZenArchive context menu entries removed." -ForegroundColor Green
+    Write-Host "`n  ZenArchieve context menu entries removed." -ForegroundColor Green
     
     # Restart Explorer
     Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue

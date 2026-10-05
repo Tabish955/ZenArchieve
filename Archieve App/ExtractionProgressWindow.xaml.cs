@@ -192,7 +192,7 @@ namespace Archieve_App
             {
                 _stopwatch.Stop();
                 _timer.Stop();
-                MessageBox.Show($"Extraction failed:\n\n{ex.Message}", "ZenArchive - Extraction Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Extraction failed:\n\n{ex.Message}", "ZenArchieve - Extraction Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }
         }

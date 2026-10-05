@@ -26,7 +26,7 @@ namespace Archieve_App
 
         static UpdateService()
         {
-            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("ZenArchive-UpdateChecker/1.0");
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("ZenArchieve-UpdateChecker/1.0");
             _httpClient.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json");
         }
 
@@ -75,15 +75,20 @@ namespace Archieve_App
 
                 if (release.Assets != null)
                 {
-                    foreach (var asset in release.Assets)
+                    // Prioritize ZenArchieve_Setup installer asset, fallback to any .exe asset
+                    var preferredAsset = release.Assets.FirstOrDefault(a => 
+                        a.Name != null && 
+                        a.Name.StartsWith("ZenArchieve", StringComparison.OrdinalIgnoreCase) && 
+                        a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                        ?? release.Assets.FirstOrDefault(a => 
+                        a.Name != null && 
+                        a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase));
+
+                    if (preferredAsset != null)
                     {
-                        if (asset.Name != null && asset.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                        {
-                            downloadUrl = asset.BrowserDownloadUrl;
-                            assetName = asset.Name;
-                            assetSize = asset.Size;
-                            break;
-                        }
+                        downloadUrl = preferredAsset.BrowserDownloadUrl;
+                        assetName = preferredAsset.Name;
+                        assetSize = preferredAsset.Size;
                     }
                 }
 
@@ -97,7 +102,7 @@ namespace Archieve_App
                     ReleaseName = release.Name ?? $"v{latestVersion}",
                     ReleaseNotes = release.Body ?? "No release notes available.",
                     DownloadUrl = downloadUrl,
-                    AssetName = assetName ?? "ZenArchive_Setup.exe",
+                    AssetName = assetName ?? "ZenArchieve_Setup.exe",
                     AssetSizeBytes = assetSize,
                     ReleaseUrl = release.HtmlUrl ?? ""
                 };
@@ -119,7 +124,7 @@ namespace Archieve_App
         {
             try
             {
-                string tempDir = Path.Combine(Path.GetTempPath(), "ZenArchive_Update");
+                string tempDir = Path.Combine(Path.GetTempPath(), "ZenArchieve_Update");
                 Directory.CreateDirectory(tempDir);
                 string installerPath = Path.Combine(tempDir, updateInfo.AssetName);
 
@@ -156,7 +161,7 @@ namespace Archieve_App
 
                 // Launch installer with /VERYSILENT for seamless in-place upgrade
                 // /SUPPRESSMSGBOXES avoids any prompts
-                // /CLOSEAPPLICATIONS tells it to close ZenArchive before upgrading
+                // /CLOSEAPPLICATIONS tells it to close ZenArchieve before upgrading
                 // /RESTARTAPPLICATIONS=no avoids auto-relaunch
                 Process.Start(new ProcessStartInfo
                 {

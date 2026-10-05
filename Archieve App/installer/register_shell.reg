@@ -1,209 +1,209 @@
 ﻿Windows Registry Editor Version 5.00
 
 ; =====================================================================
-; ZenArchive Context Menu Registration
+; ZenArchieve Context Menu Registration
 ; Auto-generated for development/testing
 ; =====================================================================
 
 ; --- Wildcard * shell entries (AppliesTo filtered) ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 "AppliesTo"="System.FileExtension:=.zip OR System.FileExtension:=.7z OR System.FileExtension:=.rar OR System.FileExtension:=.tar OR System.FileExtension:=.gz"
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveExtractFiles]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveExtractFiles]
 @="Extract Files..."
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 "AppliesTo"="System.FileExtension:=.zip OR System.FileExtension:=.7z OR System.FileExtension:=.rar OR System.FileExtension:=.tar OR System.FileExtension:=.gz"
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveExtractFiles\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveExtractFiles\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-files \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 "AppliesTo"="System.FileExtension:=.zip OR System.FileExtension:=.7z OR System.FileExtension:=.rar OR System.FileExtension:=.tar OR System.FileExtension:=.gz"
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveCompress]
-@="Add to ZenArchive..."
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveCompress]
+@="Add to ZenArchieve..."
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchiveCompress\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\*\shell\ZenArchieveCompress\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -compress \"%1\""
 
 ; --- Directory context menu ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\Directory\shell\ZenArchiveCompress]
-@="Add to ZenArchive..."
+[HKEY_LOCAL_MACHINE\Software\Classes\Directory\shell\ZenArchieveCompress]
+@="Add to ZenArchieve..."
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\Directory\shell\ZenArchiveCompress\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\Directory\shell\ZenArchieveCompress\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -compress \"%1\""
 
 ; --- SystemFileAssociations .zip ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveOpen]
-@="ZenArchive > Open"
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveOpen]
+@="ZenArchieve > Open"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveOpen\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveOpen\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveExtractFiles]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractFiles]
 @="Extract Files..."
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveExtractFiles\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractFiles\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-files \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
 ; --- SystemFileAssociations .7z ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveOpen]
-@="ZenArchive > Open"
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveOpen]
+@="ZenArchieve > Open"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveOpen\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveOpen\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveExtractFiles]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractFiles]
 @="Extract Files..."
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveExtractFiles\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractFiles\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-files \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
 ; --- SystemFileAssociations .rar ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchiveOpen]
-@="ZenArchive > Open"
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveOpen]
+@="ZenArchieve > Open"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchiveOpen\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveOpen\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
 ; --- SystemFileAssociations .tar ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchiveOpen]
-@="ZenArchive > Open"
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveOpen]
+@="ZenArchieve > Open"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchiveOpen\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveOpen\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
 ; --- SystemFileAssociations .gz ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiveOpen]
-@="ZenArchive > Open"
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveOpen]
+@="ZenArchieve > Open"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiveOpen\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveOpen\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
 ; --- CompressedFolder (Windows default ZIP handler) ---
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveOpen]
-@="ZenArchive > Open"
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveOpen]
+@="ZenArchieve > Open"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveOpen\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveOpen\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveExtractHere]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere]
 @="Extract Here"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveExtractHere\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-here \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveExtractFiles]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles]
 @="Extract Files..."
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveExtractFiles\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -extract-files \"%1\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveSmartExtract]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract]
 @="Extract to Folder"
 "Icon"="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\""
 
-[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchiveSmartExtract\command]
+[HKEY_LOCAL_MACHINE\Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract\command]
 @="\"D:\\Archieve\\Archieve App\\bin\\Release\\net9.0-windows\\win-x64\\publish\\Archieve App.exe\" -smart-extract \"%1\""
 
 ; --- Windows 11 Classic Context Menu (bypass "Show more options") ---

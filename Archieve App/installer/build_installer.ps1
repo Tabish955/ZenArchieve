@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Builds and packages ZenArchive Windows 64-bit Installer.
+    Builds and packages ZenArchieve Windows 64-bit Installer.
 .DESCRIPTION
     1. Compiles and publishes self-contained .NET 9 win-x64 binaries.
-    2. Compiles Inno Setup script (ZenArchive_Setup.iss) into ZenArchive_Setup_v1.2.exe.
+    2. Compiles Inno Setup script (ZenArchieve_Setup.iss) into ZenArchieve_Setup_v2.1.exe.
 #>
 
 param (
@@ -17,11 +17,11 @@ $ErrorActionPreference = "Stop"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectDir = Split-Path -Parent $scriptDir
 $projectFile = Join-Path $projectDir "Archieve App.csproj"
-$issFile = Join-Path $scriptDir "ZenArchive_Setup.iss"
+$issFile = Join-Path $scriptDir "ZenArchieve_Setup.iss"
 $outputDir = Join-Path $projectDir "bin\installer"
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "   ZenArchive Installer Builder (.NET 9 Win-x64)" -ForegroundColor Cyan
+Write-Host "   ZenArchieve Installer Builder (.NET 9 Win-x64)" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 # Step 1: Clean & Publish .NET 9 Binaries

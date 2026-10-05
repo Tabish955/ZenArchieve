@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/app.png" alt="ZenArchive Logo" width="128" height="128" style="border-radius: 28px; box-shadow: 0 10px 30px rgba(0,210,255,0.35);" />
+<img src="assets/app.png" alt="ZenArchieve Logo" width="128" height="128" style="border-radius: 28px; box-shadow: 0 10px 30px rgba(0,210,255,0.35);" />
 
-# ZenArchive
+# ZenArchieve
 
 ### 🏆 The Modern, Open-Source Alternative to WinRAR & 7-Zip
 
@@ -23,11 +23,11 @@
 
 ---
 
-## 🌟 Why ZenArchive?
+## 🌟 Why ZenArchieve?
 
 For decades, archive management on Windows has been trapped in 1998: clunky Win32 dialogs, "Buy WinRAR" nag screens, no preview capability, vulnerability to path traversal exploits, and zero visual feedback.
 
-**ZenArchive** reimagines archiving from the ground up — delivering the features that WinRAR and 7-Zip simply don't have:
+**ZenArchieve** reimagines archiving from the ground up — delivering the features that WinRAR and 7-Zip simply don't have:
 
 | 🎨 **Stunning UI** | 🧠 **Smart Extract** | 🔍 **Archive Diff** | 📊 **Size Analyzer** |
 |:---:|:---:|:---:|:---:|
@@ -39,9 +39,9 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 
 ---
 
-## ⚔️ ZenArchive vs. Competitors
+## ⚔️ ZenArchieve vs. Competitors
 
-| Feature | **ZenArchive v2.1** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchieve v2.1** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
 | **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |
@@ -61,7 +61,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 | **Hardware Benchmark Engine** | ✅ **ZenScore** | ⚠️ Basic | ⚠️ Legacy | ❌ No |
 | **Adware / Nag Screen** | 🚫 **None** | ❌ Constant | 🚫 None | 🚫 None |
 
-> **7 features marked 🆕 are exclusive to ZenArchive — no other archive manager has them.**
+> **7 features marked 🆕 are exclusive to ZenArchieve — no other archive manager has them.**
 
 ---
 
@@ -70,7 +70,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 ### 1. 🧠 Smart Extract (Clutter-Free Extraction)
 Tired of extracting an archive and having 50 loose files scattered across your Desktop?
 - **Loose File Detection**: Automatically creates a dedicated subfolder when multiple loose files exist at the archive root.
-- **Single Folder Preservation**: If the archive already has a clean root folder structure, ZenArchive extracts directly — no annoying duplicate nesting.
+- **Single Folder Preservation**: If the archive already has a clean root folder structure, ZenArchieve extracts directly — no annoying duplicate nesting.
 
 ### 2. 🔍 Archive Comparison (Diff Tool) — *EXCLUSIVE*
 Compare any two archives side-by-side with a structured diff report:
@@ -138,7 +138,7 @@ Merge two archives into a single output archive with intelligent deduplication:
 - Full merge report with files added, overridden, and duplicates skipped
 
 ### 13. 🔄 One-Click Auto-Update — *EXCLUSIVE (v2.1)*
-ZenArchive checks for updates automatically on startup:
+ZenArchieve checks for updates automatically on startup:
 - **GitHub Releases integration**: Detects newer versions via the GitHub API
 - **Seamless in-place upgrade**: Downloads the new installer and runs it silently
 - **No manual uninstall needed**: Inno Setup's same-AppId mechanism upgrades in place
@@ -148,15 +148,15 @@ ZenArchive checks for updates automatically on startup:
 
 ## 💻 Command-Line Interface (CLI)
 
-ZenArchive supports full CLI automation and shell integration:
+ZenArchieve supports full CLI automation and shell integration:
 
 | Command | Description |
 | :--- | :--- |
-| `ZenArchive.exe "C:\Path\To\file.zip"` | Opens and inspects the specified archive |
-| `ZenArchive.exe -extract-here "C:\Path\To\file.zip"` | Extracts directly into the archive's parent folder |
-| `ZenArchive.exe -smart-extract "C:\Path\To\file.zip"` | Clutter-free Smart Extract (auto-creates subfolder if needed) |
-| `ZenArchive.exe -extract-files "C:\Path\To\file.zip"` | Prompts for destination folder, then extracts |
-| `ZenArchive.exe -compress "C:\Path\To\Files"` | Opens Create Archive modal with source pre-populated |
+| `ZenArchieve.exe "C:\Path\To\file.zip"` | Opens and inspects the specified archive |
+| `ZenArchieve.exe -extract-here "C:\Path\To\file.zip"` | Extracts directly into the archive's parent folder |
+| `ZenArchieve.exe -smart-extract "C:\Path\To\file.zip"` | Clutter-free Smart Extract (auto-creates subfolder if needed) |
+| `ZenArchieve.exe -extract-files "C:\Path\To\file.zip"` | Prompts for destination folder, then extracts |
+| `ZenArchieve.exe -compress "C:\Path\To\Files"` | Opens Create Archive modal with source pre-populated |
 
 ---
 
@@ -164,7 +164,7 @@ ZenArchive supports full CLI automation and shell integration:
 
 ```mermaid
 graph TD
-    UI["WPF-UI 4.3 (Windows 11 Fluent / Mica)"] --> App["ZenArchive App Core"]
+    UI["WPF-UI 4.3 (Windows 11 Fluent / Mica)"] --> App["ZenArchieve App Core"]
     App --> Service["ArchiveService (.NET 9 Async Engine)"]
     Service --> SC["SharpCompress 0.50 (ZIP, RAR, 7z, TAR, GZ)"]
     Service --> SZ["SharpZipLib 1.4 (AES-256 ZIP Engine)"]
@@ -193,16 +193,16 @@ graph TD
 
 ### Option 1: Installer (Recommended)
 Download the latest installer from [**Releases**](https://github.com/Tabish955/ZenArchieve/releases):
-> **`ZenArchive_Setup_v2.1.exe`**
+> **`ZenArchieve_Setup_v2.1.exe`**
 
 The installer provides:
-- ✅ 64-bit installation to `C:\Program Files\ZenArchive`
+- ✅ 64-bit installation to `C:\Program Files\ZenArchieve`
 - ✅ File associations for `.zip`, `.7z`, `.rar`, `.tar`, `.gz`
 - ✅ Clean Explorer right-click context menu (with app icon):
   - **Extract Here**
   - **Extract Files...**
   - **Extract to \<ArchiveName\>\\**
-  - **Add to ZenArchive...**
+  - **Add to ZenArchieve...**
 - ✅ Start Menu & Desktop shortcuts
 - ✅ Clean Control Panel uninstaller
 
@@ -221,7 +221,7 @@ cd ZenArchieve
 # Build in Release configuration
 dotnet build "Archieve App/Archieve App.csproj" -c Release
 
-# Run ZenArchive
+# Run ZenArchieve
 dotnet run --project "Archieve App/Archieve App.csproj"
 ```
 
@@ -258,7 +258,7 @@ Contributions are welcome! Here's how you can help:
 5. **Open** a Pull Request
 
 ### Areas Where You Can Contribute:
-- 🌐 **Internationalization**: Help translate ZenArchive to other languages
+- 🌐 **Internationalization**: Help translate ZenArchieve to other languages
 - 🎨 **Themes**: Add light mode or custom accent color themes
 - 📦 **Format Support**: Extend support for additional archive formats
 - 🧪 **Testing**: Help test on different Windows versions and edge cases
@@ -268,7 +268,7 @@ Contributions are welcome! Here's how you can help:
 
 ## 📄 License
 
-ZenArchive is open-source software released under the **[MIT License](LICENSE)**.
+ZenArchieve is open-source software released under the **[MIT License](LICENSE)**.
 
 You are free to use, modify, distribute, and commercialize this software with no restrictions. No nag screens, no trial periods, no hidden costs. **Free forever.**
 
@@ -285,7 +285,7 @@ You are free to use, modify, distribute, and commercialize this software with no
 
 <div align="center">
 
-**⭐ If ZenArchive has been useful to you, please consider giving it a star on GitHub! ⭐**
+**⭐ If ZenArchieve has been useful to you, please consider giving it a star on GitHub! ⭐**
 
 Made with ❤️ by [Tabish Jameel](https://github.com/Tabish955)
 

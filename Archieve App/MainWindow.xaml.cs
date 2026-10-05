@@ -70,22 +70,47 @@ namespace Archieve_App
 
         #region Auto-Update
 
-        private async Task CheckForUpdatesAsync()
+        private async void BtnCheckUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            await CheckForUpdatesAsync(isManualCheck: true);
+        }
+
+        private async Task CheckForUpdatesAsync(bool isManualCheck = false)
         {
             try
             {
+                if (isManualCheck)
+                {
+                    ShowStatus("Checking for updates online...", SymbolRegular.ArrowSync24);
+                }
+
                 var update = await UpdateService.CheckForUpdateAsync();
-                if (update == null) return; // Already up to date or check failed
+                if (update == null)
+                {
+                    if (isManualCheck)
+                    {
+                        var cur = UpdateService.GetCurrentVersion();
+                        ShowStatus($"ZenArchieve is up to date (v{cur.Major}.{cur.Minor}.{cur.Build}).", SymbolRegular.CheckmarkCircle24);
+                        MessageBox.Show(
+                            $"You are running the latest version of ZenArchieve!\n\n" +
+                            $"Installed Version: v{cur.Major}.{cur.Minor}.{cur.Build}\n" +
+                            $"Status: Up to date",
+                            "ZenArchieve — Check for Updates",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    return; // Already up to date or check failed
+                }
 
                 var result = MessageBox.Show(
-                    $"🚀 A new version of ZenArchive is available!\n\n" +
+                    $"🚀 A new version of ZenArchieve is available!\n\n" +
                     $"Current Version: v{update.CurrentVersion}\n" +
                     $"Latest Version: v{update.LatestVersion}\n" +
                     $"Release: {update.ReleaseName}\n" +
                     $"Download Size: {update.FormattedSize}\n\n" +
                     $"Would you like to update now?\n\n" +
                     $"(The update installs automatically — no need to uninstall first)",
-                    "ZenArchive — Update Available",
+                    "ZenArchieve — Update Available",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information);
 
@@ -108,8 +133,8 @@ namespace Archieve_App
                 {
                     MessageBox.Show(
                         "Update downloaded successfully!\n\n" +
-                        "The installer will now run. ZenArchive will close to complete the update.",
-                        "ZenArchive — Updating",
+                        "The installer will now run. ZenArchieve will close to complete the update.",
+                        "ZenArchieve — Updating",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
 
@@ -121,9 +146,13 @@ namespace Archieve_App
                     ProgressBarOperation.Visibility = Visibility.Hidden;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Silently fail — don't disrupt the user for update check failures
+                if (isManualCheck)
+                {
+                    ShowStatus($"Update check failed: {ex.Message}", SymbolRegular.ErrorCircle24, isError: true);
+                    MessageBox.Show($"Could not check for updates:\n\n{ex.Message}", "ZenArchieve — Update Check Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 
@@ -861,7 +890,7 @@ namespace Archieve_App
                 BtnOpenDestinationFolder.Visibility = Visibility.Visible;
 
                 var result = MessageBox.Show(
-                    $"Archive created successfully:\n\n{targetPath}\n\nWould you like to open and inspect it in ZenArchive now?",
+                    $"Archive created successfully:\n\n{targetPath}\n\nWould you like to open and inspect it in ZenArchieve now?",
                     "Archive Created",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information);
@@ -1369,7 +1398,7 @@ namespace Archieve_App
                     }
                     else if (archiveCount == 1 && files.Length == 1)
                     {
-                        TxtDragDropPrompt.Text = "Drop archive to inspect in ZenArchive";
+                        TxtDragDropPrompt.Text = "Drop archive to inspect in ZenArchieve";
                     }
                     else
                     {
@@ -1619,7 +1648,7 @@ namespace Archieve_App
                 }
 
                 ShowStatus($"Comparison complete: {result.Summary}", SymbolRegular.CheckmarkCircle24);
-                MessageBox.Show(sb.ToString(), "ZenArchive — Archive Comparison", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(sb.ToString(), "ZenArchieve — Archive Comparison", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -1712,7 +1741,7 @@ namespace Archieve_App
                 }
 
                 ShowStatus($"Size analysis complete for {Path.GetFileName(_currentArchivePath)}", SymbolRegular.CheckmarkCircle24);
-                MessageBox.Show(sb.ToString(), "ZenArchive — Size Analyzer", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(sb.ToString(), "ZenArchieve — Size Analyzer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -1759,7 +1788,7 @@ namespace Archieve_App
                     $"Convert '{Path.GetFileName(_currentArchivePath)}' to {targetFormat} format?\n\n" +
                     $"Output: {targetPath}\n\n" +
                     $"This will extract the archive contents and re-compress them in the new format.",
-                    "ZenArchive — Convert Format",
+                    "ZenArchieve — Convert Format",
                     MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (confirmResult != MessageBoxResult.Yes) return;
@@ -1784,7 +1813,7 @@ namespace Archieve_App
                     $"Archive successfully converted!\n\n" +
                     $"Source: {Path.GetFileName(_currentArchivePath)}\n" +
                     $"Output: {targetPath}",
-                    "ZenArchive — Conversion Complete",
+                    "ZenArchieve — Conversion Complete",
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Optionally open the converted archive
@@ -1854,7 +1883,7 @@ namespace Archieve_App
 
                 MessageBox.Show(
                     sb.ToString() + "\n\n✅ SHA-256 hash has been copied to your clipboard.",
-                    "ZenArchive — Checksum Verifier",
+                    "ZenArchieve — Checksum Verifier",
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -1910,7 +1939,7 @@ namespace Archieve_App
                         $"✅ No duplicate files found!\n\n" +
                         $"Scanned: {report.TotalFilesScanned} files\n" +
                         $"Every file in this archive is unique.",
-                        "ZenArchive — Duplicate Finder",
+                        "ZenArchieve — Duplicate Finder",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
@@ -1946,7 +1975,7 @@ namespace Archieve_App
 
                 MessageBox.Show(
                     sb.ToString(),
-                    "ZenArchive — Duplicate Finder Report",
+                    "ZenArchieve — Duplicate Finder Report",
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -2034,7 +2063,7 @@ namespace Archieve_App
 
                 var result = MessageBox.Show(
                     sb.ToString() + "\n\nWould you like to open the merged archive now?",
-                    "ZenArchive — Merge Complete",
+                    "ZenArchieve — Merge Complete",
                     MessageBoxButton.YesNo, MessageBoxImage.Information);
 
                 if (result == MessageBoxResult.Yes)

@@ -582,7 +582,7 @@ namespace Archieve_App
                 int totalSize = 16 * 1024 * 1024; // 16 MB workload
                 byte[] testData = new byte[totalSize];
                 var rng = new Random(42);
-                byte[] pattern = Encoding.UTF8.GetBytes("ZenArchive multi-threaded benchmark synthetic workload 2026. Fast .NET 9 compression test block.\n");
+                byte[] pattern = Encoding.UTF8.GetBytes("ZenArchieve multi-threaded benchmark synthetic workload 2026. Fast .NET 9 compression test block.\n");
                 for (int i = 0; i < totalSize; i++)
                 {
                     testData[i] = (byte)(pattern[i % pattern.Length] ^ (i % 7 == 0 ? rng.Next(32) : 0));
@@ -1665,7 +1665,7 @@ namespace Archieve_App
             if (!File.Exists(sourceArchivePath))
                 throw new FileNotFoundException("Source archive not found.", sourceArchivePath);
 
-            string tempDir = Path.Combine(Path.GetTempPath(), $"ZenArchive_Convert_{Guid.NewGuid():N}");
+            string tempDir = Path.Combine(Path.GetTempPath(), $"ZenArchieve_Convert_{Guid.NewGuid():N}");
 
             try
             {
@@ -1887,7 +1887,7 @@ namespace Archieve_App
             if (!File.Exists(archivePathB))
                 throw new FileNotFoundException("Archive B not found.", archivePathB);
 
-            string tempDir = Path.Combine(Path.GetTempPath(), $"ZenArchive_Merge_{Guid.NewGuid():N}");
+            string tempDir = Path.Combine(Path.GetTempPath(), $"ZenArchieve_Merge_{Guid.NewGuid():N}");
             var report = new MergeReport();
 
             try

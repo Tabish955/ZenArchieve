@@ -77,7 +77,7 @@ namespace Archieve_App
                             {
                                 var folderDialog = new Microsoft.Win32.OpenFolderDialog
                                 {
-                                    Title = "Select Destination Folder for Extraction - ZenArchive",
+                                    Title = "Select Destination Folder for Extraction - ZenArchieve",
                                     InitialDirectory = Path.GetDirectoryName(archivePath) ?? Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
                                 };
                                 if (folderDialog.ShowDialog() == true)
@@ -146,7 +146,7 @@ namespace Archieve_App
         private static void LogAndShowCrash(string context, Exception ex, bool isTerminating)
         {
             string logContent = $"=====================================================\n" +
-                                $"[ZENARCHIVE CRASH LOG - {DateTime.Now:yyyy-MM-dd HH:mm:ss}]\n" +
+                                $"[ZENARCHIEVE CRASH LOG - {DateTime.Now:yyyy-MM-dd HH:mm:ss}]\n" +
                                 $"Context: {context}\n" +
                                 $"Terminating: {isTerminating}\n" +
                                 $"Exception: {ex.GetType().FullName}: {ex.Message}\n" +
@@ -173,17 +173,17 @@ namespace Archieve_App
                 // Fallback to temp if BaseDirectory is write-protected (e.g. Program Files without admin)
                 try
                 {
-                    string fallbackLog = Path.Combine(Path.GetTempPath(), "ZenArchive_crash.log");
+                    string fallbackLog = Path.Combine(Path.GetTempPath(), "ZenArchieve_crash.log");
                     File.AppendAllText(fallbackLog, logContent);
                 }
                 catch { }
             }
 
-            string userMessage = $"ZenArchive encountered a startup or runtime error:\n\n" +
+            string userMessage = $"ZenArchieve encountered a startup or runtime error:\n\n" +
                                  $"{ex.GetType().Name}: {ex.Message}\n\n" +
                                  $"A detailed diagnostic log has been written to 'crash.log'.";
 
-            MessageBox.Show(userMessage, "ZenArchive - Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(userMessage, "ZenArchieve - Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

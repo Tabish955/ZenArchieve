@@ -6,7 +6,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:Archieve_App"
         mc:Ignorable="d"
-        Title="ZenArchive" Height="720" Width="1160"
+        Title="ZenArchieve" Height="720" Width="1160"
         MinHeight="560" MinWidth="850"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True"
@@ -32,7 +32,7 @@
 
         <!-- 1. Title Bar -->
         <ui:TitleBar Grid.Row="0"
-                     Title="ZenArchive"
+                     Title="ZenArchieve"
                      Height="40"
                      Padding="16,0,8,0">
             <ui:TitleBar.Header>
@@ -41,7 +41,7 @@
                                    FontSize="16" 
                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" 
                                    Margin="0,0,8,0"/>
-                    <TextBlock Text="ZenArchive" 
+                    <TextBlock Text="ZenArchieve" 
                                FontWeight="SemiBold" 
                                FontSize="13" 
                                VerticalAlignment="Center" 
@@ -269,6 +269,19 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <ui:SymbolIcon Symbol="Merge24" Margin="0,0,6,0" FontSize="15" Foreground="#FF00BCD4"/>
                             <TextBlock Text="Merge" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Check for Updates Button (Online OTA) -->
+                    <ui:Button x:Name="BtnCheckUpdates" 
+                               Click="BtnCheckUpdates_Click"
+                               Appearance="Secondary"
+                               ToolTip="Check for newer versions of ZenArchieve online"
+                               Margin="0,0,10,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="ArrowSync24" Margin="0,0,6,0" FontSize="15" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                            <TextBlock Text="Updates" FontWeight="Medium" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ui:Button>
 
@@ -650,7 +663,7 @@
                                                        HorizontalAlignment="Center" 
                                                        Margin="0,0,0,6"/>
 
-                                            <TextBlock Text="Executable binaries and scripts cannot be run directly from within the ZenArchive preview pane to protect your system from malware execution." 
+                                            <TextBlock Text="Executable binaries and scripts cannot be run directly from within the ZenArchieve preview pane to protect your system from malware execution." 
                                                        FontSize="11" 
                                                        TextWrapping="Wrap" 
                                                        TextAlignment="Center" 
@@ -808,7 +821,7 @@
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <ui:SymbolIcon Symbol="ArrowDownload24" FontSize="56" Foreground="{DynamicResource AccentFillColorDefaultBrush}" Margin="0,0,0,16"/>
                     <TextBlock x:Name="TxtDragDropPrompt" 
-                               Text="Drop files to open, create, or batch process in ZenArchive" 
+                               Text="Drop files to open, create, or batch process in ZenArchieve" 
                                FontSize="20" 
                                FontWeight="Bold" 
                                Foreground="White" 

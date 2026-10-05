@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="Extracting - ZenArchive" 
+        Title="Extracting - ZenArchieve" 
         Height="290" Width="520"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
@@ -22,11 +22,11 @@
         </Grid.RowDefinitions>
 
         <!-- Native Fluent TitleBar -->
-        <ui:TitleBar Grid.Row="0" Title="ZenArchive" Height="36" Padding="14,0,8,0">
+        <ui:TitleBar Grid.Row="0" Title="ZenArchieve" Height="36" Padding="14,0,8,0">
             <ui:TitleBar.Header>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <ui:SymbolIcon Symbol="FolderZip24" FontSize="14" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" Margin="0,0,6,0"/>
-                    <TextBlock Text="ZenArchive • Extraction" FontWeight="Medium" FontSize="12"/>
+                    <TextBlock Text="ZenArchieve • Extraction" FontWeight="Medium" FontSize="12"/>
                 </StackPanel>
             </ui:TitleBar.Header>
         </ui:TitleBar>
