@@ -1,0 +1,86 @@
+Field,Type,English
+ProductName,Text,ZenArchieve
+Description,Text,"ZenArchieve is a high-performance, modern archive manager engineered specifically for Windows 11 and Windows 10. Built with native C# and WPF, it delivers a sleek Fluent interface with Mica glass styling, replacing outdated legacy compression utilities.
+
+Key Highlights:
+- Multi-Format Support: Seamlessly compress and extract ZIP, 7Z, RAR, TAR, GZ, BZ2, XZ, and ISO formats.
+- Pinned Topmost Extraction: Password prompts and extraction progress windows stay locked on top so they never slip behind background windows.
+- One-Click In-Place OTA Updates: Automatically updates in the background without requiring manual uninstallation.
+- In-Archive Duplicate Inspector: Scans inside compressed archives using SHA-256 hash sets to identify duplicate files and reclaim wasted space without unpacking.
+- Archive Merge & Deduplication: Combine two separate archives into a single unified archive with intelligent conflict resolution.
+- Isolated Safe Previews: Preview images and text documents directly inside archives without extracting them to disk. Suspicious executables are automatically shielded.
+- High-Speed Hardware Compression: Multi-threaded LZMA2 engine optimized for modern multi-core processors.
+- 100% Free & Open Source: No trial expiration popups, no bundleware, and zero advertisements."
+WhatsNew,Text,"Version 2.1.0 Release:
+- One-click in-place background update engine.
+- Pinned topmost extraction and password modal dialogs.
+- In-archive duplicate file detection powered by SHA-256 hashing.
+- Multi-archive merge and deduplication tool.
+- Refined Windows 11 Mica Fluent design and toolbar controls."
+ProductFeatures1,Text,Windows 11 native Fluent design with Mica backdrop
+ProductFeatures2,Text,High-speed multi-threaded LZMA2 compression and decompression
+ProductFeatures3,Text,"Supports ZIP, 7Z, RAR, TAR, GZ, XZ, ISO, and CAB archives"
+ProductFeatures4,Text,Pinned topmost extraction windows and password dialogs
+ProductFeatures5,Text,In-archive SHA-256 duplicate file detection
+ProductFeatures6,Text,Merge two archives with automatic deduplication
+ProductFeatures7,Text,Built-in safe image and text file previewer
+ProductFeatures8,Text,AES-256 hardware-accelerated encryption
+ProductFeatures9,Text,Hardware compression benchmark utility
+ProductFeatures10,Text,Zero trial expiration nag screens or advertisements
+ProductFeatures11,Text,
+ProductFeatures12,Text,
+ProductFeatures13,Text,
+ProductFeatures14,Text,
+ProductFeatures15,Text,
+ProductFeatures16,Text,
+ProductFeatures17,Text,
+ProductFeatures18,Text,
+ProductFeatures19,Text,
+ProductFeatures20,Text,
+ShortDescription,Text,"High-performance modern Windows 11 archive manager with Fluent Mica design, in-place OTA updates, and duplicate file detection."
+SearchTerms1,Text,zip
+SearchTerms2,Text,rar
+SearchTerms3,Text,7z
+SearchTerms4,Text,archiver
+SearchTerms5,Text,unzip
+SearchTerms6,Text,compress
+SearchTerms7,Text,file manager
+Applicable license terms,Text,https://github.com/Tabish955/ZenArchieve/blob/main/LICENSE
+Copyright,Text,Copyright (c) 2026 Tabish. All rights reserved. Open-source under MIT License.
+DevelopedBy,Text,Tabish
+RequirementsMinimum1,Text,1.0 GHz or faster 64-bit processor
+RequirementsMinimum2,Text,1 GB RAM
+RequirementsMinimum3,Text,DirectX 9 compatible graphics device
+RequirementsMinimum4,Text,
+RequirementsMinimum5,Text,
+RequirementsMinimum6,Text,
+RequirementsMinimum7,Text,
+RequirementsMinimum8,Text,
+RequirementsMinimum9,Text,
+RequirementsMinimum10,Text,
+RequirementsMinimum11,Text,
+RequirementsRecommended1,Text,Quad-core 2.0 GHz 64-bit processor
+RequirementsRecommended2,Text,2 GB RAM
+RequirementsRecommended3,Text,DirectX 11 or higher compatible graphics
+RequirementsRecommended4,Text,
+RequirementsRecommended5,Text,
+RequirementsRecommended6,Text,
+RequirementsRecommended7,Text,
+RequirementsRecommended8,Text,
+RequirementsRecommended9,Text,
+RequirementsRecommended10,Text,
+RequirementsRecommended11,Text,
+StoreLogos1,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,app_logo.png
+StoreLogos2,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots1,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,screenshot1.png
+Screenshots2,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,screenshot2.png
+Screenshots3,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots4,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots5,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots6,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots7,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots8,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots9,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+Screenshots10,Provide the file name only if it is in the same folder. Provide relative path to image starting with the subfolder name otherwise,
+HeroArts,Text,
+Trailers,Text,
