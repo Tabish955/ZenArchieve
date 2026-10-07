@@ -52,10 +52,11 @@ namespace Archieve_App
 
                 try
                 {
-                    bool isSmartExtract = string.Equals(firstArg, "-smart-extract", StringComparison.OrdinalIgnoreCase);
-                    bool isExtractHere = string.Equals(firstArg, "-extract-here", StringComparison.OrdinalIgnoreCase);
-                    bool isExtractFiles = string.Equals(firstArg, "-extract-files", StringComparison.OrdinalIgnoreCase) ||
-                                          string.Equals(firstArg, "-extract-to", StringComparison.OrdinalIgnoreCase);
+                    string normArg = firstArg.TrimStart('-', '/');
+                    bool isSmartExtract = string.Equals(normArg, "smart-extract", StringComparison.OrdinalIgnoreCase);
+                    bool isExtractHere = string.Equals(normArg, "extract-here", StringComparison.OrdinalIgnoreCase);
+                    bool isExtractFiles = string.Equals(normArg, "extract-files", StringComparison.OrdinalIgnoreCase) ||
+                                          string.Equals(normArg, "extract-to", StringComparison.OrdinalIgnoreCase);
 
                     if ((isSmartExtract || isExtractHere || isExtractFiles) && e.Args.Length > 1)
                     {
@@ -125,7 +126,8 @@ namespace Archieve_App
 
                 try
                 {
-                    if (string.Equals(firstArg, "-compress", StringComparison.OrdinalIgnoreCase) && e.Args.Length > 1)
+                    string normArg = firstArg.TrimStart('-', '/');
+                    if (string.Equals(normArg, "compress", StringComparison.OrdinalIgnoreCase) && e.Args.Length > 1)
                     {
                         var targetPaths = e.Args.Skip(1).ToList();
                         mainWindow.HandleCliCompress(targetPaths);
