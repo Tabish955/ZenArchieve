@@ -277,11 +277,24 @@
                                Click="BtnCheckUpdates_Click"
                                Appearance="Secondary"
                                ToolTip="Check for newer versions of ZenArchieve online"
-                               Margin="0,0,10,0" 
+                               Margin="0,0,6,0" 
                                Padding="10,7">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <ui:SymbolIcon Symbol="ArrowSync24" Margin="0,0,6,0" FontSize="15" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
                             <TextBlock Text="Updates" FontWeight="Medium" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ui:Button>
+
+                    <!-- Rate & Review Button -->
+                    <ui:Button x:Name="BtnRateReview" 
+                               Click="BtnRateReview_Click"
+                               Appearance="Secondary"
+                               ToolTip="Rate &amp; Review ZenArchieve on Microsoft Store &amp; SourceForge"
+                               Margin="0,0,10,0" 
+                               Padding="10,7">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="Star24" Margin="0,0,6,0" FontSize="15" Foreground="#FFFFB800"/>
+                            <TextBlock Text="Review" FontWeight="Medium" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ui:Button>
 

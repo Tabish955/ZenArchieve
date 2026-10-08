@@ -53,6 +53,24 @@ namespace Archieve_App
                 try
                 {
                     string normArg = firstArg.TrimStart('-', '/');
+
+                    // PC Bootup review prompt handler
+                    if (string.Equals(normArg, "bootup", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var settings = AppSettings.Instance;
+                        if (settings.DontShowReviewDialog)
+                        {
+                            settings.UnregisterBootupReviewPrompt();
+                            Shutdown(0);
+                            return;
+                        }
+
+                        var reviewWindow = new ReviewPromptWindow();
+                        reviewWindow.ShowDialog();
+                        Shutdown(0);
+                        return;
+                    }
+
                     bool isSmartExtract = string.Equals(normArg, "smart-extract", StringComparison.OrdinalIgnoreCase);
                     bool isExtractHere = string.Equals(normArg, "extract-here", StringComparison.OrdinalIgnoreCase);
                     bool isExtractFiles = string.Equals(normArg, "extract-files", StringComparison.OrdinalIgnoreCase) ||

@@ -64,9 +64,53 @@ namespace Archieve_App
                 WindowBackdropType = WindowBackdropType.None;
             }
 
-            // Fire-and-forget auto-update check (non-blocking)
-            Loaded += async (s, e) => await CheckForUpdatesAsync();
+            // Fire-and-forget auto-update check and review prompt (non-blocking)
+            Loaded += async (s, e) =>
+            {
+                await CheckForUpdatesAsync();
+                await CheckReviewPromptAsync();
+            };
         }
+
+        #region Rating & Review
+
+        private void BtnRateReview_Click(object sender, RoutedEventArgs e)
+        {
+            var prompt = new ReviewPromptWindow();
+            prompt.Owner = this;
+            prompt.ShowDialog();
+        }
+
+        private async Task CheckReviewPromptAsync()
+        {
+            try
+            {
+                var settings = AppSettings.Instance;
+                settings.LaunchCount++;
+                settings.Save();
+
+                if (!settings.DontShowReviewDialog)
+                {
+                    settings.RegisterBootupReviewPrompt();
+
+                    // Short delay so MainWindow renders completely and smoothly
+                    await Task.Delay(1500);
+
+                    if (!settings.DontShowReviewDialog && IsLoaded)
+                    {
+                        var prompt = new ReviewPromptWindow();
+                        prompt.Owner = this;
+                        prompt.ShowDialog();
+                    }
+                }
+            }
+            catch
+            {
+                // Non-critical, do not disturb user workflow
+            }
+        }
+
+        #endregion
 
         #region Auto-Update
 
