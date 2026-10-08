@@ -12,14 +12,43 @@
 [![Windows 11 Fluent](https://img.shields.io/badge/Design-Windows%2011%20Mica-0078D4?style=for-the-badge&logo=windows11&logoColor=white)](https://github.com/lepoco/wpfui)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 [![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
-[![Version](https://img.shields.io/badge/Version-v2.1.0-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+[![Version](https://img.shields.io/badge/Version-v2.1.1-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+[![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-Get_it_Free-0078D4?style=for-the-badge&logo=microsoft&logoColor=white)](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)
+[![SourceForge](https://img.shields.io/badge/SourceForge-Download-EE5F2B?style=for-the-badge&logo=sourceforge&logoColor=white)](https://sourceforge.net/projects/zenarchieve/)
+[![winget](https://img.shields.io/badge/winget-ZenArchieve-512BD4?style=for-the-badge&logo=windows-terminal&logoColor=white)](#-installation--download-options)
 [![GitHub Stars](https://img.shields.io/github/stars/Tabish955/ZenArchieve?style=for-the-badge&logo=github&logoColor=white&color=gold)](https://github.com/Tabish955/ZenArchieve)
 
 ---
 
-**[📥 Download Latest Release](https://github.com/Tabish955/ZenArchieve/releases)** · **[🐛 Report Bug](https://github.com/Tabish955/ZenArchieve/issues)** · **[💡 Request Feature](https://github.com/Tabish955/ZenArchieve/issues)**
+**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.1_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.1.exe)**
 
 </div>
+
+---
+
+## 🚀 Installation & Download Options
+
+ZenArchieve is available through multiple trusted distribution channels:
+
+### 1. 🪟 Windows Package Manager (`winget`)
+Install ZenArchieve directly from Windows Terminal or PowerShell:
+```powershell
+winget install ZenArchieve
+```
+
+### 2. 🏪 Microsoft Store (Certified & Auto-Updating)
+Download directly from the official Microsoft Store:
+* **[Get ZenArchieve on Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** *(Product ID: `9N4HCX0KRFNP`)*
+
+### 3. 🌐 SourceForge
+Download installer releases and read community reviews on SourceForge:
+* **[ZenArchieve on SourceForge](https://sourceforge.net/projects/zenarchieve/)**
+
+### 4. ⚡ Direct Download Links (Lightweight ~6.3 MB)
+Fast, non-redirecting raw download links hosted directly on GitHub:
+* **[Download MSIX Package (v2.1.1)](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.1_x64.msix)** `(6.34 MB)` — Recommended for Windows 10/11
+* **[Download Setup EXE (v2.1.1)](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.1.exe)** `(6.71 MB)` — Classic Inno Setup installer
+* All releases also available on **[GitHub Releases](https://github.com/Tabish955/ZenArchieve/releases)**
 
 ---
 
@@ -41,7 +70,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 
 ## ⚔️ ZenArchieve vs. Competitors
 
-| Feature | **ZenArchieve v2.1** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchieve v2.1.1** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
 | **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |

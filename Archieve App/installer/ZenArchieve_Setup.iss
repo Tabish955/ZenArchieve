@@ -1,10 +1,10 @@
-﻿; =====================================================================
+; =====================================================================
 ; ZenArchieve Inno Setup Script (Windows 10 / 11 64-bit)
 ; Clean alternative to WinRAR/7-Zip in .NET 9 WPF
 ; =====================================================================
 
 #define MyAppName "ZenArchieve"
-#define MyAppVersion "2.1.0"
+#define MyAppVersion "2.1.1"
 #define MyAppPublisher "ZenArchieve"
 #define MyAppURL "https://github.com/Tabish955/ZenArchieve"
 #define MyAppExeName "Archieve App.exe"
@@ -26,7 +26,7 @@ DisableProgramGroupPage=yes
 
 ; Output Configuration
 OutputDir=..\bin\installer
-OutputBaseFilename=ZenArchieve_Setup_v2.1
+OutputBaseFilename=ZenArchieve_Setup_v2.1.1
 SetupIconFile=..\assets\app.ico
 UninstallDisplayIcon={app}\{#MyAppExeName},0
 

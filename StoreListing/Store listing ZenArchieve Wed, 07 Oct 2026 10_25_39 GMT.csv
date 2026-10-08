@@ -11,12 +11,11 @@ Key Highlights:
 - Isolated Safe Previews: Preview images and text documents directly inside archives without extracting them to disk. Suspicious executables are automatically shielded.
 - High-Speed Hardware Compression: Multi-threaded LZMA2 engine optimized for modern multi-core processors.
 - 100% Free & Open Source: No trial expiration popups, no bundleware, and zero advertisements."
-WhatsNew,Text,"Version 2.1.0 Release:
-- One-click in-place background update engine.
-- Pinned topmost extraction and password modal dialogs.
-- In-archive duplicate file detection powered by SHA-256 hashing.
-- Multi-archive merge and deduplication tool.
-- Refined Windows 11 Mica Fluent design and toolbar controls."
+WhatsNew,Text,"Version 2.1.1 Release:
+- Official Microsoft Store & SourceForge integration.
+- Rating & review prompt with persistent dismissal preference.
+- Ultra-compact package optimizations (~6.3 MB MSIX / 6.7 MB EXE).
+- Direct Windows 11 context menu verbs and 7-Zip acceleration."
 ProductFeatures1,Text,Windows 11 native Fluent design with Mica backdrop
 ProductFeatures2,Text,High-speed multi-threaded LZMA2 compression and decompression
 ProductFeatures3,Text,"Supports ZIP, 7Z, RAR, TAR, GZ, XZ, ISO, and CAB archives"

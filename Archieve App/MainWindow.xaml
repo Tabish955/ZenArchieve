@@ -51,7 +51,7 @@
                             Padding="6,1" 
                             Margin="10,0,0,0" 
                             VerticalAlignment="Center">
-                        <TextBlock Text="v2.0 • Enterprise Pro" 
+                        <TextBlock Text="v2.1.1 • Enterprise Pro" 
                                    FontSize="10" 
                                    FontWeight="Medium" 
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
