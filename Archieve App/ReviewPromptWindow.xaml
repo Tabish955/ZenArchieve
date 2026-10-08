@@ -6,7 +6,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
         Title="Enjoying ZenArchieve?" 
-        Height="410" Width="530"
+        Height="435" Width="530"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Topmost="True"
@@ -67,38 +67,68 @@
             </Grid>
 
             <!-- Action Buttons Section -->
-            <Border Grid.Row="1" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                    CornerRadius="8" Padding="14,12" Margin="0,0,0,16" VerticalAlignment="Center">
+            <Border Grid.Row="1" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1" 
+                    CornerRadius="8" Padding="14,14" Margin="0,0,0,16" VerticalAlignment="Center">
                 <StackPanel Orientation="Vertical">
                     <!-- Microsoft Store Review Button -->
                     <ui:Button x:Name="BtnReviewStore" 
-                               Click="BtnReviewStore_Click"
+                               Click="BtnReviewStore_Click" 
                                Appearance="Primary" 
                                HorizontalAlignment="Stretch" 
-                               Height="44" Margin="0,0,0,10">
+                               Height="50" Margin="0,0,0,10" 
+                               Padding="10,0">
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <ui:SymbolIcon Symbol="Star24" FontSize="18" Margin="8,0,10,0"/>
+                                <!-- Microsoft Windows 4-Color Brand Logo -->
+                                <Border Width="30" Height="30" CornerRadius="6" Background="#26FFFFFF" BorderBrush="#38FFFFFF" BorderThickness="1" Margin="2,0,12,0" VerticalAlignment="Center">
+                                    <Grid Width="16" Height="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="2"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Row="0" Grid.Column="0" Background="#F25022" CornerRadius="1"/>
+                                        <Border Grid.Row="0" Grid.Column="2" Background="#7FBA00" CornerRadius="1"/>
+                                        <Border Grid.Row="2" Grid.Column="0" Background="#00A4EF" CornerRadius="1"/>
+                                        <Border Grid.Row="2" Grid.Column="2" Background="#FFB900" CornerRadius="1"/>
+                                    </Grid>
+                                </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Review on Microsoft Store" FontWeight="SemiBold" FontSize="13"/>
+                                    <TextBlock Text="Review on Microsoft Windows Store" FontWeight="SemiBold" FontSize="13" Foreground="White"/>
+                                    <TextBlock Text="Rate &amp; review on the official Microsoft Store" FontSize="11" Opacity="0.85" Foreground="White"/>
                                 </StackPanel>
                             </StackPanel>
-                            <ui:SymbolIcon Symbol="ChevronRight24" FontSize="14" HorizontalAlignment="Right" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <ui:SymbolIcon Symbol="ChevronRight24" FontSize="14" HorizontalAlignment="Right" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="White"/>
                         </Grid>
                     </ui:Button>
 
                     <!-- SourceForge Review Button -->
                     <ui:Button x:Name="BtnReviewSourceForge" 
-                               Click="BtnReviewSourceForge_Click"
+                               Click="BtnReviewSourceForge_Click" 
                                Appearance="Secondary" 
                                HorizontalAlignment="Stretch" 
-                               Height="44">
+                               Height="50"
+                               Padding="10,0">
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <ui:SymbolIcon Symbol="Globe24" FontSize="18" Margin="8,0,10,0" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                                <!-- SourceForge Flame Brand Logo -->
+                                <Border Width="30" Height="30" CornerRadius="6" Background="#1CEE5F2B" BorderBrush="#3DEE5F2B" BorderThickness="1" Margin="2,0,12,0" VerticalAlignment="Center">
+                                    <Viewbox Width="17" Height="17" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="#EE5F2B" 
+                                                  Data="M9.998 1.4648c-.088 0-.1761.0395-.2402.1036L.1016 11.2148c-.1361.1281-.1361.3444 0 .4805l9.1523 9.1348c.064.072.1522.1054.2402.1054.0881 0 .1743-.0414.2383-.1054l1.3692-1.3848c.136-.128.136-.3444 0-.4805l-7.172-7.1738a.4682.4682 0 010-.664l9.0782-9.0782c.1201-.12.1123-.2728.0723-.377-.04-.096-.1444-.207-.3125-.207H9.998zm4.5313 1.5918c-.088 0-.1762.0415-.2402.1055l-1.3926 1.3926c-.1361.128-.1361.3444 0 .4805l7.1719 7.1816c.088.088.1367.208.1367.3281 0 .1201-.0487.24-.1367.3281l-9.0782 9.0782c-.12.12-.1123.2728-.0722.377.04.096.1443.207.3125.207v-.0079H14c.088 0 .1762-.0316.2402-.0957l9.6563-9.6543c.072-.064.1035-.1521.1035-.2402 0-.088-.0395-.1762-.1035-.2402l-9.127-9.1348c-.064-.072-.1521-.1055-.2402-.1055zM11.4336 6.213c-.1125.005-.2164.1007-.211.2383.1442 2.2176-2.6425 2.7635-2.6425 6.246v.0235c0 2.1216 1.6026 3.8418 3.58 3.8418 1.9775 0 3.5782-1.7202 3.5782-3.8418v-.0234c0-.9848-.3679-1.9225-.7442-2.627-.072-.136-.2896-.087-.2656.041.6725 2.9943-1.0156 4.8507-1.0156 2.545 0-3.931-1.3943-5.7162-2.1309-6.3887a.2072.2072 0 00-.1484-.0547Z" />
+                                        </Canvas>
+                                    </Viewbox>
+                                </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Review on SourceForge" FontWeight="SemiBold" FontSize="13"/>
+                                    <TextBlock Text="Review on SourceForge" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="Rate &amp; review on SourceForge.net open-source hub" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </StackPanel>
                             </StackPanel>
                             <ui:SymbolIcon Symbol="ChevronRight24" FontSize="14" HorizontalAlignment="Right" Margin="0,0,8,0" VerticalAlignment="Center"/>

@@ -4,23 +4,57 @@
 
 # ZenArchieve
 
-### 🏆 The Modern, Open-Source Alternative to WinRAR & 7-Zip
+### 🏆 The Modern, High-Performance Archiver for Windows 11 & 10
 
-**Next-generation archive manager built for Windows 11 — .NET 9, Mica Glassmorphism, AES-256 Security & features no other archiver has.**
+**A next-generation, open-source archive manager crafted with .NET 9, native Windows 11 Mica Fluent styling, AES-256 encryption, and intelligent features that WinRAR and 7-Zip never had.**
 
-[![.NET 9](https://img.shields.io/badge/.NET-9.0%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Windows 11 Fluent](https://img.shields.io/badge/Design-Windows%2011%20Mica-0078D4?style=for-the-badge&logo=windows11&logoColor=white)](https://github.com/lepoco/wpfui)
-[![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
-[![Version](https://img.shields.io/badge/Version-v2.1.1-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+<br/>
+
+<!-- Store Download Buttons with Official Logos -->
+<p align="center">
+  <a href="https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US" target="_blank" rel="noopener noreferrer">
+    <img src="assets/get-it-from-ms.svg" alt="Get it from Microsoft Store" height="48" />
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://sourceforge.net/projects/zenarchieve/" target="_blank" rel="noopener noreferrer">
+    <img src="assets/get-it-on-sourceforge.svg" alt="Get ZenArchieve at SourceForge" height="48" />
+  </a>
+</p>
+
+<!-- Technology and Community Badges -->
 [![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-Get_it_Free-0078D4?style=for-the-badge&logo=microsoft&logoColor=white)](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)
 [![SourceForge](https://img.shields.io/badge/SourceForge-Download-EE5F2B?style=for-the-badge&logo=sourceforge&logoColor=white)](https://sourceforge.net/projects/zenarchieve/)
-[![winget](https://img.shields.io/badge/winget-ZenArchieve-512BD4?style=for-the-badge&logo=windows-terminal&logoColor=white)](#-installation--download-options)
+[![winget](https://img.shields.io/badge/winget-ZenArchieve-512BD4?style=for-the-badge&logo=windows-terminal&logoColor=white)](#-1-windows-package-manager-winget)
+[![Windows 11 Fluent](https://img.shields.io/badge/Design-Windows%2011%20Mica-0078D4?style=for-the-badge&logo=windows11&logoColor=white)](https://github.com/lepoco/wpfui)
+[![.NET 9](https://img.shields.io/badge/.NET-9.0%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
+[![Version](https://img.shields.io/badge/Version-v2.1.2-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/Tabish955/ZenArchieve?style=for-the-badge&logo=github&logoColor=white&color=gold)](https://github.com/Tabish955/ZenArchieve)
 
 ---
 
-**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.1_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.1.exe)**
+**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.2_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.2.exe)** · **[✨ Releases](https://github.com/Tabish955/ZenArchieve/releases)**
+
+</div>
+
+---
+
+## 📸 Visual Showcase
+
+<div align="center">
+
+### Modern Windows 11 Mica Fluent Interface
+<img src="StoreListing/screenshot1.png" alt="ZenArchieve Main Archive Explorer" width="850" style="border-radius: 12px; box-shadow: 0 12px 35px rgba(0,0,0,0.4);" />
+
+*Clean dark Fluent theme with in-memory image & code preview, archive diff tool, and visual size analyzer.*
+
+<br/>
+
+### Pinned Extraction Dialog with Real-Time Throughput
+<img src="StoreListing/screenshot2.png" alt="ZenArchieve Extraction Progress Window" width="850" style="border-radius: 12px; box-shadow: 0 12px 35px rgba(0,0,0,0.4);" />
+
+*Always locked topmost so extraction and password prompts never get hidden behind other apps.*
 
 </div>
 
@@ -30,25 +64,47 @@
 
 ZenArchieve is available through multiple trusted distribution channels:
 
-### 1. 🪟 Windows Package Manager (`winget`)
-Install ZenArchieve directly from Windows Terminal or PowerShell:
+### 1. 🏪 Microsoft Store (Certified & Auto-Updating)
+Download directly from the official Microsoft Store with native sandbox isolation and automatic background updates:
+<p>
+  <a href="https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US" target="_blank">
+    <img src="assets/get-it-from-ms.svg" alt="Get it from Microsoft" height="44" />
+  </a>
+</p>
+* Product ID: `9N4HCX0KRFNP`
+* Protocol launch: `ms-windows-store://pdp/?ProductId=9n4hcx0krfnp`
+
+---
+
+### 2. 🌐 SourceForge (Open Source Mirror & Community)
+Download installers, check checksums, and rate the project on SourceForge:
+<p>
+  <a href="https://sourceforge.net/projects/zenarchieve/" target="_blank">
+    <img src="assets/get-it-on-sourceforge.svg" alt="Get ZenArchieve at SourceForge" height="44" />
+  </a>
+</p>
+* Direct project hub: [https://sourceforge.net/projects/zenarchieve/](https://sourceforge.net/projects/zenarchieve/)
+* Community reviews: [https://sourceforge.net/projects/zenarchieve/reviews/](https://sourceforge.net/projects/zenarchieve/reviews/)
+
+---
+
+### 3. 🪟 Windows Package Manager (`winget`)
+Install ZenArchieve effortlessly with a single terminal command:
 ```powershell
 winget install ZenArchieve
 ```
 
-### 2. 🏪 Microsoft Store (Certified & Auto-Updating)
-Download directly from the official Microsoft Store:
-* **[Get ZenArchieve on Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** *(Product ID: `9N4HCX0KRFNP`)*
-
-### 3. 🌐 SourceForge
-Download installer releases and read community reviews on SourceForge:
-* **[ZenArchieve on SourceForge](https://sourceforge.net/projects/zenarchieve/)**
+---
 
 ### 4. ⚡ Direct Download Links (Lightweight ~6.3 MB)
-Fast, non-redirecting raw download links hosted directly on GitHub:
-* **[Download MSIX Package (v2.1.1)](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.1_x64.msix)** `(6.34 MB)` — Recommended for Windows 10/11
-* **[Download Setup EXE (v2.1.1)](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.1.exe)** `(6.71 MB)` — Classic Inno Setup installer
-* All releases also available on **[GitHub Releases](https://github.com/Tabish955/ZenArchieve/releases)**
+Fast, direct download links hosted in this repository:
+
+| Package Type | Architecture | File Size | Description | Download |
+| :--- | :---: | :---: | :--- | :---: |
+| **MSIX Package** | x64 | ~6.35 MB | Recommended for Windows 10 & 11 (Store format) | [**Download MSIX (v2.1.2)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.2_x64.msix) |
+| **Setup EXE** | x64 | ~6.72 MB | Classic Inno Setup with Explorer context menus | [**Download EXE (v2.1.2)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.2.exe) |
+
+*All historic releases are also available on [GitHub Releases](https://github.com/Tabish955/ZenArchieve/releases).*
 
 ---
 
@@ -56,7 +112,7 @@ Fast, non-redirecting raw download links hosted directly on GitHub:
 
 For decades, archive management on Windows has been trapped in 1998: clunky Win32 dialogs, "Buy WinRAR" nag screens, no preview capability, vulnerability to path traversal exploits, and zero visual feedback.
 
-**ZenArchieve** reimagines archiving from the ground up — delivering the features that WinRAR and 7-Zip simply don't have:
+**ZenArchieve** reimagines archiving from the ground up — delivering modern performance and features that legacy archivers lack:
 
 | 🎨 **Stunning UI** | 🧠 **Smart Extract** | 🔍 **Archive Diff** | 📊 **Size Analyzer** |
 |:---:|:---:|:---:|:---:|
@@ -70,18 +126,19 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 
 ## ⚔️ ZenArchieve vs. Competitors
 
-| Feature | **ZenArchieve v2.1.1** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchieve v2.1.2** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
 | **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |
 | **Smart Extract (Clutter Prevention)** | ✅ **Automatic** | ❌ Manual | ❌ Manual | ⚠️ Semi |
-| **🆕 Archive Comparison (Diff Tool)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
-| **🆕 Size Analyzer (Visual Breakdown)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
-| **🆕 One-Click Format Converter** | ✅ **ZIP ↔ 7Z** | ❌ No | ❌ Manual | ❌ No |
-| **🆕 Checksum Verifier (SHA/MD5)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
-| **🆕 Duplicate File Finder** | ✅ **SHA-256 Hash** | ❌ No | ❌ No | ❌ No |
-| **🆕 Archive Merge (Deduplicate)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
-| **🆕 One-Click Auto-Update** | ✅ **GitHub OTA** | ❌ Manual | ❌ Manual | ❌ Manual |
+| **Archive Comparison (Diff Tool)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **Size Analyzer (Visual Breakdown)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **One-Click Format Converter** | ✅ **ZIP ↔ 7Z** | ❌ No | ❌ Manual | ❌ No |
+| **Checksum Verifier (SHA/MD5)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **Duplicate File Finder** | ✅ **SHA-256 Hash** | ❌ No | ❌ No | ❌ No |
+| **Archive Merge (Deduplicate)** | ✅ **Built-in** | ❌ No | ❌ No | ❌ No |
+| **One-Click Auto-Update** | ✅ **GitHub OTA** | ❌ Manual | ❌ Manual | ❌ Manual |
+| **Store & SourceForge Rating** | ✅ **Built-in Dialog** | ❌ No | ❌ No | ❌ No |
 | **In-Memory Image & Code Previews** | ✅ **Direct Stream** | ❌ Temp File | ❌ Temp File | ⚠️ Basic |
 | **Executable Threat Shield** | ✅ **SHA-256 Guard** | ❌ Auto-runs | ❌ Auto-runs | ❌ No |
 | **Disguised Extension Blocker** | ✅ **Active Warning** | ❌ Hidden | ❌ Hidden | ❌ No |
@@ -89,8 +146,6 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 | **Multi-Archive Batch Processing** | ✅ **Smart Queue** | ⚠️ Wizard | ❌ No | ⚠️ Clunky |
 | **Hardware Benchmark Engine** | ✅ **ZenScore** | ⚠️ Basic | ⚠️ Legacy | ❌ No |
 | **Adware / Nag Screen** | 🚫 **None** | ❌ Constant | 🚫 None | 🚫 None |
-
-> **7 features marked 🆕 are exclusive to ZenArchieve — no other archive manager has them.**
 
 ---
 
@@ -153,20 +208,20 @@ Click any entry in the archive to preview it directly in memory:
 - Measures compression and decompression throughput in MB/s
 - Awards an official **ZenScore** rating tier
 
-### 11. 🔎 Duplicate File Finder — *EXCLUSIVE (v2.1)*
+### 11. 🔎 Duplicate File Finder — *EXCLUSIVE*
 Scan any archive for duplicate files using SHA-256 content hashing:
 - **Two-phase detection**: Fast size-based pre-filter, then content hashing for accuracy
 - **Grouped report**: Duplicates shown in groups with individual and total wasted space
 - Find bloated archives with redundant copies of the same files
 
-### 12. 🔗 Archive Merge — *EXCLUSIVE (v2.1)*
+### 12. 🔗 Archive Merge — *EXCLUSIVE*
 Merge two archives into a single output archive with intelligent deduplication:
 - **Select Archive A + Archive B → Output**: Choose any two archives and a destination
 - **Auto-deduplication**: Identical files are detected and skipped — no redundant copies
 - **Conflict resolution**: When both archives contain the same path, Archive B wins
 - Full merge report with files added, overridden, and duplicates skipped
 
-### 13. 🔄 One-Click Auto-Update — *EXCLUSIVE (v2.1)*
+### 13. 🔄 One-Click Auto-Update — *EXCLUSIVE*
 ZenArchieve checks for updates automatically on startup:
 - **GitHub Releases integration**: Detects newer versions via the GitHub API
 - **Seamless in-place upgrade**: Downloads the new installer and runs it silently
@@ -205,7 +260,7 @@ graph TD
     Service --> Dupes["Duplicate Finder (SHA-256 Content Hash)"]
     Service --> Merge["Archive Merger (Deduplicate & Combine)"]
     App --> Update["Auto-Update (GitHub Releases API)"]
-    App --> Setup["Inno Setup 6 (64-Bit Installer)"]
+    App --> Setup["Inno Setup 6 / MakeAppx MSIX Package"]
 ```
 
 | Component | Technology |
@@ -214,50 +269,7 @@ graph TD
 | **UI & Design System** | [WPF-UI](https://github.com/lepoco/wpfui) — Fluent Design, Windows 11 Mica backdrop |
 | **Archive Parsing** | [SharpCompress](https://github.com/adamhathcock/sharpcompress) — High-performance async streaming |
 | **AES-256 Engine** | [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) — Native AES-256 encryption |
-| **Installer** | [Inno Setup 6](https://jrsoftware.org/isinfo.php) — Modern 64-bit installer |
-
----
-
-## 📦 Installation
-
-### Option 1: Installer (Recommended)
-Download the latest installer from [**Releases**](https://github.com/Tabish955/ZenArchieve/releases):
-> **`ZenArchieve_Setup_v2.1.exe`**
-
-The installer provides:
-- ✅ 64-bit installation to `C:\Program Files\ZenArchieve`
-- ✅ File associations for `.zip`, `.7z`, `.rar`, `.tar`, `.gz`
-- ✅ Clean Explorer right-click context menu (with app icon):
-  - **Extract Here**
-  - **Extract Files...**
-  - **Extract to \<ArchiveName\>\\**
-  - **Add to ZenArchieve...**
-- ✅ Start Menu & Desktop shortcuts
-- ✅ Clean Control Panel uninstaller
-
-### Option 2: Build from Source
-
-**Prerequisites:**
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or higher
-- Windows 10 (1809+) or Windows 11 (64-bit)
-- Optional: [Inno Setup 6](https://jrsoftware.org/isdl.php) (for building the installer)
-
-```powershell
-# Clone repository
-git clone https://github.com/Tabish955/ZenArchieve.git
-cd ZenArchieve
-
-# Build in Release configuration
-dotnet build "Archieve App/Archieve App.csproj" -c Release
-
-# Run ZenArchieve
-dotnet run --project "Archieve App/Archieve App.csproj"
-```
-
-**Build the Installer:**
-```powershell
-powershell -ExecutionPolicy Bypass -File "Archieve App/installer/build_installer.ps1"
-```
+| **Packaging** | [Inno Setup 6](https://jrsoftware.org/isinfo.php) & Windows SDK MakeAppx MSIX |
 
 ---
 
@@ -286,13 +298,6 @@ Contributions are welcome! Here's how you can help:
 4. **Push** to the branch (`git push origin feature/amazing-feature`)
 5. **Open** a Pull Request
 
-### Areas Where You Can Contribute:
-- 🌐 **Internationalization**: Help translate ZenArchieve to other languages
-- 🎨 **Themes**: Add light mode or custom accent color themes
-- 📦 **Format Support**: Extend support for additional archive formats
-- 🧪 **Testing**: Help test on different Windows versions and edge cases
-- 📖 **Documentation**: Improve docs, add tutorials, record demo videos
-
 ---
 
 ## 📄 License
@@ -300,15 +305,6 @@ Contributions are welcome! Here's how you can help:
 ZenArchieve is open-source software released under the **[MIT License](LICENSE)**.
 
 You are free to use, modify, distribute, and commercialize this software with no restrictions. No nag screens, no trial periods, no hidden costs. **Free forever.**
-
----
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ using [.NET 9](https://dotnet.microsoft.com/) by Microsoft
-- UI powered by [WPF-UI](https://github.com/lepoco/wpfui) by Lepoco
-- Compression powered by [SharpCompress](https://github.com/adamhathcock/sharpcompress) and [SharpZipLib](https://github.com/icsharpcode/SharpZipLib)
-- Packaging powered by [Inno Setup 6](https://jrsoftware.org/isinfo.php) by Jordan Russell
 
 ---
 

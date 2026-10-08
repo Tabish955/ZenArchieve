@@ -31,3 +31,8 @@ Archieve App/bin/installer/*.exe
 
 ## Crash logs
 crash.log
+
+## MSIX build staging
+msix_build/
+msix_output/
+msix_package/app/
