@@ -1,13 +1,49 @@
 import os
 import shutil
 import subprocess
+import glob
 
-app_publish_dir = r"D:\Archieve\Archieve App\bin\Release\net9.0-windows\win-x64\publish"
-assets_src_dir = r"D:\Archieve\msix_package\Assets"
-build_dir = r"D:\Archieve\msix_build"
-output_dir = r"D:\Archieve\msix_output"
-dist_dir = r"D:\Archieve\installer_dist"
-makeappx_exe = r"C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\microsoft.windows.sdk.buildtools\10.0.26100.1742\bin\10.0.26100.0\x64\makeappx.exe"
+# Resolve paths relative to repository root
+script_dir = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
+
+app_publish_dir = os.path.join(repo_root, "Archieve App", "bin", "Release", "net9.0-windows", "win-x64", "publish")
+assets_src_dir = os.path.join(repo_root, "msix_package", "Assets")
+build_dir = os.path.join(repo_root, "msix_build")
+output_dir = os.path.join(repo_root, "msix_output")
+dist_dir = os.path.join(repo_root, "installer_dist")
+
+def find_makeappx():
+    # 1. Search PATH
+    in_path = shutil.which("makeappx")
+    if in_path and os.path.isfile(in_path):
+        return in_path
+
+    # 2. Search standard Windows SDK and NuGet BuildTools paths
+    candidates = [
+        r"C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\microsoft.windows.sdk.buildtools\10.0.26100.1742\bin\10.0.26100.0\x64\makeappx.exe",
+    ]
+    candidates.extend(glob.glob(r"C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"))
+    candidates.extend(glob.glob(r"C:\Program Files\Windows Kits\10\bin\*\x64\makeappx.exe"))
+    candidates.extend(glob.glob(r"C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\microsoft.windows.sdk.buildtools\*\bin\*\x64\makeappx.exe"))
+    user_profile = os.environ.get("USERPROFILE", "")
+    if user_profile:
+        candidates.extend(glob.glob(os.path.join(user_profile, r".nuget\packages\microsoft.windows.sdk.buildtools\*\bin\*\x64\makeappx.exe")))
+
+    for c in candidates:
+        if os.path.isfile(c):
+            return c
+    return None
+
+makeappx_exe = find_makeappx()
+if not makeappx_exe:
+    raise FileNotFoundError(
+        "makeappx.exe not found in PATH or standard Windows SDK / BuildTools locations.\n"
+        "Please install the Windows 10/11 SDK or NuGet package Microsoft.Windows.SDK.BuildTools."
+    )
+
+print(f"Using makeappx: {makeappx_exe}")
+print(f"Repo root: {repo_root}")
 
 os.makedirs(build_dir, exist_ok=True)
 os.makedirs(output_dir, exist_ok=True)
@@ -18,6 +54,9 @@ print("[1/5] Cleaning and copying published binaries to build staging...")
 if os.path.exists(build_dir):
     shutil.rmtree(build_dir)
 os.makedirs(build_dir, exist_ok=True)
+
+if not os.path.exists(app_publish_dir):
+    raise FileNotFoundError(f"Published binaries directory not found: {app_publish_dir}\nPlease run dotnet publish first.")
 
 for item in os.listdir(app_publish_dir):
     src = os.path.join(app_publish_dir, item)
@@ -136,8 +175,8 @@ print("[5/5] Deploying packages to installer_dist...")
 dist_output = os.path.join(dist_dir, "ZenArchieve_v2.2.0_x64.msix")
 shutil.copy2(msix_output, dist_output)
 
-# Copy EXE installer to installer_dist
-inno_exe = r"D:\Archieve\Archieve App\bin\installer\ZenArchieve_Setup_v2.2.0.exe"
+# Copy EXE installer to installer_dist if present
+inno_exe = os.path.join(repo_root, "Archieve App", "bin", "installer", "ZenArchieve_Setup_v2.2.0.exe")
 if os.path.exists(inno_exe):
     dist_exe = os.path.join(dist_dir, "ZenArchieve_Setup_v2.2.0.exe")
     shutil.copy2(inno_exe, dist_exe)

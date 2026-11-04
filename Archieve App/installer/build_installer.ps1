@@ -101,9 +101,11 @@ if ($isccPath) {
             Write-Host "   -> $($_.Name) ($([math]::Round($_.Length / 1MB, 2)) MB)" -ForegroundColor Yellow
         }
         $distDir = Join-Path (Split-Path -Parent $projectDir) "installer_dist"
-        if (Test-Path $distDir) {
-            Copy-Item "$outputDir\ZenArchieve_Setup_v2.2.0.exe" -Destination $distDir -Force -ErrorAction SilentlyContinue
+        if (-not (Test-Path $distDir)) {
+            New-Item -ItemType Directory -Path $distDir -Force | Out-Null
         }
+        Copy-Item "$outputDir\ZenArchieve_Setup_v2.2.0.exe" -Destination $distDir -Force
+        Write-Host "  -> Copied installer to: $distDir\ZenArchieve_Setup_v2.2.0.exe" -ForegroundColor Green
         Write-Host "==========================================================" -ForegroundColor Green
     } else {
         Write-Error "ISCC compilation failed with exit code $LASTEXITCODE."

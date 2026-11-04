@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Registers ZenArchieve context menu entries in Windows Explorer.
 .DESCRIPTION
@@ -90,7 +90,7 @@ function Register-ContextMenuEntries {
     Set-ItemProperty -Path $ehKey -Name "(Default)" -Value "Extract Here"
     Set-ItemProperty -Path $ehKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $ehKey -Name "AppliesTo" -Value $appliesTo
-    Set-ItemProperty -Path "$ehKey\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
+    Set-ItemProperty -Path "$ehKey\command" -Name "(Default)" -Value "$quotedApp --extract-here ""%1"""
     
     # Extract Files...
     $efKey = "$starBase\ZenArchieveExtractFiles"
@@ -98,7 +98,7 @@ function Register-ContextMenuEntries {
     Set-ItemProperty -Path $efKey -Name "(Default)" -Value "Extract Files..."
     Set-ItemProperty -Path $efKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $efKey -Name "AppliesTo" -Value $appliesTo
-    Set-ItemProperty -Path "$efKey\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
+    Set-ItemProperty -Path "$efKey\command" -Name "(Default)" -Value "$quotedApp --extract-files ""%1"""
     
     # Extract to <ArchiveName>\
     $seKey = "$starBase\ZenArchieveSmartExtract"
@@ -106,21 +106,21 @@ function Register-ContextMenuEntries {
     Set-ItemProperty -Path $seKey -Name "(Default)" -Value "Extract to <ArchiveName>\\"
     Set-ItemProperty -Path $seKey -Name "Icon" -Value $quotedApp
     Set-ItemProperty -Path $seKey -Name "AppliesTo" -Value $appliesTo
-    Set-ItemProperty -Path "$seKey\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
+    Set-ItemProperty -Path "$seKey\command" -Name "(Default)" -Value "$quotedApp --smart-extract ""%1"""
     
     # Add to ZenArchieve... (for any file)
     $acKey = "$starBase\ZenArchieveCompress"
     New-Item -Path "$acKey\command" -Force | Out-Null
     Set-ItemProperty -Path $acKey -Name "(Default)" -Value "Add to ZenArchieve..."
     Set-ItemProperty -Path $acKey -Name "Icon" -Value $quotedApp
-    Set-ItemProperty -Path "$acKey\command" -Name "(Default)" -Value "$quotedApp -compress ""%1"""
+    Set-ItemProperty -Path "$acKey\command" -Name "(Default)" -Value "$quotedApp --compress ""%1"""
     
     # Directory context menu (compress folder)
     $dirKey = "$rootKey\Software\Classes\Directory\shell\ZenArchieveCompress"
     New-Item -Path "$dirKey\command" -Force | Out-Null
     Set-ItemProperty -Path $dirKey -Name "(Default)" -Value "Add to ZenArchieve..."
     Set-ItemProperty -Path $dirKey -Name "Icon" -Value $quotedApp
-    Set-ItemProperty -Path "$dirKey\command" -Name "(Default)" -Value "$quotedApp -compress ""%1"""
+    Set-ItemProperty -Path "$dirKey\command" -Name "(Default)" -Value "$quotedApp --compress ""%1"""
     
     Write-Host "  -> Context menu entries registered" -ForegroundColor Green
     
@@ -139,19 +139,19 @@ function Register-ContextMenuEntries {
         New-Item -Path "$sfaBase\ZenArchieveExtractHere\command" -Force | Out-Null
         Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere" -Name "(Default)" -Value "Extract Here"
         Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere\command" -Name "(Default)" -Value "$quotedApp -extract-here ""%1"""
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractHere\command" -Name "(Default)" -Value "$quotedApp --extract-here ""%1"""
         
         # Extract Files...
         New-Item -Path "$sfaBase\ZenArchieveExtractFiles\command" -Force | Out-Null
         Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles" -Name "(Default)" -Value "Extract Files..."
         Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles\command" -Name "(Default)" -Value "$quotedApp -extract-files ""%1"""
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveExtractFiles\command" -Name "(Default)" -Value "$quotedApp --extract-files ""%1"""
         
         # Smart Extract
         New-Item -Path "$sfaBase\ZenArchieveSmartExtract\command" -Force | Out-Null
         Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract" -Name "(Default)" -Value "Extract to <ArchiveName>\\"
         Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract" -Name "Icon" -Value $quotedApp
-        Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract\command" -Name "(Default)" -Value "$quotedApp -smart-extract ""%1"""
+        Set-ItemProperty -Path "$sfaBase\ZenArchieveSmartExtract\command" -Name "(Default)" -Value "$quotedApp --smart-extract ""%1"""
     }
     
     Write-Host "  -> SystemFileAssociations registered" -ForegroundColor Green
