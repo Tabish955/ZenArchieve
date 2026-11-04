@@ -92,31 +92,31 @@ Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveOpen\comm
 
 Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles"; ValueType: string; ValueData: "Extract Files..."; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-files ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-files ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\CompressedFolder\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 ; B. Wildcard with AppliesTo (Matches any .zip, .7z, .rar, .tar, .gz regardless of ProgID or default app)
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "AppliesTo"; ValueData: "System.FileExtension:=.zip OR System.FileExtension:=.7z OR System.FileExtension:=.rar OR System.FileExtension:=.tar OR System.FileExtension:=.gz"; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractFiles"; ValueType: string; ValueData: "Extract Files..."; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractFiles"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractFiles"; ValueType: string; ValueName: "AppliesTo"; ValueData: "System.FileExtension:=.zip OR System.FileExtension:=.7z OR System.FileExtension:=.rar OR System.FileExtension:=.tar OR System.FileExtension:=.gz"; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-files ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-files ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "AppliesTo"; ValueData: "System.FileExtension:=.zip OR System.FileExtension:=.7z OR System.FileExtension:=.rar OR System.FileExtension:=.tar OR System.FileExtension:=.gz"; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 ; C. ZenArchieve.Archive ProgID
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\open"; ValueType: string; ValueData: "Open with ZenArchieve"; Tasks: context_menu
@@ -125,15 +125,15 @@ Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\open\command"; Va
 
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extracthere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extracthere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extracthere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extracthere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extractfiles"; ValueType: string; ValueData: "Extract Files..."; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extractfiles"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extractfiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-files ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\extractfiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-files ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\smartextract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\smartextract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\smartextract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\ZenArchieve.Archive\shell\smartextract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 ; D. SystemFileAssociations for Explorer right-click integration (.zip, .7z, .rar, .tar, .gz)
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveOpen"; ValueType: string; ValueData: "Open with ZenArchieve"; Tasks: context_menu
@@ -142,15 +142,15 @@ Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchie
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractFiles"; ValueType: string; ValueData: "Extract Files..."; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractFiles"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-files ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-files ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.zip\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveOpen"; ValueType: string; ValueData: "Open with ZenArchieve"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveOpen"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
@@ -158,19 +158,19 @@ Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchiev
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractFiles"; ValueType: string; ValueData: "Extract Files..."; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractFiles"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-files ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractFiles\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-files ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.7z\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveOpen"; ValueType: string; ValueData: "Open with ZenArchieve"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveOpen"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
@@ -178,11 +178,11 @@ Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchie
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.rar\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveOpen"; ValueType: string; ValueData: "Open with ZenArchieve"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveOpen"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
@@ -190,11 +190,11 @@ Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchie
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.tar\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveOpen"; ValueType: string; ValueData: "Open with ZenArchieve"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveOpen"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
@@ -202,22 +202,22 @@ Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchiev
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveExtractHere"; ValueType: string; ValueData: "Extract Here"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveExtractHere"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -extract-here ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveExtractHere\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --extract-here ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveSmartExtract"; ValueType: string; ValueData: "Extract to \<ArchiveName>\"; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveSmartExtract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -smart-extract ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\SystemFileAssociations\.gz\shell\ZenArchieveSmartExtract\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --smart-extract ""%1"""; Tasks: context_menu
 
 ; ---------------------------------------------------------------------
 ; 3. Shell Context Menu on Files and Directories (Add to ZenArchieve...)
 ; ---------------------------------------------------------------------
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveCompress"; ValueType: string; ValueData: "Add to ZenArchieve..."; Flags: uninsdeletekey; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveCompress"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveCompress\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -compress ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\*\shell\ZenArchieveCompress\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --compress ""%1"""; Tasks: context_menu
 
 Root: HKA; Subkey: "Software\Classes\Directory\shell\ZenArchieveCompress"; ValueType: string; ValueData: "Add to ZenArchieve..."; Flags: uninsdeletekey; Tasks: context_menu
 Root: HKA; Subkey: "Software\Classes\Directory\shell\ZenArchieveCompress"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: context_menu
-Root: HKA; Subkey: "Software\Classes\Directory\shell\ZenArchieveCompress\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" -compress ""%1"""; Tasks: context_menu
+Root: HKA; Subkey: "Software\Classes\Directory\shell\ZenArchieveCompress\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" --compress ""%1"""; Tasks: context_menu
 
 ; ---------------------------------------------------------------------
 ; 4. Windows 11 Direct Context Menu (Enables classic menu directly on right-click without "Show more options")

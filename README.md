@@ -239,10 +239,12 @@ ZenArchieve supports full CLI automation and shell integration:
 | Command | Description |
 | :--- | :--- |
 | `ZenArchieve.exe "C:\Path\To\file.zip"` | Opens and inspects the specified archive |
-| `ZenArchieve.exe -extract-here "C:\Path\To\file.zip"` | Extracts directly into the archive's parent folder |
-| `ZenArchieve.exe -smart-extract "C:\Path\To\file.zip"` | Clutter-free Smart Extract (auto-creates subfolder if needed) |
-| `ZenArchieve.exe -extract-files "C:\Path\To\file.zip"` | Prompts for destination folder, then extracts |
-| `ZenArchieve.exe -compress "C:\Path\To\Files"` | Opens Create Archive modal with source pre-populated |
+| `ZenArchieve.exe --extract-here "C:\Path\To\file.zip"` | Extracts directly into the archive's parent folder |
+| `ZenArchieve.exe --smart-extract "C:\Path\To\file.zip"` | Clutter-free Smart Extract (auto-creates subfolder if needed) |
+| `ZenArchieve.exe --extract-files "C:\Path\To\file.zip"` | Prompts for destination folder, then extracts |
+| `ZenArchieve.exe --compress "C:\Path\To\Files"` | Opens Create Archive modal with source pre-populated |
+| `ZenArchieve.exe --bootup-updater` | Silent background update check at logon (retries offline, exits cleanly) |
+| `ZenArchieve.exe --bootup-review` | Startup rating & review prompt (respects opt-out) |
 
 ---
 
@@ -287,6 +289,17 @@ graph TD
 | `Search Box` | Real-time filter by filename, extension, or path |
 | `Click DataGrid row` | Expand Quick Look Preview / Inspector |
 | `Esc` | Close any active modal |
+
+---
+
+## 📝 Changelog
+
+### v2.2.0
+* **Fixed**: Dialog/extraction windows no longer have transparent Mica backgrounds (`WindowBackdropType="None"` and solid background brush).
+* **Fixed**: Smart Extract no longer wraps single loose files in unnecessary folders (only wraps when 2+ loose root files or 2+ root segments).
+* **Fixed**: Rating/review dialog now appears after boot as intended (`--bootup-review` switch registered in HKCU Run).
+* **New**: Lightweight background updater runs at Windows logon (`--bootup-updater`), retries every 30s on no internet, and exits cleanly.
+* **Security**: Encrypted archives are decrypted in-process (SharpCompress) to avoid 7z.exe CLI password leakage.
 
 ---
 
