@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -128,7 +129,33 @@ namespace Archieve_App
                     ShowStatus("Checking for updates online...", SymbolRegular.ArrowSync24);
                 }
 
-                var update = await UpdateService.CheckForUpdateAsync();
+                UpdateInfo? update = null;
+                try
+                {
+                    update = await UpdateService.CheckForUpdateAsync();
+                }
+                catch (System.Net.Http.HttpRequestException)
+                {
+                    if (isManualCheck)
+                    {
+                        ShowStatus("No internet connection or update server unreachable.", SymbolRegular.ErrorCircle24, isError: true);
+                        MessageBox.Show(
+                            "Could not reach the update server.\n\nPlease check your internet connection and try again later.",
+                            "ZenArchieve — Update Check",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+                    }
+                    return;
+                }
+                catch (System.Threading.Tasks.TaskCanceledException)
+                {
+                    if (isManualCheck)
+                    {
+                        ShowStatus("Update check timed out.", SymbolRegular.ErrorCircle24, isError: true);
+                    }
+                    return;
+                }
+
                 if (update == null)
                 {
                     if (isManualCheck)
@@ -143,7 +170,7 @@ namespace Archieve_App
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
                     }
-                    return; // Already up to date or check failed
+                    return; // Already up to date
                 }
 
                 var result = MessageBox.Show(

@@ -42,75 +42,76 @@ namespace Archieve_App
 
         /// <summary>
         /// Checks GitHub Releases API for the latest release.
-        /// Returns null if no update is available or if the check fails.
+        /// Returns null if no update is available (already up-to-date, or unparseable release).
+        /// Throws HttpRequestException / TaskCanceledException on network failures so callers
+        /// can distinguish "no internet / timeout" from "already up to date".
         /// </summary>
         public static async Task<UpdateInfo?> CheckForUpdateAsync(CancellationToken cancellationToken = default)
         {
-            try
+            // Network errors (no internet, DNS failure, timeout) propagate to caller.
+            using var response = await _httpClient.GetAsync(GitHubReleasesUrl, cancellationToken);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.GetAsync(GitHubReleasesUrl, cancellationToken);
-                if (!response.IsSuccessStatusCode) return null;
+                // Treat HTTP-level errors (rate-limit 403, 500, etc.) as "no update available right now"
+                // but do not throw — they are not a network connectivity issue.
+                return null;
+            }
 
-                var json = await response.Content.ReadAsStringAsync(cancellationToken);
-                var release = JsonSerializer.Deserialize<GitHubRelease>(json);
-                if (release == null) return null;
+            var json = await response.Content.ReadAsStringAsync(cancellationToken);
+            var release = JsonSerializer.Deserialize<GitHubRelease>(json);
+            if (release == null) return null;
 
-                // Parse version from tag_name (e.g. "v2.1.0" → 2.1.0)
-                string versionStr = release.TagName.TrimStart('v', 'V');
-                if (!Version.TryParse(versionStr, out var latestVersion)) return null;
+            // Parse version from tag_name (e.g. "v2.1.0" → 2.1.0)
+            string versionStr = release.TagName.TrimStart('v', 'V');
+            if (!Version.TryParse(versionStr, out var latestVersion)) return null;
 
-                var currentVersion = GetCurrentVersion();
+            var currentVersion = GetCurrentVersion();
 
-                // Compare: only consider major.minor.build (ignore revision)
-                var currentComparable = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build >= 0 ? currentVersion.Build : 0);
-                var latestComparable = new Version(latestVersion.Major, latestVersion.Minor, latestVersion.Build >= 0 ? latestVersion.Build : 0);
+            // Compare: only consider major.minor.build (ignore revision)
+            var currentComparable = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build >= 0 ? currentVersion.Build : 0);
+            var latestComparable = new Version(latestVersion.Major, latestVersion.Minor, latestVersion.Build >= 0 ? latestVersion.Build : 0);
 
-                if (latestComparable <= currentComparable)
-                    return null; // Already up to date
+            if (latestComparable <= currentComparable)
+                return null; // Already up to date
 
-                // Find the .exe asset (installer)
-                string? downloadUrl = null;
-                string? assetName = null;
-                long assetSize = 0;
+            // Find the .exe asset (installer)
+            string? downloadUrl = null;
+            string? assetName = null;
+            long assetSize = 0;
 
-                if (release.Assets != null)
+            if (release.Assets != null)
+            {
+                // Prioritize ZenArchieve_Setup installer asset, fallback to any .exe asset
+                var preferredAsset = release.Assets.FirstOrDefault(a =>
+                    a.Name != null &&
+                    a.Name.StartsWith("ZenArchieve", StringComparison.OrdinalIgnoreCase) &&
+                    a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                    ?? release.Assets.FirstOrDefault(a =>
+                    a.Name != null &&
+                    a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase));
+
+                if (preferredAsset != null)
                 {
-                    // Prioritize ZenArchieve_Setup installer asset, fallback to any .exe asset
-                    var preferredAsset = release.Assets.FirstOrDefault(a => 
-                        a.Name != null && 
-                        a.Name.StartsWith("ZenArchieve", StringComparison.OrdinalIgnoreCase) && 
-                        a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                        ?? release.Assets.FirstOrDefault(a => 
-                        a.Name != null && 
-                        a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase));
-
-                    if (preferredAsset != null)
-                    {
-                        downloadUrl = preferredAsset.BrowserDownloadUrl;
-                        assetName = preferredAsset.Name;
-                        assetSize = preferredAsset.Size;
-                    }
+                    downloadUrl = preferredAsset.BrowserDownloadUrl;
+                    assetName = preferredAsset.Name;
+                    assetSize = preferredAsset.Size;
                 }
-
-                if (string.IsNullOrEmpty(downloadUrl))
-                    return null;
-
-                return new UpdateInfo
-                {
-                    CurrentVersion = currentComparable,
-                    LatestVersion = latestComparable,
-                    ReleaseName = release.Name ?? $"v{latestVersion}",
-                    ReleaseNotes = release.Body ?? "No release notes available.",
-                    DownloadUrl = downloadUrl,
-                    AssetName = assetName ?? "ZenArchieve_Setup.exe",
-                    AssetSizeBytes = assetSize,
-                    ReleaseUrl = release.HtmlUrl ?? ""
-                };
             }
-            catch
+
+            if (string.IsNullOrEmpty(downloadUrl))
+                return null;
+
+            return new UpdateInfo
             {
-                return null; // Silently fail — don't disrupt the user
-            }
+                CurrentVersion = currentComparable,
+                LatestVersion = latestComparable,
+                ReleaseName = release.Name ?? $"v{latestVersion}",
+                ReleaseNotes = release.Body ?? "No release notes available.",
+                DownloadUrl = downloadUrl,
+                AssetName = assetName ?? "ZenArchieve_Setup.exe",
+                AssetSizeBytes = assetSize,
+                ReleaseUrl = release.HtmlUrl ?? ""
+            };
         }
 
         /// <summary>

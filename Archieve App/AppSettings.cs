@@ -14,7 +14,8 @@ namespace Archieve_App
         private static readonly string SettingsFilePath = Path.Combine(SettingsDirectory, "settings.json");
         private const string RegistrySubKey = @"Software\ZenArchieve";
         private const string RunRegistrySubKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        private const string RunValueName = "ZenArchieveReviewPrompt";
+        private const string ReviewRunValueName = "ZenArchieveReviewPrompt";
+        private const string UpdaterRunValueName = "ZenArchieveBootUpdater";
 
         private static AppSettings? _instance;
         private static readonly object _lock = new();
@@ -38,6 +39,7 @@ namespace Archieve_App
         public int LaunchCount { get; set; } = 0;
         public DateTime? FirstLaunchUtc { get; set; } = null;
         public DateTime? LastReviewPromptUtc { get; set; } = null;
+        public bool DisableAutoUpdateCheck { get; set; } = false;
 
         public static AppSettings Load()
         {
@@ -71,6 +73,11 @@ namespace Archieve_App
                     {
                         settings.DontShowReviewDialog = true;
                     }
+                    object? updVal = key.GetValue("DisableAutoUpdateCheck");
+                    if (updVal is int updInt && updInt == 1)
+                    {
+                        settings.DisableAutoUpdateCheck = true;
+                    }
                 }
             }
             catch
@@ -99,6 +106,7 @@ namespace Archieve_App
             {
                 using var key = Registry.CurrentUser.CreateSubKey(RegistrySubKey);
                 key?.SetValue("DontShowReviewDialog", DontShowReviewDialog ? 1 : 0, RegistryValueKind.DWord);
+                key?.SetValue("DisableAutoUpdateCheck", DisableAutoUpdateCheck ? 1 : 0, RegistryValueKind.DWord);
             }
             catch
             {
@@ -118,6 +126,43 @@ namespace Archieve_App
             UnregisterBootupReviewPrompt();
         }
 
+        /// <summary>
+        /// Resolves the actual application executable path, accounting for MSIX / Store packaging
+        /// where Environment.ProcessPath can point into the WindowsApps restricted folder.
+        /// Returns null if no reliable path can be determined.
+        /// </summary>
+        private static string? ResolveExecutablePath()
+        {
+            // Prefer the entry assembly location (works for both framework-dependent and self-contained)
+            string? exePath = Environment.ProcessPath;
+            if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+                return exePath;
+
+            try
+            {
+                var asmLoc = System.Reflection.Assembly.GetEntryAssembly()?.Location;
+                if (!string.IsNullOrEmpty(asmLoc))
+                {
+                    string? dir = Path.GetDirectoryName(asmLoc);
+                    if (!string.IsNullOrEmpty(dir))
+                    {
+                        // Try the .exe alongside the assembly
+                        string candidate = Path.ChangeExtension(asmLoc, ".exe");
+                        if (File.Exists(candidate)) return candidate;
+
+                        // Also try appid.exe / native host name for self-contained builds
+                        string exeInDir = Path.Combine(dir, "Archieve App.exe");
+                        if (File.Exists(exeInDir)) return exeInDir;
+                        string exeInDir2 = Path.Combine(dir, "ZenArchieve.exe");
+                        if (File.Exists(exeInDir2)) return exeInDir2;
+                    }
+                }
+            }
+            catch { }
+
+            return null;
+        }
+
         public void RegisterBootupReviewPrompt()
         {
             if (DontShowReviewDialog)
@@ -128,16 +173,16 @@ namespace Archieve_App
 
             try
             {
-                string? exePath = Environment.ProcessPath;
+                string? exePath = ResolveExecutablePath();
                 if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
                 {
                     using var runKey = Registry.CurrentUser.CreateSubKey(RunRegistrySubKey);
-                    runKey?.SetValue(RunValueName, $"\"{exePath}\" --bootup");
+                    runKey?.SetValue(ReviewRunValueName, $"\"{exePath}\" --bootup-review");
                 }
             }
             catch
             {
-                // Ignore registry write error in sandbox
+                // Ignore registry write error in sandbox / restricted environments
             }
         }
 
@@ -146,12 +191,60 @@ namespace Archieve_App
             try
             {
                 using var runKey = Registry.CurrentUser.OpenSubKey(RunRegistrySubKey, writable: true);
-                runKey?.DeleteValue(RunValueName, throwOnMissingValue: false);
+                runKey?.DeleteValue(ReviewRunValueName, throwOnMissingValue: false);
             }
             catch
             {
                 // Ignore registry delete error
             }
+        }
+
+        public void RegisterBootupUpdater()
+        {
+            if (DisableAutoUpdateCheck)
+            {
+                UnregisterBootupUpdater();
+                return;
+            }
+
+            try
+            {
+                string? exePath = ResolveExecutablePath();
+                if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+                {
+                    using var runKey = Registry.CurrentUser.CreateSubKey(RunRegistrySubKey);
+                    runKey?.SetValue(UpdaterRunValueName, $"\"{exePath}\" --bootup-updater");
+                }
+            }
+            catch
+            {
+                // Ignore registry write error
+            }
+        }
+
+        public void UnregisterBootupUpdater()
+        {
+            try
+            {
+                using var runKey = Registry.CurrentUser.OpenSubKey(RunRegistrySubKey, writable: true);
+                runKey?.DeleteValue(UpdaterRunValueName, throwOnMissingValue: false);
+            }
+            catch
+            {
+                // Ignore registry delete error
+            }
+        }
+
+        /// <summary>
+        /// Ensures both boot tasks are registered together (call on every normal app launch).
+        /// </summary>
+        public void EnsureBootTasksRegistered()
+        {
+            RegisterBootupUpdater();
+            if (!DontShowReviewDialog)
+                RegisterBootupReviewPrompt();
+            else
+                UnregisterBootupReviewPrompt();
         }
     }
 }

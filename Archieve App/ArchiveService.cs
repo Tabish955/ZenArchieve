@@ -154,7 +154,10 @@ namespace Archieve_App
 
             return await Task.Run(() =>
             {
-                // Tier 1: Try SharpCompress
+                // Tier order is chosen to avoid passing passwords on the command line when possible.
+                // Tier 1: SharpCompress (in-process — password never leaves the application).
+                // Tier 2: System.IO.Compression (in-process, plain zip only).
+                // Tier 3: 7-Zip CLI (password briefly visible in process args; only used as last resort).
                 Exception? primaryException = null;
                 try
                 {
@@ -173,17 +176,20 @@ namespace Archieve_App
                     primaryException = ex;
                 }
 
-                // Tier 2: Try .NET System.IO.Compression
-                try
+                // Tier 2: Try .NET System.IO.Compression (plain zip only — no password support)
+                if (string.IsNullOrEmpty(password))
                 {
-                    return ReadArchiveWithSystemZip(archivePath);
-                }
-                catch
-                {
-                    // Fall through to 7-Zip engine
+                    try
+                    {
+                        return ReadArchiveWithSystemZip(archivePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        primaryException ??= ex;
+                    }
                 }
 
-                // Tier 3: Try 7-Zip CLI engine
+                // Tier 3: Try 7-Zip CLI engine (fallback for RAR5 / unusual formats)
                 try
                 {
                     string? sevenZip = FindSevenZipPath();
@@ -196,9 +202,9 @@ namespace Archieve_App
                 {
                     throw;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Fall through to throw primary exception
+                    primaryException ??= ex;
                 }
 
                 throw primaryException ?? new InvalidOperationException("Failed to inspect archive with all available engines.");
@@ -441,16 +447,25 @@ namespace Archieve_App
 
             return await Task.Run(() =>
             {
+                // Prefer in-process SharpCompress to avoid password exposure in 7z CLI arguments.
                 try
                 {
                     return TestIntegrityWithSharpCompress(archiveFilePath, password, progress, cancellationToken);
                 }
-                catch
+                catch (Exception primaryEx)
                 {
+                    // Fall back to 7z CLI only for formats SharpCompress can't test (e.g. RAR5).
                     string? sevenZip = FindSevenZipPath();
                     if (!string.IsNullOrEmpty(sevenZip))
                     {
-                        return TestIntegrityWithSevenZip(sevenZip, archiveFilePath, password, progress, cancellationToken);
+                        try
+                        {
+                            return TestIntegrityWithSevenZip(sevenZip, archiveFilePath, password, progress, cancellationToken);
+                        }
+                        catch
+                        {
+                            throw primaryEx;
+                        }
                     }
                     throw;
                 }
@@ -661,7 +676,7 @@ namespace Archieve_App
 
             return await Task.Run(() =>
             {
-                // Tier 1: Try SharpCompress
+                // Tier 1: Try SharpCompress (in-process, password safe)
                 try
                 {
                     return GetEntryStreamWithSharpCompress(archiveFilePath, entryKey, password);
@@ -676,39 +691,42 @@ namespace Archieve_App
                 }
                 catch
                 {
-                    // Fall through to System.IO.Compression
+                    // Fall through
                 }
 
-                // Tier 2: Try System.IO.Compression
-                try
+                // Tier 2: Try System.IO.Compression (plain zip only)
+                if (string.IsNullOrEmpty(password))
                 {
-                    using var fs = new FileStream(archiveFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    using var zip = new SysZipArchive(fs, ZipArchiveMode.Read, leaveOpen: false);
-                    string normalizedSearchKey = entryKey.Replace('\\', '/').Trim('/');
-
-                    var entry = zip.Entries.FirstOrDefault(e =>
+                    try
                     {
-                        if (string.IsNullOrWhiteSpace(e.FullName)) return false;
-                        string k = e.FullName.Replace('\\', '/').Trim('/');
-                        return string.Equals(k, normalizedSearchKey, StringComparison.OrdinalIgnoreCase) ||
-                               string.Equals(Path.GetFileName(k), normalizedSearchKey, StringComparison.OrdinalIgnoreCase);
-                    });
+                        using var fs = new FileStream(archiveFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        using var zip = new SysZipArchive(fs, ZipArchiveMode.Read, leaveOpen: false);
+                        string normalizedSearchKey = entryKey.Replace('\\', '/').Trim('/');
 
-                    if (entry != null)
+                        var entry = zip.Entries.FirstOrDefault(e =>
+                        {
+                            if (string.IsNullOrWhiteSpace(e.FullName)) return false;
+                            string k = e.FullName.Replace('\\', '/').Trim('/');
+                            return string.Equals(k, normalizedSearchKey, StringComparison.OrdinalIgnoreCase) ||
+                                   string.Equals(Path.GetFileName(k), normalizedSearchKey, StringComparison.OrdinalIgnoreCase);
+                        });
+
+                        if (entry != null)
+                        {
+                            var ms = new MemoryStream();
+                            using var s = entry.Open();
+                            s.CopyTo(ms);
+                            ms.Position = 0;
+                            return ms;
+                        }
+                    }
+                    catch
                     {
-                        var ms = new MemoryStream();
-                        using var s = entry.Open();
-                        s.CopyTo(ms);
-                        ms.Position = 0;
-                        return ms;
+                        // Fall through to 7-Zip
                     }
                 }
-                catch
-                {
-                    // Fall through to 7-Zip
-                }
 
-                // Tier 3: Try 7-Zip CLI engine
+                // Tier 3: Try 7-Zip CLI engine (last resort — password briefly visible on command line if used)
                 string? sevenZip = FindSevenZipPath();
                 if (!string.IsNullOrEmpty(sevenZip))
                 {
@@ -795,6 +813,10 @@ namespace Archieve_App
         /// <summary>
         /// Evaluates whether the archive entries require a dedicated container subfolder
         /// to prevent cluttering the destination directory (Smart Extract logic).
+        /// Rule: Create a subfolder (named after the archive) ONLY when extracting more
+        /// than one file into the destination — i.e. when there are 2+ loose root files
+        /// OR 2+ distinct root segments (mix of folders/loose files).
+        /// A single file (even at root) extracts directly without wrapping.
         /// </summary>
         public bool ShouldUseSmartExtractSubfolder(IEnumerable<string?> entryKeys)
         {
@@ -809,6 +831,8 @@ namespace Archieve_App
                 return false;
             }
 
+            // Count real files (non-directory entries — directory keys typically end with '/' but we can't reliably know;
+            // we conservatively treat all keys as entries and track unique root segments).
             var rootSegments = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             int looseRootFilesCount = 0;
 
@@ -827,9 +851,11 @@ namespace Archieve_App
                 }
             }
 
+            // Always wrap when multiple loose files would spill out
             if (looseRootFilesCount > 1) return true;
+            // Multiple distinct root segments (e.g. a loose file + a folder, or two folders)
             if (rootSegments.Count > 1) return true;
-            if (looseRootFilesCount == 1 && rootSegments.Count == 1) return true;
+            // Single root folder (e.g. "project/file1.txt") OR single loose file ("readme.txt") → NO subfolder
             return false;
         }
 
@@ -916,7 +942,16 @@ namespace Archieve_App
                 string? sevenZip = FindSevenZipPath();
                 Exception? primaryException = null;
 
-                // Priority 1 for .zip with no password: Native .NET 9 System.IO.Compression (hardware SIMD, instant)
+                // PRIORITY ORDER (chosen to MINIMIZE password exposure on process command line):
+                // 1. System.IO.Compression for non-passworded .zip (fastest, in-process, zero exposure)
+                // 2. SharpCompress for everything — fully in-process, password never leaves the app;
+                //    supports .zip (AES), .7z, many .rar, .tar, .gz. Prefer this whenever a password
+                //    is provided so the password is NEVER visible to other processes via command line.
+                // 3. System.IO.Compression again as a zip fallback.
+                // 4. 7z.exe CLI as a LAST RESORT (password may briefly appear in process arguments —
+                //    unavoidable for formats only 7z supports like RAR5 or exotic 7z methods).
+
+                // Step 1: In-process System.IO.Compression for plain .zip
                 if (ext == ".zip" && string.IsNullOrEmpty(password))
                 {
                     try
@@ -928,7 +963,20 @@ namespace Archieve_App
                     catch (Exception ex) { primaryException = ex; }
                 }
 
-                // Priority 1 for .7z, .rar, or password-protected archives: Native 7-Zip CLI engine (AVX2 multithreaded)
+                // Step 2: In-process SharpCompress (safe for password-protected archives — no CLI exposure)
+                try
+                {
+                    ExtractWithSharpCompress(archivePath, targetDirectory, password, progress, cancellationToken);
+                    return targetDirectory;
+                }
+                catch (ArchiveEncryptedException) { throw; }
+                catch (OperationCanceledException) { throw; }
+                catch (Exception ex) { primaryException ??= ex; }
+
+                // Step 3: 7-Zip CLI — ONLY as fallback for formats SharpCompress cannot handle (e.g. RAR5, LZMA2 edge cases).
+                // NOTE: When a password is supplied here it appears in 7z.exe command-line arguments. This is a
+                // well-known limitation of 7-Zip's CLI on Windows (no stdin/env password channel). Using
+                // SharpCompress first eliminates exposure for the common AES-Zip / 7z cases.
                 if (!string.IsNullOrEmpty(sevenZip))
                 {
                     try
@@ -941,18 +989,8 @@ namespace Archieve_App
                     catch (Exception ex) { primaryException ??= ex; }
                 }
 
-                // Fallback: SharpCompress engine
-                try
-                {
-                    ExtractWithSharpCompress(archivePath, targetDirectory, password, progress, cancellationToken);
-                    return targetDirectory;
-                }
-                catch (ArchiveEncryptedException) { throw; }
-                catch (OperationCanceledException) { throw; }
-                catch (Exception ex) { primaryException ??= ex; }
-
-                // Fallback: System.IO.Compression if not already attempted
-                if (ext == ".zip")
+                // Step 4: System.IO.Compression again (non-passworded zip fallback after SharpCompress failure)
+                if (ext == ".zip" && string.IsNullOrEmpty(password))
                 {
                     try
                     {
@@ -960,7 +998,7 @@ namespace Archieve_App
                         return targetDirectory;
                     }
                     catch (OperationCanceledException) { throw; }
-                    catch { }
+                    catch (Exception ex) { primaryException ??= ex; }
                 }
 
                 throw primaryException ?? new InvalidOperationException("Failed to extract archive using all available engines.");

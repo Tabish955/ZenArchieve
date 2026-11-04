@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -46,6 +48,9 @@ namespace Archieve_App
             }
             catch { }
 
+            // Ensure boot tasks (updater + review prompt) stay registered for future boots.
+            try { AppSettings.Instance.EnsureBootTasksRegistered(); } catch { }
+
             if (e.Args.Length > 0)
             {
                 string firstArg = e.Args[0];
@@ -55,19 +60,23 @@ namespace Archieve_App
                     string normArg = firstArg.TrimStart('-', '/');
 
                     // PC Bootup review prompt handler
-                    if (string.Equals(normArg, "bootup", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(normArg, "bootup-review", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(normArg, "bootup", StringComparison.OrdinalIgnoreCase))
                     {
-                        var settings = AppSettings.Instance;
-                        if (settings.DontShowReviewDialog)
-                        {
-                            settings.UnregisterBootupReviewPrompt();
-                            Shutdown(0);
-                            return;
-                        }
+                        // Show a hidden helper window so the WPF dispatcher/message loop stays alive
+                        // while we do async work and show the dialog.
+                        var hidden = new Window { Width = 0, Height = 0, WindowStyle = WindowStyle.None, ShowInTaskbar = false, ShowActivated = false, Visibility = Visibility.Hidden };
+                        hidden.Show();
+                        await HandleBootupReviewAsync();
+                        return;
+                    }
 
-                        var reviewWindow = new ReviewPromptWindow();
-                        reviewWindow.ShowDialog();
-                        Shutdown(0);
+                    // PC Bootup silent update checker (runs in background at Windows startup)
+                    if (string.Equals(normArg, "bootup-updater", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var hidden = new Window { Width = 0, Height = 0, WindowStyle = WindowStyle.None, ShowInTaskbar = false, ShowActivated = false, Visibility = Visibility.Hidden };
+                        hidden.Show();
+                        await HandleBootupUpdaterAsync();
                         return;
                     }
 
@@ -163,9 +172,109 @@ namespace Archieve_App
             }
         }
 
+        /// <summary>
+        /// Boot-time review prompt: if the user hasn't opted out, show the rating dialog then exit.
+        /// Runs on the UI thread (called after await in OnStartup).
+        /// </summary>
+        private async Task HandleBootupReviewAsync()
+        {
+            // Small delay to let Windows finish logging in so the dialog doesn't fight other startup apps.
+            await Task.Delay(3500);
+
+            try
+            {
+                var settings = AppSettings.Instance;
+                if (settings.DontShowReviewDialog)
+                {
+                    settings.UnregisterBootupReviewPrompt();
+                    return;
+                }
+
+                var reviewWindow = new ReviewPromptWindow();
+                reviewWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                LogAndShowCrash("Error showing boot review prompt", ex, isTerminating: false);
+            }
+            finally
+            {
+                Shutdown(0);
+            }
+        }
+
+        /// <summary>
+        /// Boot-time background updater: runs hidden in the background at Windows logon.
+        /// 1. Quietly checks GitHub Releases for a newer version.
+        /// 2. If no internet connection, retries every 30 seconds (up to ~10 minutes).
+        /// 3. If an update is found, shows a compact "Update Available" popup.
+        /// 4. If no update is available OR the user dismisses, exits cleanly so no process lingers.
+        /// </summary>
+        private async Task HandleBootupUpdaterAsync()
+        {
+            var settings = AppSettings.Instance;
+            if (settings.DisableAutoUpdateCheck)
+            {
+                Shutdown(0);
+                return;
+            }
+
+            // Small delay after login so we don't compete with other startup apps for bandwidth/CPU.
+            await Task.Delay(8000);
+
+            const int maxRetries = 20; // ~10 minutes of retries with 30s interval
+            const int retryIntervalMs = 30_000;
+
+            UpdateInfo? availableUpdate = null;
+
+            for (int attempt = 0; attempt < maxRetries; attempt++)
+            {
+                try
+                {
+                    availableUpdate = await UpdateService.CheckForUpdateAsync();
+                    break; // Either got an update or confirmed up-to-date (null) — break the retry loop
+                }
+                catch (HttpRequestException)
+                {
+                    // Network issue — wait and retry
+                }
+                catch (TaskCanceledException)
+                {
+                    // Timeout — retry
+                }
+                catch (Exception)
+                {
+                    // Unexpected error (DNS, etc.) — retry
+                }
+
+                if (attempt < maxRetries - 1)
+                {
+                    try { await Task.Delay(retryIntervalMs); } catch { break; }
+                }
+            }
+
+            try
+            {
+                if (availableUpdate != null)
+                {
+                    var updateWindow = new UpdateAvailableWindow(availableUpdate);
+                    updateWindow.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogAndShowCrash("Error showing boot update prompt", ex, isTerminating: false);
+            }
+            finally
+            {
+                // Always exit cleanly — never leave a background process lingering
+                Shutdown(0);
+            }
+        }
+
         private static void LogAndShowCrash(string context, Exception ex, bool isTerminating)
         {
-            string logContent = $"=====================================================\n" +
+            string logContent = "=====================================================\n" +
                                 $"[ZENARCHIEVE CRASH LOG - {DateTime.Now:yyyy-MM-dd HH:mm:ss}]\n" +
                                 $"Context: {context}\n" +
                                 $"Terminating: {isTerminating}\n" +
@@ -181,7 +290,7 @@ namespace Archieve_App
                 inner = inner.InnerException;
                 level++;
             }
-            logContent += $"=====================================================\n\n";
+            logContent += "=====================================================\n\n";
 
             try
             {
@@ -199,9 +308,9 @@ namespace Archieve_App
                 catch { }
             }
 
-            string userMessage = $"ZenArchieve encountered a startup or runtime error:\n\n" +
+            string userMessage = "ZenArchieve encountered a startup or runtime error:\n\n" +
                                  $"{ex.GetType().Name}: {ex.Message}\n\n" +
-                                 $"A detailed diagnostic log has been written to 'crash.log'.";
+                                 "A detailed diagnostic log has been written to 'crash.log'.";
 
             MessageBox.Show(userMessage, "ZenArchieve - Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
