@@ -102,7 +102,7 @@ if ($isccPath) {
         }
         $distDir = Join-Path (Split-Path -Parent $projectDir) "installer_dist"
         if (Test-Path $distDir) {
-            Copy-Item "$outputDir\ZenArchieve_Setup_v2.1.2.exe" -Destination $distDir -Force -ErrorAction SilentlyContinue
+            Copy-Item "$outputDir\ZenArchieve_Setup_v2.2.0.exe" -Destination $distDir -Force -ErrorAction SilentlyContinue
         }
         Write-Host "==========================================================" -ForegroundColor Green
     } else {

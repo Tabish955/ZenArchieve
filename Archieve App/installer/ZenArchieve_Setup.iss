@@ -4,7 +4,7 @@
 ; =====================================================================
 
 #define MyAppName "ZenArchieve"
-#define MyAppVersion "2.1.2"
+#define MyAppVersion "2.2.0"
 #define MyAppPublisher "ZenArchieve"
 #define MyAppURL "https://github.com/Tabish955/ZenArchieve"
 #define MyAppExeName "Archieve App.exe"
@@ -26,7 +26,7 @@ DisableProgramGroupPage=yes
 
 ; Output Configuration
 OutputDir=..\bin\installer
-OutputBaseFilename=ZenArchieve_Setup_v2.1.2
+OutputBaseFilename=ZenArchieve_Setup_v2.2.0
 SetupIconFile=..\assets\app.ico
 UninstallDisplayIcon={app}\{#MyAppExeName},0
 
@@ -223,6 +223,15 @@ Root: HKA; Subkey: "Software\Classes\Directory\shell\ZenArchieveCompress\command
 ; 4. Windows 11 Direct Context Menu (Enables classic menu directly on right-click without "Show more options")
 ; ---------------------------------------------------------------------
 Root: HKCU; Subkey: "Software\Classes\CLSID\{{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32"; ValueType: string; ValueData: ""; Flags: uninsdeletekey; Tasks: context_menu
+
+; ---------------------------------------------------------------------
+; 5. Boot-time tasks (HKCU Run keys — user-specific, no admin required)
+;    - ZenArchieveBootUpdater: silently checks for updates on Windows logon (retries on no internet, exits cleanly)
+;    - ZenArchieveReviewPrompt: shows the optional "Rate ZenArchieve" dialog after a few boots
+;    Both are registered under HKCU (per-user) and self-unregister when the user opts out.
+; ---------------------------------------------------------------------
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ZenArchieveBootUpdater"; ValueData: """{app}\{#MyAppExeName}"" --bootup-updater"; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ZenArchieveReviewPrompt"; ValueData: """{app}\{#MyAppExeName}"" --bootup-review"; Flags: uninsdeletevalue
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

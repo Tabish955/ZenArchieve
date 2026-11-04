@@ -11,11 +11,12 @@
         ResizeMode="NoResize"
         Topmost="True"
         ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        WindowBackdropType="None"
         Background="{DynamicResource ApplicationBackgroundBrush}"
-        Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        AllowsTransparency="False">
 
-    <Grid>
+    <Grid Background="{DynamicResource ApplicationBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- TitleBar Row -->
             <RowDefinition Height="*"/>    <!-- Main Extraction Content -->

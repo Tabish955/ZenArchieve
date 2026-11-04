@@ -29,12 +29,12 @@
 [![.NET 9](https://img.shields.io/badge/.NET-9.0%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 [![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
-[![Version](https://img.shields.io/badge/Version-v2.1.2-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+[![Version](https://img.shields.io/badge/Version-v2.2.0-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/Tabish955/ZenArchieve?style=for-the-badge&logo=github&logoColor=white&color=gold)](https://github.com/Tabish955/ZenArchieve)
 
 ---
 
-**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.2_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.2.exe)** · **[✨ Releases](https://github.com/Tabish955/ZenArchieve/releases)**
+**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.2.0_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.2.0.exe)** · **[✨ Releases](https://github.com/Tabish955/ZenArchieve/releases)**
 
 </div>
 
@@ -101,8 +101,8 @@ Fast, direct download links hosted in this repository:
 
 | Package Type | Architecture | File Size | Description | Download |
 | :--- | :---: | :---: | :--- | :---: |
-| **MSIX Package** | x64 | ~6.35 MB | Recommended for Windows 10 & 11 (Store format) | [**Download MSIX (v2.1.2)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.1.2_x64.msix) |
-| **Setup EXE** | x64 | ~6.72 MB | Classic Inno Setup with Explorer context menus | [**Download EXE (v2.1.2)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.1.2.exe) |
+| **MSIX Package** | x64 | ~6.35 MB | Recommended for Windows 10 & 11 (Store format) | [**Download MSIX (v2.2.0)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.2.0_x64.msix) |
+| **Setup EXE** | x64 | ~6.72 MB | Classic Inno Setup with Explorer context menus | [**Download EXE (v2.2.0)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.2.0.exe) |
 
 *All historic releases are also available on [GitHub Releases](https://github.com/Tabish955/ZenArchieve/releases).*
 
@@ -126,7 +126,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 
 ## ⚔️ ZenArchieve vs. Competitors
 
-| Feature | **ZenArchieve v2.1.2** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchieve v2.2.0** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
 | **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |
@@ -188,6 +188,7 @@ Click any entry in the archive to preview it directly in memory:
 - **Safety Shield**: Executables (.exe, .bat, .dll, .ps1) are blocked from preview execution — SHA-256 hash displayed for virus verification
 
 ### 7. 🛡️ Enterprise Security & Defense Features
+- **Password Exposure Mitigation (v2.2.0+)**: Encrypted archives are decrypted in-process via SharpCompress/SharpZipLib so the password is never passed to external processes on the command line (eliminating the well-known 7z CLI password-leak risk for `.zip` AES and `.7z` archives)
 - **Zip-Slip Neutralization**: Strips path traversal attacks (`../../evil.exe`) — entries are strictly sandboxed within the target extraction directory
 - **Disguised Double-Extension Detection**: Flags `invoice.pdf.exe` or `photo.jpg.scr` with high-contrast warning badges
 - **Integrity Audit ("Test Archive")**: Decompresses every entry in-memory, verifies CRC checksums, and produces a diagnostic health report
@@ -221,9 +222,10 @@ Merge two archives into a single output archive with intelligent deduplication:
 - **Conflict resolution**: When both archives contain the same path, Archive B wins
 - Full merge report with files added, overridden, and duplicates skipped
 
-### 13. 🔄 One-Click Auto-Update — *EXCLUSIVE*
-ZenArchieve checks for updates automatically on startup:
+### 13. 🔄 One-Click Auto-Update (with Background Boot Checker) — *EXCLUSIVE*
+ZenArchieve checks for updates automatically:
 - **GitHub Releases integration**: Detects newer versions via the GitHub API
+- **Background Boot-Time Checker (v2.2.0+)**: A lightweight silent updater runs at Windows logon, retries every 30 seconds if offline, shows a popup only if an update is available, and exits cleanly otherwise (no lingering process)
 - **Seamless in-place upgrade**: Downloads the new installer and runs it silently
 - **No manual uninstall needed**: Inno Setup's same-AppId mechanism upgrades in place
 - User is never forced to update — always prompted first
