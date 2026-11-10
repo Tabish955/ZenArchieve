@@ -63,10 +63,9 @@ namespace Archieve_App
                     if (string.Equals(normArg, "bootup-review", StringComparison.OrdinalIgnoreCase) ||
                         string.Equals(normArg, "bootup", StringComparison.OrdinalIgnoreCase))
                     {
-                        // Show a hidden helper window so the WPF dispatcher/message loop stays alive
-                        // while we do async work and show the dialog.
-                        var hidden = new Window { Width = 0, Height = 0, WindowStyle = WindowStyle.None, ShowInTaskbar = false, ShowActivated = false, Visibility = Visibility.Hidden };
-                        hidden.Show();
+                        // Keep the WPF dispatcher alive during async work without creating a hidden Window
+                        // (creating/showing a Window triggers WPF-UI's implicit Window style and AllowsTransparency exception).
+                        ShutdownMode = ShutdownMode.OnExplicitShutdown;
                         await HandleBootupReviewAsync();
                         return;
                     }
@@ -74,8 +73,7 @@ namespace Archieve_App
                     // PC Bootup silent update checker (runs in background at Windows startup)
                     if (string.Equals(normArg, "bootup-updater", StringComparison.OrdinalIgnoreCase))
                     {
-                        var hidden = new Window { Width = 0, Height = 0, WindowStyle = WindowStyle.None, ShowInTaskbar = false, ShowActivated = false, Visibility = Visibility.Hidden };
-                        hidden.Show();
+                        ShutdownMode = ShutdownMode.OnExplicitShutdown;
                         await HandleBootupUpdaterAsync();
                         return;
                     }

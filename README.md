@@ -29,12 +29,12 @@
 [![.NET 9](https://img.shields.io/badge/.NET-9.0%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 [![Security Guard](https://img.shields.io/badge/Security-Zip--Slip%20Protected-107C41?style=for-the-badge&logo=shieldcheck&logoColor=white)](#-enterprise-security--defense-features)
-[![Version](https://img.shields.io/badge/Version-v2.2.0-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
+[![Version](https://img.shields.io/badge/Version-v2.2.1-00D2FF?style=for-the-badge)](https://github.com/Tabish955/ZenArchieve/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/Tabish955/ZenArchieve?style=for-the-badge&logo=github&logoColor=white&color=gold)](https://github.com/Tabish955/ZenArchieve)
 
 ---
 
-**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.2.0_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.2.0.exe)** · **[✨ Releases](https://github.com/Tabish955/ZenArchieve/releases)**
+**[🛍️ Microsoft Store](https://apps.microsoft.com/detail/9n4hcx0krfnp?hl=en-US&gl=US)** · **[🌐 SourceForge](https://sourceforge.net/projects/zenarchieve/)** · **[📥 Direct MSIX](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.2.1_x64.msix)** · **[📦 Direct EXE](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.2.1.exe)** · **[✨ Releases](https://github.com/Tabish955/ZenArchieve/releases)**
 
 </div>
 
@@ -96,13 +96,13 @@ winget install ZenArchieve
 
 ---
 
-### 4. ⚡ Direct Download Links (Lightweight ~6.3 MB)
-Fast, direct download links hosted in this repository:
+### 4. ⚡ Direct Download Links (Self-Contained)
+Self-contained distribution — no separate .NET runtime download required.
 
 | Package Type | Architecture | File Size | Description | Download |
 | :--- | :---: | :---: | :--- | :---: |
-| **MSIX Package** | x64 | ~6.35 MB | Recommended for Windows 10 & 11 (Store format) | [**Download MSIX (v2.2.0)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.2.0_x64.msix) |
-| **Setup EXE** | x64 | ~6.72 MB | Classic Inno Setup with Explorer context menus | [**Download EXE (v2.2.0)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.2.0.exe) |
+| **MSIX Package** | x64 | ~65.7 MB | Recommended for Windows 10 & 11 (Store format, self-contained) | [**Download MSIX (v2.2.1)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_v2.2.1_x64.msix) |
+| **Setup EXE** | x64 | ~47.0 MB | Classic Inno Setup with Explorer context menus (self-contained) | [**Download EXE (v2.2.1)**](https://raw.githubusercontent.com/Tabish955/ZenArchieve/main/installer_dist/ZenArchieve_Setup_v2.2.1.exe) |
 
 *All historic releases are also available on [GitHub Releases](https://github.com/Tabish955/ZenArchieve/releases).*
 
@@ -126,7 +126,7 @@ For decades, archive management on Windows has been trapped in 1998: clunky Win3
 
 ## ⚔️ ZenArchieve vs. Competitors
 
-| Feature | **ZenArchieve v2.2.0** | **WinRAR** | **7-Zip** | **PeaZip** |
+| Feature | **ZenArchieve v2.2.1** | **WinRAR** | **7-Zip** | **PeaZip** |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Interface** | ✅ Windows 11 Fluent / Mica | ❌ 1995 Win32 | ❌ Minimal Win32 | ⚠️ Custom Widget |
 | **100% Free & Open Source** | ✅ **MIT License** | ❌ Paid / Nag | ✅ Free | ✅ Free |
@@ -293,6 +293,9 @@ graph TD
 ---
 
 ## 📝 Changelog
+
+### v2.2.1
+* Fixed startup crash; self-contained deployment; no .NET runtime needed.
 
 ### v2.2.0
 * **Fixed**: Dialog/extraction windows no longer have transparent Mica backgrounds (`WindowBackdropType="None"` and solid background brush).

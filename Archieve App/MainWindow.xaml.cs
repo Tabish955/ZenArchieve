@@ -56,15 +56,6 @@ namespace Archieve_App
                 // Fallback: icon not found or unparseable
             }
 
-            try
-            {
-                WindowBackdropType = WindowBackdropType.Mica;
-            }
-            catch
-            {
-                WindowBackdropType = WindowBackdropType.None;
-            }
-
             // Fire-and-forget auto-update check and review prompt (non-blocking)
             Loaded += async (s, e) =>
             {

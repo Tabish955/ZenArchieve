@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import glob
+import sys
 
 # Resolve paths relative to repository root
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -37,10 +38,11 @@ def find_makeappx():
 
 makeappx_exe = find_makeappx()
 if not makeappx_exe:
-    raise FileNotFoundError(
-        "makeappx.exe not found in PATH or standard Windows SDK / BuildTools locations.\n"
+    print(
+        "[ERROR] makeappx.exe not found in PATH or standard Windows SDK / BuildTools locations.\n"
         "Please install the Windows 10/11 SDK or NuGet package Microsoft.Windows.SDK.BuildTools."
     )
+    sys.exit(1)
 
 print(f"Using makeappx: {makeappx_exe}")
 print(f"Repo root: {repo_root}")
@@ -72,7 +74,7 @@ if os.path.exists(assets_dst):
     shutil.rmtree(assets_dst)
 shutil.copytree(assets_src_dir, assets_dst)
 
-print("[3/5] Writing AppxManifest.xml with version 2.2.0.0...")
+print("[3/5] Writing AppxManifest.xml with version 2.2.1.0...")
 manifest_content = """<?xml version="1.0" encoding="utf-8"?>
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
@@ -86,7 +88,7 @@ manifest_content = """<?xml version="1.0" encoding="utf-8"?>
   <Identity
     Name="FluxCode.ZenArchieve"
     Publisher="CN=DAD1369C-ABD8-4AAD-9FF7-0BA25EDAAED2"
-    Version="2.2.0.0"
+    Version="2.2.1.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
@@ -153,7 +155,7 @@ manifest_path = os.path.join(build_dir, "AppxManifest.xml")
 with open(manifest_path, "w", encoding="utf-8") as f:
     f.write(manifest_content.strip())
 
-msix_output = os.path.join(output_dir, "ZenArchieve_v2.2.0_x64.msix")
+msix_output = os.path.join(output_dir, "ZenArchieve_v2.2.1_x64.msix")
 print("[4/5] Packing MSIX package with makeappx.exe...")
 cmd = [
     makeappx_exe,
@@ -172,13 +174,13 @@ if res.returncode != 0:
     raise RuntimeError(f"makeappx pack failed with exit code {res.returncode}")
 
 print("[5/5] Deploying packages to installer_dist...")
-dist_output = os.path.join(dist_dir, "ZenArchieve_v2.2.0_x64.msix")
+dist_output = os.path.join(dist_dir, "ZenArchieve_v2.2.1_x64.msix")
 shutil.copy2(msix_output, dist_output)
 
 # Copy EXE installer to installer_dist if present
-inno_exe = os.path.join(repo_root, "Archieve App", "bin", "installer", "ZenArchieve_Setup_v2.2.0.exe")
+inno_exe = os.path.join(repo_root, "Archieve App", "bin", "installer", "ZenArchieve_Setup_v2.2.1.exe")
 if os.path.exists(inno_exe):
-    dist_exe = os.path.join(dist_dir, "ZenArchieve_Setup_v2.2.0.exe")
+    dist_exe = os.path.join(dist_dir, "ZenArchieve_Setup_v2.2.1.exe")
     shutil.copy2(inno_exe, dist_exe)
     print(f"Copied Inno EXE to installer_dist: {dist_exe}")
 

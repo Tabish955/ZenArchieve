@@ -3,13 +3,13 @@
     Builds and packages ZenArchieve Windows 64-bit Installer.
 .DESCRIPTION
     1. Compiles and publishes self-contained .NET 9 win-x64 binaries.
-    2. Compiles Inno Setup script (ZenArchieve_Setup.iss) into ZenArchieve_Setup_v2.1.exe.
+    2. Compiles Inno Setup script (ZenArchieve_Setup.iss) into ZenArchieve_Setup_v2.2.1.exe.
 #>
 
 param (
     [string]$Configuration = "Release",
     [string]$Runtime = "win-x64",
-    [bool]$SelfContained = $false
+    [bool]$SelfContained = $true
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,7 +36,7 @@ $publishArgs = @(
     "`"$projectFile`"",
     "-c", $Configuration,
     "-r", $Runtime,
-    "--self-contained", "$SelfContained",
+    "--self-contained", $SelfContained.ToString().ToLowerInvariant(),
     "-p:PublishSingleFile=false",
     "-p:DebugType=none",
     "-p:DebugSymbols=false"
@@ -104,8 +104,8 @@ if ($isccPath) {
         if (-not (Test-Path $distDir)) {
             New-Item -ItemType Directory -Path $distDir -Force | Out-Null
         }
-        Copy-Item "$outputDir\ZenArchieve_Setup_v2.2.0.exe" -Destination $distDir -Force
-        Write-Host "  -> Copied installer to: $distDir\ZenArchieve_Setup_v2.2.0.exe" -ForegroundColor Green
+        Copy-Item "$outputDir\ZenArchieve_Setup_v2.2.1.exe" -Destination $distDir -Force
+        Write-Host "  -> Copied installer to: $distDir\ZenArchieve_Setup_v2.2.1.exe" -ForegroundColor Green
         Write-Host "==========================================================" -ForegroundColor Green
     } else {
         Write-Error "ISCC compilation failed with exit code $LASTEXITCODE."

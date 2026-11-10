@@ -14,7 +14,7 @@
         WindowBackdropType="None"
         Background="{DynamicResource ApplicationBackgroundBrush}"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-        AllowsTransparency="False">
+>
 
     <Grid Background="{DynamicResource ApplicationBackgroundBrush}">
         <Grid.RowDefinitions>

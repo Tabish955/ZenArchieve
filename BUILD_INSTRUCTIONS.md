@@ -1,6 +1,6 @@
-# ZenArchieve — Build & Packaging Instructions (v2.2.0)
+# ZenArchieve — Build & Packaging Instructions (v2.2.1)
 
-This guide documents the complete end-to-end process to build, package, test, release, and submit **ZenArchieve v2.2.0** on Windows 10/11 (x64).
+This guide documents the complete end-to-end process to build, package, test, release, and submit **ZenArchieve v2.2.1** on Windows 10/11 (x64).
 
 ---
 
@@ -49,10 +49,10 @@ Restore packages and verify that the application compiles with zero errors and z
 dotnet build "Archieve App/Archieve App.csproj" -c Release
 ```
 
-### 2. Framework-Dependent Publish
-Publish the application binaries for 64-bit Windows without debug symbols:
+### 2. Self-Contained Publish
+Publish self-contained application binaries for 64-bit Windows (no separate .NET runtime required on target machines):
 ```powershell
-dotnet publish "Archieve App/Archieve App.csproj" -c Release -r win-x64 --self-contained false -p:DebugType=none -p:DebugSymbols=false
+dotnet publish "Archieve App/Archieve App.csproj" -c Release -r win-x64 --self-contained true -p:DebugType=none -p:DebugSymbols=false
 ```
 Published output is staged at:
 `Archieve App\bin\Release\net9.0-windows\win-x64\publish\`
@@ -63,15 +63,15 @@ Run the automated installer build script. It verifies published binaries, runs `
 powershell -ExecutionPolicy Bypass -File "Archieve App/installer/build_installer.ps1"
 ```
 Output:
-`installer_dist\ZenArchieve_Setup_v2.2.0.exe` (~6.7 MB)
+`installer_dist\ZenArchieve_Setup_v2.2.1.exe` (~47.0 MB)
 
 ### 4. Build the Microsoft Store MSIX Package (`.msix`)
-Run the automated MSIX packager. It creates the packaging layout, injects `AppxManifest.xml` (Identity Version `2.2.0.0`), executes `makeappx.exe pack`, and copies the final package to `installer_dist\`:
+Run the automated MSIX packager. It creates the packaging layout, injects `AppxManifest.xml` (Identity Version `2.2.1.0`), executes `makeappx.exe pack`, and copies the final package to `installer_dist\`:
 ```powershell
 python "Archieve App/installer/build_msix.py"
 ```
 Output:
-`installer_dist\ZenArchieve_v2.2.0_x64.msix` (~6.3 MB)
+`installer_dist\ZenArchieve_v2.2.1_x64.msix` (~65.7 MB)
 
 ---
 
@@ -79,12 +79,12 @@ Output:
 
 Verify that both built installers are present and intact:
 ```powershell
-Get-ChildItem -Path "installer_dist" -Filter "*v2.2.0*" | Select-Object Name, Length, LastWriteTime
+Get-ChildItem -Path "installer_dist" -Filter "*v2.2.1*" | Select-Object Name, Length, LastWriteTime
 ```
 
 Calculate SHA-256 checksums:
 ```powershell
-Get-FileHash -Algorithm SHA256 "installer_dist\ZenArchieve_Setup_v2.2.0.exe", "installer_dist\ZenArchieve_v2.2.0_x64.msix" | Format-List
+Get-FileHash -Algorithm SHA256 "installer_dist\ZenArchieve_Setup_v2.2.1.exe", "installer_dist\ZenArchieve_v2.2.1_x64.msix" | Format-List
 ```
 
 ---
@@ -95,15 +95,15 @@ Push the tag and publish the release with both installer assets:
 
 ```powershell
 # 1. Create and push the annotated tag
-git tag -a v2.2.0 -m "ZenArchieve v2.2.0"
-git push origin v2.2.0
+git tag -a v2.2.1 -m "ZenArchieve v2.2.1"
+git push origin v2.2.1
 
 # 2. Publish GitHub Release via GitHub CLI
-gh release create v2.2.0 `
-    "installer_dist\ZenArchieve_Setup_v2.2.0.exe#ZenArchieve Setup v2.2.0 (EXE)" `
-    "installer_dist\ZenArchieve_v2.2.0_x64.msix#ZenArchieve v2.2.0 (MSIX Package)" `
-    --title "ZenArchieve v2.2.0 — Security Hardening & Desktop Experience" `
-    --notes "### What's New in v2.2.0
+gh release create v2.2.1 `
+    "installer_dist\ZenArchieve_Setup_v2.2.1.exe#ZenArchieve Setup v2.2.1 (EXE)" `
+    "installer_dist\ZenArchieve_v2.2.1_x64.msix#ZenArchieve v2.2.1 (MSIX Package)" `
+    --title "ZenArchieve v2.2.1 — Security Hardening & Desktop Experience" `
+    --notes "### What's New in v2.2.1
 * **Fixed**: Dialog/extraction windows no longer have transparent Mica backgrounds (\`WindowBackdropType=\"None\"\` and solid background brush).
 * **Fixed**: Smart Extract no longer wraps single loose files in unnecessary folders (only wraps when 2+ loose root files or 2+ root segments).
 * **Fixed**: Rating/review dialog now appears after boot as intended (\`--bootup-review\` switch registered in HKCU Run).
@@ -118,6 +118,6 @@ gh release create v2.2.0 `
 1. Sign in to the [Microsoft Partner Center](https://partner.microsoft.com/dashboard).
 2. Navigate to **Apps and games** → **ZenArchieve**.
 3. Create a new submission.
-4. Upload `installer_dist\ZenArchieve_v2.2.0_x64.msix` under **Packages**.
-5. Update Store listing description with the v2.2.0 release notes.
+4. Upload `installer_dist\ZenArchieve_v2.2.1_x64.msix` under **Packages**.
+5. Update Store listing description with the v2.2.1 release notes.
 6. Submit to certification. See [STORE_SUBMISSION_CHECKLIST.md](file:///d:/Archieve/STORE_SUBMISSION_CHECKLIST.md) for full compliance checks.

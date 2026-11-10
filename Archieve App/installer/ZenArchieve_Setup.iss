@@ -4,7 +4,7 @@
 ; =====================================================================
 
 #define MyAppName "ZenArchieve"
-#define MyAppVersion "2.2.0"
+#define MyAppVersion "2.2.1"
 #define MyAppPublisher "ZenArchieve"
 #define MyAppURL "https://github.com/Tabish955/ZenArchieve"
 #define MyAppExeName "Archieve App.exe"
@@ -26,7 +26,7 @@ DisableProgramGroupPage=yes
 
 ; Output Configuration
 OutputDir=..\bin\installer
-OutputBaseFilename=ZenArchieve_Setup_v2.2.0
+OutputBaseFilename=ZenArchieve_Setup_v2.2.1
 SetupIconFile=..\assets\app.ico
 UninstallDisplayIcon={app}\{#MyAppExeName},0
 
@@ -237,54 +237,6 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-function IsDotNet9Installed(): Boolean;
-var
-  ErrorCode: Integer;
-  DesktopFxDir: String;
-  FindRec: TFindRec;
-begin
-  Result := False;
-  DesktopFxDir := ExpandConstant('{commonpf}\dotnet\shared\Microsoft.WindowsDesktop.App');
-
-  if DirExists(DesktopFxDir) then
-  begin
-    if FindFirst(DesktopFxDir + '\9.*', FindRec) then
-    begin
-      try
-        Result := True;
-      finally
-        FindClose(FindRec);
-      end;
-    end;
-  end;
-
-  if not Result then
-  begin
-    // Check via dotnet --list-runtimes
-    if Exec('cmd.exe', '/c dotnet --list-runtimes | findstr "Microsoft.WindowsDesktop.App 9."', '', SW_HIDE, ewWaitUntilTerminated, ErrorCode) then
-    begin
-      if ErrorCode = 0 then
-        Result := True;
-    end;
-  end;
-end;
-
-function InitializeSetup(): Boolean;
-var
-  ErrorCode: Integer;
-begin
-  Result := True;
-
-  if not IsDotNet9Installed() then
-  begin
-    if MsgBox('ZenArchieve requires Microsoft .NET 9 Desktop Runtime (x64) to run.' + #13#10 + #13#10 +
-              'Would you like to download and install .NET 9 now?', mbConfirmation, MB_YESNO) = IDYES then
-    begin
-      ShellExec('open', 'https://dotnet.microsoft.com/en-us/download/dotnet/9.0', '', '', SW_SHOWNORMAL, ewNoWait, ErrorCode);
-    end;
-  end;
-end;
-
 // Custom Inno Setup Pascal Script procedures for clean uninstallation notification
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin

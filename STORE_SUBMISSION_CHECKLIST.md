@@ -1,20 +1,21 @@
-# Microsoft Store Submission Checklist — ZenArchieve v2.2.0
+# Microsoft Store Submission Checklist — ZenArchieve v2.2.1
 
-This checklist guides the developer through publishing the **ZenArchieve v2.2.0** update to the Microsoft Partner Center.
+This checklist guides the developer through publishing the **ZenArchieve v2.2.1** update to the Microsoft Partner Center.
 
 ---
 
 ## 📋 Package & Identity Verification
 
-- [x] **Package Version**: Must be `2.2.0.0`
-  - In `build_msix.py`: `<Identity Name="FluxCode.ZenArchieve" Publisher="CN=DAD1369C-ABD8-4AAD-9FF7-0BA25EDAAED2" Version="2.2.0.0" ProcessorArchitecture="x64" />`
-  - In `Archieve App.csproj`: `<Version>2.2.0</Version>`, `<AssemblyVersion>2.2.0.0</AssemblyVersion>`, `<FileVersion>2.2.0.0</FileVersion>`
+- [x] **Package Version**: Must be `2.2.1.0`
+  - In `build_msix.py`: `<Identity Name="FluxCode.ZenArchieve" Publisher="CN=DAD1369C-ABD8-4AAD-9FF7-0BA25EDAAED2" Version="2.2.1.0" ProcessorArchitecture="x64" />`
+  - In `Archieve App.csproj`: `<Version>2.2.1</Version>`, `<AssemblyVersion>2.2.1.0</AssemblyVersion>`, `<FileVersion>2.2.1.0</FileVersion>`
 - [x] **Target Architecture**: `x64`
 - [x] **Target Device Family**: `Windows.Desktop` (`MinVersion="10.0.17763.0"`, `MaxVersionTested="10.0.26100.0"`)
+- [x] **Self-Contained Packaging**: Bundles .NET 9 Windows Desktop runtime (`SelfContained=true`, `win-x64`), so no external framework dependency declarations are needed in Partner Center.
 - [x] **Declared Capabilities**:
   - `runFullTrust` (`rescap:Capability`) only. ZenArchieve is a classic desktop WPF utility requiring full desktop filesystem access for archive compression and extraction. No additional restricted or privacy-invasive capabilities are declared.
 - [x] **Package File Location**:
-  - `installer_dist\ZenArchieve_v2.2.0_x64.msix` (~6.35 MB)
+  - `installer_dist\ZenArchieve_v2.2.1_x64.msix` (~65.7 MB, self-contained)
 
 ---
 
@@ -25,7 +26,7 @@ Before uploading to Partner Center, run WACK locally to guarantee zero validatio
 ```powershell
 # If Windows SDK is installed in standard location:
 & "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\appcert.exe" test `
-    -p "d:\Archieve\installer_dist\ZenArchieve_v2.2.0_x64.msix" `
+    -p "d:\Archieve\installer_dist\ZenArchieve_v2.2.1_x64.msix" `
     -reportoutputpath "d:\Archieve\wack_report.xml"
 ```
 
@@ -66,8 +67,8 @@ Verify that all automated checks pass:
 2. **Select App**: Select **ZenArchieve** (Product ID: `9N4HCX0KRFNP`).
 3. **Start Update**: In the left sidebar under *Application overview*, click **Update** to start a new submission.
 4. **Packages**:
-   - Drag and drop `installer_dist\ZenArchieve_v2.2.0_x64.msix`.
-   - Partner Center will validate package identity, architecture (`x64`), and version (`2.2.0.0`).
+   - Drag and drop `installer_dist\ZenArchieve_v2.2.1_x64.msix`.
+   - Partner Center will validate package identity, architecture (`x64`), and version (`2.2.1.0`).
    - Remove previous version packages (or let Partner Center replace them).
 5. **Properties & Age Ratings**:
    - Confirm categories: *Utilities & Tools* → *File Manager*.
@@ -75,7 +76,9 @@ Verify that all automated checks pass:
 6. **Store Listings**:
    - Update **What's new in this version**:
      ```text
-     What's New in ZenArchieve v2.2.0:
+     What's New in ZenArchieve v2.2.1:
+     • Fixed: Startup crash on boot/review/updater (AllowsTransparency exception).
+     • Improved: Self-contained deployment — no separate .NET 9 runtime required.
      • Fixed: Dialog and extraction windows now render with solid Fluent backgrounds for enhanced clarity.
      • Fixed: Smart Extract logic refined to avoid creating unnecessary nested subfolders for single files.
      • Fixed: Rating and review prompt now properly triggers post-boot when appropriate.
